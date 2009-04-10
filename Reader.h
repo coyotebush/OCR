@@ -1,60 +1,62 @@
 /**
- * @file OCR.h
+ * @file Reader.h
  * @author Corey Ford <fordco@sonoma.edu>
  * @date Spring 2009
- * @brief The interface and documentation of the OCR class.
- * @see OCR.h for the implementation.
+ * @brief The interface and documentation of the Reader class.
+ * @see Reader.h for the implementation.
  */
 /*
  * Copyright 2009 Corey Ford
  *
- * This file is part of OCR.
+ * This file is part of Ocular Conformation Resolver.
  *
- * OCR is free software: you can redistribute it and/or modify
+ * Ocular Conformation Resolver is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * OCR is distributed in the hope that it will be useful,
+ * Ocular Conformation Resolver is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OCR.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Ocular Conformation Resolver.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef OCR_H_
 #define OCR_H_
 #include <queue>
 #include <string>
-#include "EasyBMP.h"
-using std::vector;
 using std::string;
 #include "EasyBMP/EasyBMP.h"
 
-class OCR
+class Reader
 {
 public:
-	/* Constructor */
-	OCR();
-
-	/* Constructor
-	 * Parameter: filename
-	 * Loads the image from the
-	 * specified file
+	/**
+	 * Initializes the class.
 	 */
-	OCR(string filename);
+	Reader();
 
-	/* LoadFile
-	 * Loads the image from the
-	 * specified file
+	/**
+	 * Initializes the class and loads the image
+	 * from the specified file
+	 * @param[in] filename Filename of existing BMP file
+	 * @see LoadFile
+	 */
+	Reader(string filename);
+
+	/**
+	 * Loads the image from the specified file
+	 * @param[in] filename Filename of existing BMP file
 	 */
 	void LoadFile (string filename);
 
-	/* WriteOut
+	/**
 	 * Writes the resulting image
-	 * to the specified file
+	 * to the specified file.
+	 * @param[in] filename Filename for new BMP file
 	 */
 	void WriteOut (string filename);
 

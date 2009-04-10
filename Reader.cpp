@@ -1,33 +1,33 @@
 /**
- * @file OCR.cpp
+ * @file Reader.cpp
  * @author Corey Ford <fordco@sonoma.edu>
  * @date Spring 2009
- * @brief The implementation of the OCR class.
- * @see OCR.h for the interface and documentation.
+ * @brief The implementation of the Reader class.
+ * @see Reader.h for the interface and documentation.
  */
 /*
  * Copyright 2009 Corey Ford
  *
- * This file is part of OCR.
+ * This file is part of Ocular Conformation Resolver.
  *
- * OCR is free software: you can redistribute it and/or modify
+ * Ocular Conformation Resolver is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * OCR is distributed in the hope that it will be useful,
+ * Ocular Conformation Resolver is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OCR.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Ocular Conformation Resolver.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "OCR.h"
+#include "Reader.h"
 
 /* Constructor */
-OCR::OCR()
+Reader::Reader()
 {
 }
 
@@ -36,7 +36,7 @@ OCR::OCR()
  * Loads the image from the
  * specified file
  */
-OCR::OCR(string filename)
+Reader::Reader(string filename)
 {
 	LoadFile (filename);
 }
@@ -45,7 +45,7 @@ OCR::OCR(string filename)
  * Loads the image from the
  * specified file
  */
-void OCR::LoadFile (string filename)
+void Reader::LoadFile (string filename)
 {
 	static bool visitedInitAlready = false;
 	// Read file
@@ -73,7 +73,7 @@ void OCR::LoadFile (string filename)
  * Writes the resulting image
  * to the specified file
  */
-void OCR::WriteOut (string filename)
+void Reader::WriteOut (string filename)
 {
 	outputImage.WriteToFile(filename.c_str());
 }
@@ -85,7 +85,7 @@ void OCR::WriteOut (string filename)
  * with foreground pixels colored
  * and bounding boxes drawn around the letters
  */
-int OCR::Recognize ()
+int Reader::Recognize ()
 {
 	// Initialize output image as a copy of the input image
 	outputImage.SetSize(inputImage.TellWidth(), inputImage.TellHeight());
@@ -121,7 +121,7 @@ int OCR::Recognize ()
  * Returns whether the specified Pixel
  * is a foreground pixel.
  */
-bool OCR::isForeground (Pixel point)
+bool Reader::isForeground (Pixel point)
 {
 	RGBApixel * pixel = inputImage(point.x, point.y);
 	return (pixel->Red < 100 && pixel->Green < 100 && pixel->Blue < 100);
@@ -132,7 +132,7 @@ bool OCR::isForeground (Pixel point)
  * has been marked as visited, and marks
  * it as visited if it has not.
  */
-bool OCR::isVisited (OCR::Pixel p)
+bool Reader::isVisited (Reader::Pixel p)
 {
 	if (visited[p.x][p.y])
 		return true;
@@ -143,7 +143,7 @@ bool OCR::isVisited (OCR::Pixel p)
 /* nextNeighbor
  * Returns the next neighbor of the specified Pixel
  */
-OCR::Pixel OCR::nextNeighbor (OCR::Pixel p)
+Reader::Pixel Reader::nextNeighbor (Reader::Pixel p)
 {
 	static int lowY, highX, highY, currentX, currentY;
 	static Pixel thePixel (-1, -1);
@@ -174,7 +174,7 @@ OCR::Pixel OCR::nextNeighbor (OCR::Pixel p)
  * at the specified Pixel, then draws a box
  * around it
  */
-OCR::Box OCR::processLetter (OCR::Pixel start)
+Reader::Box Reader::processLetter (Reader::Pixel start)
 {
 	// Initialize queue and box
 	std::queue<Pixel> Q;
@@ -221,7 +221,7 @@ OCR::Box OCR::processLetter (OCR::Pixel start)
  * but it is assumed not to extend beyond
  * the edge of the image.
  */
-void OCR::drawBoundingBox (OCR::Box box)
+void Reader::drawBoundingBox (Reader::Box box)
 {
 	RGBApixel borderTemplate;
 	borderTemplate.Red = 255;
