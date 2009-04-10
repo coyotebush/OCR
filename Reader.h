@@ -60,17 +60,18 @@ public:
 	 */
 	void WriteOut (string filename);
 
-	/* Recognize
+	/**
 	 * Processes the input image.
-	 * Returns the number of letters in the input image.
+	 *
 	 * The output image will also be modified,
 	 * with foreground pixels colored
-	 * and bounding boxes drawn around the letters
+	 * and bounding boxes drawn around the letters.
+	 * @return number of letters in the input image.
 	 */
 	int Recognize ();
 
 private:
-	/* Pixel class
+	/**
 	 * Represents the position
 	 * of a pixel in the image
 	 */
@@ -82,7 +83,7 @@ private:
 		int x, y;
 	};
 
-	/* Box class
+	/**
 	 * Represents a rectangle,
 	 * such as the extent of a letter
 	 */
@@ -93,45 +94,52 @@ private:
 		Pixel low, high;
 	};
 
-	/* isForeground
-	 * Returns whether the specified Pixel
-	 * is a foreground pixel.
+	/**
+	 * @param[in] point Pixel to check
+	 * @return whether the specified Pixel is a foreground pixel.
 	 */
 	bool isForeground (Pixel point);
 
-	/* isVisited
+	/**
 	 * Returns whether the specified Pixel
 	 * has been marked as visited, and marks
 	 * it as visited if it is not.
+	 * @param[in] p Pixel to check
+	 * @return whether this Pixel has been visited already.
 	 */
 	bool isVisited (Pixel p);
 
-	/* nextNeighbor
-	 * Returns the next neighbor of the specified Pixel
+	/**
+	 * @param[in] p Pixel to find neighbors of
+	 * @return the next neighbor of the specified Pixel
 	 */
 	Pixel nextNeighbor (Pixel p);
 
-	/* processLetter
+	/**
 	 * Finds the extent of a letter, starting
 	 * at the specified Pixel.
-	 * Returns a Box representing the extent
-	 * of the letter
+	 * @param[in] start Pixel to start at
+	 * @return a Box representing the extentof the letter
 	 */
 	Box processLetter (Pixel start);
 
-	/* drawBoundingBox
+	/**
 	 * Draws a box surrounding the
 	 * specified Box,
 	 * on the output image.
 	 * The Box may extend to the edge of the image,
 	 * but it is assumed not to extend beyond
 	 * the edge of the image.
+	 * @param[in] box The box to draw around
 	 */
 	void drawBoundingBox (Box box);
 
-	BMP inputImage; // the input image
-	BMP outputImage;// the output image
-	bool ** visited;// array indicating which pixels have been visited
+	/// the input image
+	BMP inputImage;
+	/// the output image
+	BMP outputImage;
+	/// array indicating which pixels have been visited
+	bool ** visited;
 };
 
 #endif /*OCR_H_*/
