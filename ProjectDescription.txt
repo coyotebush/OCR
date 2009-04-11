@@ -35,7 +35,17 @@ Identifying letters
 -----
 This is the most complicated step.
 
-Class and method structure
+One algorithm I'm considering is to check a number of parallel lines at certain
+predetermined angles (perhaps eventually with a choice of different angle
+configurations for different fonts), and identifying those that contain a large
+number of foreground pixels. This would probably be easier with sans-serif
+fonts.
+
+Identifying if and how many holes are in the image would also be helpful.
+The breadth-first search would come in useful here. 
+
+Possible class and method structure
 -----
-Reader
-    The main class
+* Reader - The main class (or perhaps some global functions in a namespace?)
+* Line   - A line of text
+* Letter - Represents a letter
