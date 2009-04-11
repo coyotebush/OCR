@@ -28,11 +28,37 @@
 #include "TextLine.h"
 namespace OCR
 {
-TextLine::TextLine()
-{
-	// TODO Auto-generated constructor stub
 
+/**
+ * Initializes the object using an entire image
+ * @param img reference to a BMP
+ */
+TextLine::TextLine(BMP & img) :
+	image(img)
+{
 }
 
+/**
+ * Initializes the object using part of a BMP image
+ * @param[in] img reference to BMP
+ * @param[in] x1  left coordinate
+ * @param[in] x2  right coordinate
+ */
+TextLine::TextLine(BMP & img, int x1, int x2) :
+	image(img), left(x1), right(x2)
+{
+}
 
-}; // namespace GraphemeResolver
+/**
+ * Recognizes the text.
+ * @return text of the line.
+ */
+std::string TextLine::Read()
+{
+	// TODO: Split horizontally into letters
+	// TODO: Keep track of spaces
+	// TODO: Read letters and concatenate for result
+}
+
+}
+; // namespace GraphemeResolver

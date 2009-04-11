@@ -41,14 +41,18 @@ class TextLine
 {
 public:
 	/**
-	 * Initializes the class with a part of a BMP image
+	 * Initializes the object using an entire image
+	 * @param img reference to a BMP
+	 */
+	TextLine(BMP & img);
+
+	/**
+	 * Initializes the object using part of a BMP image
 	 * @param[in] img reference to BMP
 	 * @param[in] x1  left coordinate
-	 * @param[in] y1  top coordinate
 	 * @param[in] x2  right coordinate
-	 * @param[in] y2  bottom coordinate
 	 */
-	TextLine(BMP & img, int x1, int y1, int x2, int y2);
+	TextLine(BMP & img, int x1, int x2);
 
 	/**
 	 * Recognizes the text.
@@ -64,7 +68,7 @@ private:
 	/// The image
 	BMP & image;
 	/// The part of the image
-	int left, right, bottom, top;
+	int left, right;
 };
 } // namespace OCR
 
