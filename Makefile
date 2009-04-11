@@ -1,28 +1,41 @@
 # @file Makefile
 # @author Corey Ford <fordco@sonoma.edu>
+# @date Spring 2009
 
-# Main
+# Primary target
 all: ocr
 
-# Compilation flags
-flags = -g -Wall
+# List all object files
+OBJS = build/main.o build/reader.o build/easybmp.o
 
 # Main program
-ocr: app.o reader.o
-	g++ $(flags) -o ocr app.o reader.o
+ocr: $(OBJS)
+	$(CXX) $(CXXFLAGS) -o ocr $(OBJS)
 
 # Application program
-app.o: main.cpp Reader.h
-	g++ $(flags) -c -o app.o main.cpp
+build/main.o: main.cpp Reader.h
+	$(CXX) $(CXXFLAGS) -c -o build/main.o main.cpp
 
-# Reader class
-reader.o: Reader.cpp Reader.h
-	g++ $(flags) -c -o reader.o Reader.cpp
+# EasyBMP
+build/easybmp.o: EasyBMP/EasyBMP.cpp EasyBMP/EasyBMP.h
+	$(CXX) $(CXXFLAGS) -c -o build/easybmp.o EasyBMP/EasyBMP.cpp
+
+# General rules
+build/%.o: %.cpp %.h
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+build/%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 # Documentation
 doc:
 	doxygen Doxyfile
 
 # Clean
+clean-all: clean clean-doc
+
+clean-doc: doc
+	$(RM) -r doc/
+
 clean:
-	rm -rf *.o ocr
+	$(RM) -r build/*.o ocr
