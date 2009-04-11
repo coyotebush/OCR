@@ -27,6 +27,7 @@
 
 #ifndef GRAPHEME_H_
 #define GRAPHEME_H_
+#include "EasyBMP/EasyBMP.h"
 namespace OCR
 {
 

@@ -31,6 +31,7 @@
 #include <string>
 using std::string;
 #include "EasyBMP/EasyBMP.h"
+#include "TextLine.h"
 
 namespace OCR
 {

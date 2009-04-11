@@ -22,13 +22,14 @@ Titles under consideration include
 
 Steps
 -----
-The general steps involved in the algorithm include
+The general steps involved in the algorithm will include
 
 1. Loading the image file
-2. Preprocessing, including:
+2. Preprocessing, such as:
     - noise removal
     - determining threshold level
-3. Locating letters and lines of text
+3. Dividing page horizontally into lines
+4. Dividing lines vertically into letters
 4. Identifying letters
 
 Identifying letters
@@ -46,6 +47,6 @@ The breadth-first search would come in useful here.
 
 Possible class and method structure
 -----
-* Reader - The main class (or perhaps some global functions in a namespace?)
-* Line   - A line of text
-* Letter - Represents a letter
+* TextPage - Recognizes a page of text
+* TextLine - Recognizes a line of text
+* Grapheme - Recognizes a letter

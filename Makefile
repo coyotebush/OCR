@@ -6,25 +6,23 @@
 all: ocr
 
 # List all object files
-OBJS = build/main.o build/reader.o build/easybmp.o
+OBJS = build/main.o build/TextPage.o build/TextLine.o \
+	build/Grapheme.o build/EasyBMP.o
 
 # Main program
 ocr: $(OBJS)
 	$(CXX) $(CXXFLAGS) -o ocr $(OBJS)
 
 # Application program
-build/main.o: main.cpp Reader.h
+build/main.o: main.cpp TextPage.h
 	$(CXX) $(CXXFLAGS) -c -o build/main.o main.cpp
 
 # EasyBMP
-build/easybmp.o: EasyBMP/EasyBMP.cpp EasyBMP/EasyBMP.h
-	$(CXX) $(CXXFLAGS) -c -o build/easybmp.o EasyBMP/EasyBMP.cpp
+build/EasyBMP.o: EasyBMP/EasyBMP.cpp EasyBMP/EasyBMP.h
+	$(CXX) $(CXXFLAGS) -c -o build/EasyBMP.o EasyBMP/EasyBMP.cpp
 
-# General rules
+# General rules for classes
 build/%.o: %.cpp %.h
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
-
-build/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 # Documentation
@@ -38,4 +36,4 @@ clean-doc: doc
 	$(RM) -r doc/
 
 clean:
-	$(RM) -r build/*.o ocr
+	$(RM) -r build/*.o *.o ocr

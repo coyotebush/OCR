@@ -27,6 +27,9 @@
 
 #ifndef TEXTLINE_H_
 #define TEXTLINE_H_
+#include <vector>
+#include "EasyBMP/EasyBMP.h"
+#include "Grapheme.h"
 
 namespace OCR
 {
@@ -39,7 +42,7 @@ public:
 	TextLine();
 	virtual ~TextLine();
 private:
-	vector<Letter> letters;
+	std::vector<Grapheme> letters;
 };
 }; // namespace GraphemeResolver
 
