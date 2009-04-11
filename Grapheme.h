@@ -29,10 +29,15 @@
 #define GRAPHEME_H_
 #include "EasyBMP/EasyBMP.h"
 
-#define isForeground(p) ((p)->Red < 100 && (p)->Green < 100 && (p)->Blue < 100)
-
 namespace OCR
 {
+
+/**
+ * Determines whether a pixel is a foreground pixel.
+ * @param pixel a pixel
+ * @return whether this is a foreground pixel
+ */
+bool isForeground(RGBApixel * pixel);
 
 /**
  * A character in the image.
