@@ -1,8 +1,9 @@
 /**
- * @file Letter.h
+ * @file Grapheme.cpp
  * @date Spring 2009
  * @author Corey Ford <fordco@sonoma.edu>
- * @brief
+ * @brief The interface and documentation of the Grapheme class.
+ * @see Grapheme.cpp for the implementation.
  */
 /*
  * Copyright 2009 Corey Ford
@@ -23,21 +24,20 @@
  * along with Omophagic Content Reader.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LETTER_H_
-#define LETTER_H_
+#ifndef GRAPHEME_H_
+#define GRAPHEME_H_
 namespace OCR
 {
 
 /**
- * A letter in the image.
+ * A character in the image.
  */
-class Letter
+class Grapheme
 {
 public:
-	Letter();
-	virtual ~Letter();
+	Grapheme();
 };
 
 }; // namespace GraphemeResolver
 
-#endif /* LETTER_H_ */
+#endif /* GRAPHEME_H_ */

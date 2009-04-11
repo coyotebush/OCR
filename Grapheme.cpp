@@ -1,8 +1,9 @@
 /**
- * @file Letter.cpp
- * @date Apr 10, 2009
- * @author corey
- * @brief
+ * @file Grapheme.cpp
+ * @date Spring 2009
+ * @author Corey Ford <fordco@sonoma.edu>
+ * @brief The implementation of the Grapheme class.
+ * @see Grapheme.h for the interface and documentation.
  */
 /*
  * Copyright 2009 Corey Ford
@@ -23,18 +24,13 @@
  * along with Omophagic Content Reader.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Letter.h"
+#include "Grapheme.h"
 namespace OCR
 {
-Letter::Letter()
-{
-	// TODO Auto-generated constructor stub
 
+Grapheme::Grapheme()
+{
 }
 
-Letter::~Letter()
-{
-	// TODO Auto-generated destructor stub
-}
 
 }; // namespace GraphemeResolver
