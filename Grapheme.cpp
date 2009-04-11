@@ -30,6 +30,16 @@ namespace OCR
 {
 
 /**
+ * Determines whether a pixel is a foreground pixel.
+ * @param pixel a pixel
+ * @return whether this is a foreground pixel
+ */
+bool isForeground(RGBApixel * pixel)
+{
+	return (pixel->Red < 100 && pixel->Green < 100 && pixel->Blue < 100);
+}
+
+/**
  * Initializes the object as a copy of another
  * @param other a Grapheme object
  */

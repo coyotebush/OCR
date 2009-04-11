@@ -48,17 +48,23 @@ public:
 
 	/**
 	 * Initializes the object using part of a BMP image
-	 * @param[in] img reference to BMP
-	 * @param[in] y1  top coordinate
-	 * @param[in] y2  bottom coordinate
+	 * @param img reference to BMP
+	 * @param y1  top coordinate
+	 * @param y2  bottom coordinate
 	 */
-	TextLine(const BMP & img, int y1, int y2);
+	TextLine(BMP & img, int y1, int y2);
 
 	/**
 	 * Initializes the object as a copy of another
 	 * @param other a TextLine object
 	 */
 	TextLine(const TextLine & other);
+
+	/**
+	 * Copies the members of another object
+	 * @param other a TextLine object
+	 */
+	TextLine & operator =(const TextLine & other);
 
 	/**
 	 * Recognizes the text.
