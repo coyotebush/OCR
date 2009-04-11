@@ -26,7 +26,7 @@ build/%.o: %.cpp %.h
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 # Documentation
-doc:
+doc: *.cpp *.h
 	doxygen Doxyfile
 
 # Clean
