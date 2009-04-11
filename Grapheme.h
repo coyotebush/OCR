@@ -37,7 +37,15 @@ namespace OCR
 class Grapheme
 {
 public:
-	Grapheme();
+	/**
+	 * Initializes the class with a part of a BMP image
+	 * @param[in] img reference to BMP
+	 * @param[in] x1  left coordinate
+	 * @param[in] y1  top coordinate
+	 * @param[in] x2  right coordinate
+	 * @param[in] y2  bottom coordinate
+	 */
+	Grapheme(BMP & img, int x1, int y1, int x2, int y2);
 };
 
 }; // namespace GraphemeResolver

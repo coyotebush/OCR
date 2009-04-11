@@ -28,6 +28,7 @@
 #ifndef TEXTLINE_H_
 #define TEXTLINE_H_
 #include <vector>
+#include <string>
 #include "EasyBMP/EasyBMP.h"
 #include "Grapheme.h"
 
@@ -39,8 +40,20 @@ namespace OCR
 class TextLine
 {
 public:
-	TextLine();
-	virtual ~TextLine();
+	/**
+	 * Initializes the class with a part of a BMP image
+	 * @param[in] img reference to BMP
+	 * @param[in] x1  left coordinate
+	 * @param[in] y1  top coordinate
+	 * @param[in] x2  right coordinate
+	 * @param[in] y2  bottom coordinate
+	 */
+	TextLine(BMP & img, int x1, int y1, int x2, int y2);
+	/**
+	 * Recognizes the text.
+	 * @return text of the line.
+	 */
+	std::string Read ();
 private:
 	std::vector<Grapheme> letters;
 };

@@ -28,9 +28,6 @@
 #include "TextPage.h"
 namespace OCR
 {
-TextPage::TextPage()
-{
-}
 
 TextPage::TextPage(string filename)
 {
@@ -59,12 +56,6 @@ void TextPage::LoadFile (string filename)
 			visited[i][j] = false;
 	}
 	visitedInitAlready = true;
-}
-
-
-void TextPage::WriteOut (string filename)
-{
-	outputImage.WriteToFile(filename.c_str());
 }
 
 

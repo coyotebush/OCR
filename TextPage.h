@@ -28,8 +28,8 @@
 #ifndef TEXTPAGE_H_
 #define TEXTPAGE_H_
 #include <queue>
+#include <vector>
 #include <string>
-using std::string;
 #include "EasyBMP/EasyBMP.h"
 #include "TextLine.h"
 
@@ -39,40 +39,15 @@ class TextPage
 {
 public:
 	/**
-	 * Initializes the class.
+	 * Initializes the class with a BMP image
 	 */
-	TextPage();
+	TextPage(BMP & img);
 
 	/**
-	 * Initializes the class and loads the image
-	 * from the specified file
-	 * @param[in] filename Filename of existing BMP file
-	 * @see LoadFile
+	 * Processes the image.
+	 * @return text of the image.
 	 */
-	TextPage(string filename);
-
-	/**
-	 * Loads the image from the specified file
-	 * @param[in] filename Filename of existing BMP file
-	 */
-	void LoadFile (string filename);
-
-	/**
-	 * Writes the resulting image
-	 * to the specified file.
-	 * @param[in] filename Filename for new BMP file
-	 */
-	void WriteOut (string filename);
-
-	/**
-	 * Processes the input image.
-	 *
-	 * The output image will also be modified,
-	 * with foreground pixels colored
-	 * and bounding boxes drawn around the letters.
-	 * @return number of letters in the input image.
-	 */
-	int Recognize ();
+	std::string Read ();
 
 private:
 	/**
@@ -126,21 +101,10 @@ private:
 	 */
 	Box findContiguousShape (Pixel start);
 
-	/**
-	 * Draws a box surrounding the
-	 * specified Box,
-	 * on the output image.
-	 * The Box may extend to the edge of the image,
-	 * but it is assumed not to extend beyond
-	 * the edge of the image.
-	 * @param[in] box The box to draw around
-	 */
-	void drawBoundingBox (Box box);
-
-	/// the input image
-	BMP inputImage;
-	/// the output image
-	BMP outputImage;
+	/// the image
+	BMP & image;
+	/// the lines of text
+	std::vector<TextLine> lines;
 	/// array indicating which pixels have been visited
 	bool ** visited;
 };

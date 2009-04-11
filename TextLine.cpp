@@ -34,9 +34,5 @@ TextLine::TextLine()
 
 }
 
-TextLine::~TextLine()
-{
-	// TODO Auto-generated destructor stub
-}
 
 }; // namespace GraphemeResolver
