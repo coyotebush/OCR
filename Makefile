@@ -21,9 +21,21 @@ build/main.o: main.cpp TextPage.h
 build/EasyBMP.o: EasyBMP/EasyBMP.cpp EasyBMP/EasyBMP.h
 	$(CXX) $(CXXFLAGS) -c -o build/EasyBMP.o EasyBMP/EasyBMP.cpp
 
+# TextPage
+build/TextPage.o: TextPage.cpp TextPage.h TextLine.h Grapheme.h
+	$(CXX) $(CXXFLAGS) -c -o build/TextPage.o TextPage.cpp
+
+# TextLine
+build/TextLine.o: TextLine.cpp TextLine.h Grapheme.h
+	$(CXX) $(CXXFLAGS) -c -o build/TextLine.o TextLine.cpp
+
+# Grapheme
+build/Grapheme.o: Grapheme.cpp Grapheme.h
+	$(CXX) $(CXXFLAGS) -c -o build/Grapheme.o Grapheme.cpp
+
 # General rules for classes
-build/%.o: %.cpp %.h
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+#build/%.o: %.cpp %.h
+#	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 # Documentation
 doc: *.cpp *.h

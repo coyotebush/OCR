@@ -28,6 +28,9 @@
 #ifndef GRAPHEME_H_
 #define GRAPHEME_H_
 #include "EasyBMP/EasyBMP.h"
+
+#define isForeground(p) ((p)->Red < 100 && (p)->Green < 100 && (p)->Blue < 100)
+
 namespace OCR
 {
 
