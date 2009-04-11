@@ -1,0 +1,41 @@
+Corey Ford, CS 315 Final Project, Spring 2009
+
+OCR
+=====
+
+Input
+-----
+Input will consist of a bitmap image containing text
+in the Arial font.
+
+Output
+-----
+Output will consist of the text identified in the image.
+
+Title
+-----
+Titles under consideration include
+
+- OCR
+- Ocular Conformation Resolver
+- Grapheme Resolver
+
+Steps
+-----
+The general steps involved in the algorithm include
+
+1. Loading the image file
+2. Preprocessing, including:
+    - noise removal
+    - determining threshold level
+3. Locating letters and lines of text
+4. Identifying letters
+
+Identifying letters
+-----
+This is the most complicated step.
+
+Class and method structure
+-----
+Reader
+    The main class
