@@ -44,7 +44,7 @@ public:
 	 * Initializes the object using an entire image
 	 * @param img reference to a BMP
 	 */
-	Grapheme(const BMP & img);
+	Grapheme(BMP & img);
 
 	/**
 	 * Initializes the object using part of a BMP image
@@ -54,13 +54,19 @@ public:
 	 * @param[in] x2  right coordinate
 	 * @param[in] y2  bottom coordinate
 	 */
-	Grapheme(const BMP & img, int x1, int y1, int x2, int y2);
+	Grapheme(BMP & img, int x1, int y1, int x2, int y2);
 
 	/**
 	 * Initializes the object as a copy of another
 	 * @param other a Grapheme object
 	 */
 	Grapheme(const Grapheme & other);
+
+	/**
+	 * Copies the members of another object
+	 * @param other a Grapheme object
+	 */
+	Grapheme & operator =(const Grapheme & other);
 
 	/**
 	 * Recognizes the character.

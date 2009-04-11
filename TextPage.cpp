@@ -38,6 +38,25 @@ TextPage::TextPage(BMP & img) :
 }
 
 /**
+ * Initializes the object as a copy of another
+ * @param other a TextPage object
+ */
+TextPage::TextPage(const TextPage & other) :
+	image(other.image)
+{
+}
+
+/**
+ * Copies the members of another object
+ * @param other a TextPage object
+ */
+TextPage & TextPage::operator =(const TextPage & other)
+{
+	image = other.image;
+	return *this;
+}
+
+/**
  * Processes the image.
  * @return text of the image.
  */

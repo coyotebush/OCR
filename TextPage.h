@@ -44,6 +44,18 @@ public:
 	TextPage(BMP & img);
 
 	/**
+	 * Initializes the object as a copy of another
+	 * @param other a TextPage object
+	 */
+	TextPage(const TextPage & other);
+
+	/**
+	 * Copies the members of another object
+	 * @param other a TextPage object
+	 */
+	TextPage & operator =(const TextPage & other);
+
+	/**
 	 * Processes the image.
 	 * @return text of the image.
 	 */
