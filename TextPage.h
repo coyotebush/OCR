@@ -24,8 +24,8 @@
  * along with Omophagic Content Reader.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OCR_H_
-#define OCR_H_
+#ifndef TEXTPAGE_H_
+#define TEXTPAGE_H_
 #include <queue>
 #include <string>
 using std::string;
@@ -144,4 +144,4 @@ private:
 };
 
 }; // namespace GraphemeResolver
-#endif /*OCR_H_*/
+#endif /*TEXTPAGE_H_*/
