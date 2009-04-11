@@ -8,48 +8,39 @@
 /*
  * Copyright 2009 Corey Ford
  *
- * This file is part of Ocular Conformation Resolver.
+ * This file is part of GraphemeResolver.
  *
- * Ocular Conformation Resolver is free software: you can redistribute it and/or modify
+ * GraphemeResolver is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Ocular Conformation Resolver is distributed in the hope that it will be useful,
+ * GraphemeResolver is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Ocular Conformation Resolver.  If not, see <http://www.gnu.org/licenses/>.
+ * along with GraphemeResolver.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Reader.h"
-
-/* Constructor */
+namespace GraphemeResolver
+{
 Reader::Reader()
 {
 }
 
-/* Constructor
- * Parameter: filename
- * Loads the image from the
- * specified file
- */
 Reader::Reader(string filename)
 {
 	LoadFile (filename);
 }
 
-/* LoadFile
- * Loads the image from the
- * specified file
- */
 void Reader::LoadFile (string filename)
 {
 	static bool visitedInitAlready = false;
 	// Read file
-	bool loadResult = inputImage.ReadFromFile (filename.c_str());
+	inputImage.ReadFromFile (filename.c_str());
 
 	// Deallocate memory if it has been allocated before
 	if (visitedInitAlready)
@@ -69,22 +60,13 @@ void Reader::LoadFile (string filename)
 	visitedInitAlready = true;
 }
 
-/* WriteOut
- * Writes the resulting image
- * to the specified file
- */
+
 void Reader::WriteOut (string filename)
 {
 	outputImage.WriteToFile(filename.c_str());
 }
 
-/* Recognize
- * Processes the input image.
- * Returns the number of letters in the input image.
- * The output image will also be modified,
- * with foreground pixels colored
- * and bounding boxes drawn around the letters
- */
+
 int Reader::Recognize ()
 {
 	// Initialize output image as a copy of the input image
@@ -110,28 +92,21 @@ int Reader::Recognize ()
 			if (!isVisited(current) && isForeground (current))
 			{
 				letterCount++;
-				Box letter = processLetter(current);
+				Box letter = findContiguousShape(current);
 				drawBoundingBox(letter);
 			}
 		}
 	return letterCount;
 }
 
-/* isForeground
- * Returns whether the specified Pixel
- * is a foreground pixel.
- */
+
 bool Reader::isForeground (Pixel point)
 {
 	RGBApixel * pixel = inputImage(point.x, point.y);
 	return (pixel->Red < 100 && pixel->Green < 100 && pixel->Blue < 100);
 }
 
-/* isVisited
- * Returns whether the specified Pixel
- * has been marked as visited, and marks
- * it as visited if it has not.
- */
+
 bool Reader::isVisited (Reader::Pixel p)
 {
 	if (visited[p.x][p.y])
@@ -140,9 +115,7 @@ bool Reader::isVisited (Reader::Pixel p)
 	return false;
 }
 
-/* nextNeighbor
- * Returns the next neighbor of the specified Pixel
- */
+
 Reader::Pixel Reader::nextNeighbor (Reader::Pixel p)
 {
 	static int lowY, highX, highY, currentX, currentY;
@@ -169,18 +142,14 @@ Reader::Pixel Reader::nextNeighbor (Reader::Pixel p)
 	}
 	return Pixel (currentX, currentY);
 }
-/* processLetter
- * Finds the extent of a letter, starting
- * at the specified Pixel, then draws a box
- * around it
- */
-Reader::Box Reader::processLetter (Reader::Pixel start)
+
+
+Reader::Box Reader::findContiguousShape (Reader::Pixel start)
 {
 	// Initialize queue and box
 	std::queue<Pixel> Q;
 	Box letter (start.x, start.y, start.x, start.y);
-	// The pixel to be used as a template for coloring
-	// visited pixels
+	// The pixel to be used as a template for coloring visited pixels
 	RGBApixel visitedTemplate;
 	visitedTemplate.Red = 0;
 	visitedTemplate.Green = 135;
@@ -213,14 +182,7 @@ Reader::Box Reader::processLetter (Reader::Pixel start)
 	return letter;
 }
 
-/* drawBoundingBox
- * Draws a box surrounding the
- * specified Box,
- * on the output image.
- * The Box may extend to the edge of the image,
- * but it is assumed not to extend beyond
- * the edge of the image.
- */
+
 void Reader::drawBoundingBox (Reader::Box box)
 {
 	RGBApixel borderTemplate;
@@ -256,3 +218,4 @@ void Reader::drawBoundingBox (Reader::Box box)
 		*(outputImage(box.high.x + 1, box.high.y + 1)) = borderTemplate;
 }
 
+}; // namespace GraphemeResolver
