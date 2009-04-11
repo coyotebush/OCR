@@ -8,20 +8,20 @@
 /*
  * Copyright 2009 Corey Ford
  *
- * This file is part of Ocular Conformation Resolver.
+ * This file is part of GraphemeResolver.
  *
- * Ocular Conformation Resolver is free software: you can redistribute it and/or modify
+ * GraphemeResolver is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Ocular Conformation Resolver is distributed in the hope that it will be useful,
+ * GraphemeResolver is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Ocular Conformation Resolver.  If not, see <http://www.gnu.org/licenses/>.
+ * along with GraphemeResolver.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef OCR_H_
@@ -31,6 +31,8 @@
 using std::string;
 #include "EasyBMP/EasyBMP.h"
 
+namespace GraphemeResolver
+{
 class Reader
 {
 public:
@@ -116,12 +118,11 @@ private:
 	Pixel nextNeighbor (Pixel p);
 
 	/**
-	 * Finds the extent of a letter, starting
-	 * at the specified Pixel.
+	 * Finds the extent of a contiguous shape, starting at the specified Pixel.
 	 * @param[in] start Pixel to start at
-	 * @return a Box representing the extentof the letter
+	 * @return a Box representing the extent of the letter
 	 */
-	Box processLetter (Pixel start);
+	Box findContiguousShape (Pixel start);
 
 	/**
 	 * Draws a box surrounding the
@@ -142,4 +143,5 @@ private:
 	bool ** visited;
 };
 
+}; // namespace GraphemeResolver
 #endif /*OCR_H_*/
