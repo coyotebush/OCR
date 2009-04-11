@@ -44,7 +44,10 @@ number of foreground pixels. This would probably be easier with sans-serif
 fonts.
 
 Identifying if and how many holes are in the image would also be helpful.
-The breadth-first search would come in useful here. 
+The breadth-first search would come in useful here.
+
+Calculating the height/width ratio of a letter seems like a reliable way to
+narrow down the options.
 
 Possible class and method structure
 -----

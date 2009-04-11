@@ -34,18 +34,28 @@ namespace OCR
  * @param img reference to a BMP
  */
 TextLine::TextLine(BMP & img) :
-	image(img)
+	image(img), left(0)
 {
+	right = image.TellWidth();
 }
 
 /**
  * Initializes the object using part of a BMP image
  * @param[in] img reference to BMP
- * @param[in] x1  left coordinate
- * @param[in] x2  right coordinate
+ * @param[in] y1  top coordinate
+ * @param[in] y2  bottom coordinate
  */
-TextLine::TextLine(BMP & img, int x1, int x2) :
-	image(img), left(x1), right(x2)
+TextLine::TextLine(const BMP & img, int y1, int y2) :
+	image(img), top(y1), bottom(y2)
+{
+}
+
+/**
+ * Initializes the object as a copy of another
+ * @param other a TextLine object
+ */
+TextLine::TextLine(const TextLine & other) :
+	image(other.image), left(other.left), right(other.right)
 {
 }
 
@@ -60,5 +70,4 @@ std::string TextLine::Read()
 	// TODO: Read letters and concatenate for result
 }
 
-}
-; // namespace GraphemeResolver
+} // namespace GraphemeResolver

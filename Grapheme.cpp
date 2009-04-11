@@ -29,9 +29,14 @@
 namespace OCR
 {
 
-Grapheme::Grapheme()
+/**
+ * Initializes the object as a copy of another
+ * @param other a Grapheme object
+ */
+Grapheme::Grapheme(const Grapheme & other) :
+	image(other.image), left(other.left), right(other.right), top(other.top),
+			bottom(other.bottom)
 {
 }
 
-
-}; // namespace GraphemeResolver
+} // namespace GraphemeResolver

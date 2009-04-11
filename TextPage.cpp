@@ -41,8 +41,10 @@ TextPage::TextPage(BMP & img) :
  * Processes the image.
  * @return text of the image.
  */
-std::string Read()
+std::string TextPage::Read()
 {
+	result = "";
+	lines.clear();
 	// Divide into lines
 	int top = 0, bottom = 0; // of the current line of text
 	bool inRow = false; // Whether in a row
@@ -65,7 +67,7 @@ std::string Read()
 		// End of a row
 		{
 			bottom = row - 1;
-			lines.push_back(TextLine(top, bottom));
+			lines.push_back(TextLine(image, top, bottom));
 			inRow = false;
 		}
 	}

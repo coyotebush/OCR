@@ -49,10 +49,16 @@ public:
 	/**
 	 * Initializes the object using part of a BMP image
 	 * @param[in] img reference to BMP
-	 * @param[in] x1  left coordinate
-	 * @param[in] x2  right coordinate
+	 * @param[in] y1  top coordinate
+	 * @param[in] y2  bottom coordinate
 	 */
-	TextLine(BMP & img, int x1, int x2);
+	TextLine(const BMP & img, int y1, int y2);
+
+	/**
+	 * Initializes the object as a copy of another
+	 * @param other a TextLine object
+	 */
+	TextLine(const TextLine & other);
 
 	/**
 	 * Recognizes the text.
@@ -68,7 +74,7 @@ private:
 	/// The image
 	BMP & image;
 	/// The part of the image
-	int left, right;
+	int top, bottom;
 };
 } // namespace OCR
 

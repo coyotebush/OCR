@@ -41,7 +41,7 @@ public:
 	/**
 	 * Initializes the class with a BMP image
 	 */
-	TextPage(BMP & img);
+	TextPage(const BMP & img);
 
 	/**
 	 * Processes the image.
