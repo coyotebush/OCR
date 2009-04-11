@@ -1,9 +1,9 @@
 /**
- * @file Reader.cpp
+ * @file TextPage.cpp
  * @author Corey Ford <fordco@sonoma.edu>
  * @date Spring 2009
- * @brief The implementation of the Reader class.
- * @see Reader.h for the interface and documentation.
+ * @brief The implementation of the TextPage class.
+ * @see TextPage.h for the interface and documentation.
  */
 /*
  * Copyright 2009 Corey Ford
@@ -24,19 +24,19 @@
  * along with Omophagic Content Reader.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Reader.h"
+#include "TextPage.h"
 namespace OCR
 {
-Reader::Reader()
+TextPage::TextPage()
 {
 }
 
-Reader::Reader(string filename)
+TextPage::TextPage(string filename)
 {
 	LoadFile (filename);
 }
 
-void Reader::LoadFile (string filename)
+void TextPage::LoadFile (string filename)
 {
 	static bool visitedInitAlready = false;
 	// Read file
@@ -61,13 +61,13 @@ void Reader::LoadFile (string filename)
 }
 
 
-void Reader::WriteOut (string filename)
+void TextPage::WriteOut (string filename)
 {
 	outputImage.WriteToFile(filename.c_str());
 }
 
 
-int Reader::Recognize ()
+int TextPage::Recognize ()
 {
 	// Initialize output image as a copy of the input image
 	outputImage.SetSize(inputImage.TellWidth(), inputImage.TellHeight());
@@ -100,14 +100,14 @@ int Reader::Recognize ()
 }
 
 
-bool Reader::isForeground (Pixel point)
+bool TextPage::isForeground (Pixel point)
 {
 	RGBApixel * pixel = inputImage(point.x, point.y);
 	return (pixel->Red < 100 && pixel->Green < 100 && pixel->Blue < 100);
 }
 
 
-bool Reader::isVisited (Reader::Pixel p)
+bool TextPage::isVisited (TextPage::Pixel p)
 {
 	if (visited[p.x][p.y])
 		return true;
@@ -116,7 +116,7 @@ bool Reader::isVisited (Reader::Pixel p)
 }
 
 
-Reader::Pixel Reader::nextNeighbor (Reader::Pixel p)
+TextPage::Pixel TextPage::nextNeighbor (TextPage::Pixel p)
 {
 	static int lowY, highX, highY, currentX, currentY;
 	static Pixel thePixel (-1, -1);
@@ -144,7 +144,7 @@ Reader::Pixel Reader::nextNeighbor (Reader::Pixel p)
 }
 
 
-Reader::Box Reader::findContiguousShape (Reader::Pixel start)
+TextPage::Box TextPage::findContiguousShape (TextPage::Pixel start)
 {
 	// Initialize queue and box
 	std::queue<Pixel> Q;
@@ -183,7 +183,7 @@ Reader::Box Reader::findContiguousShape (Reader::Pixel start)
 }
 
 
-void Reader::drawBoundingBox (Reader::Box box)
+void TextPage::drawBoundingBox (TextPage::Box box)
 {
 	RGBApixel borderTemplate;
 	borderTemplate.Red = 255;

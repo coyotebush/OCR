@@ -1,9 +1,9 @@
 /**
- * @file Reader.h
+ * @file TextPage.h
  * @author Corey Ford <fordco@sonoma.edu>
  * @date Spring 2009
- * @brief The interface and documentation of the Reader class.
- * @see Reader.h for the implementation.
+ * @brief The interface and documentation of the TextPage class.
+ * @see TextPage.cpp for the implementation.
  */
 /*
  * Copyright 2009 Corey Ford
@@ -33,13 +33,13 @@ using std::string;
 
 namespace OCR
 {
-class Reader
+class TextPage
 {
 public:
 	/**
 	 * Initializes the class.
 	 */
-	Reader();
+	TextPage();
 
 	/**
 	 * Initializes the class and loads the image
@@ -47,7 +47,7 @@ public:
 	 * @param[in] filename Filename of existing BMP file
 	 * @see LoadFile
 	 */
-	Reader(string filename);
+	TextPage(string filename);
 
 	/**
 	 * Loads the image from the specified file
