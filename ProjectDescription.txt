@@ -19,6 +19,7 @@ Titles under consideration include
 - OCR
 - Ocular Conformation Resolver
 - Grapheme Resolver
+- Omophagic Content Reader
 
 Steps
 -----
@@ -49,4 +50,4 @@ Possible class and method structure
 -----
 * TextPage - Recognizes a page of text
 * TextLine - Recognizes a line of text
-* Grapheme - Recognizes a letter
+* Grapheme - Recognizes a single letter

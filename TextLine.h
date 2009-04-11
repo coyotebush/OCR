@@ -49,14 +49,23 @@ public:
 	 * @param[in] y2  bottom coordinate
 	 */
 	TextLine(BMP & img, int x1, int y1, int x2, int y2);
+
 	/**
 	 * Recognizes the text.
 	 * @return text of the line.
 	 */
-	std::string Read ();
+	std::string Read();
+
 private:
+	/// The letters
 	std::vector<Grapheme> letters;
+	/// The resulting string
+	std::string result;
+	/// The image
+	BMP & image;
+	/// The part of the image
+	int left, right, bottom, top;
 };
-}; // namespace GraphemeResolver
+} // namespace OCR
 
 #endif /* TEXTLINE_H_ */

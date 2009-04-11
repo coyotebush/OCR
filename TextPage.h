@@ -47,67 +47,16 @@ public:
 	 * Processes the image.
 	 * @return text of the image.
 	 */
-	std::string Read ();
+	std::string Read();
 
 private:
-	/**
-	 * Represents the position
-	 * of a pixel in the image
-	 */
-	struct Pixel
-	{
-		Pixel (int left, int top) : x (left), y(top) {}
-		bool operator!= (const Pixel & rhs) const
-		{ return this->x != rhs.x || this->y != rhs.y; }
-		int x, y;
-	};
-
-	/**
-	 * Represents a rectangle,
-	 * such as the extent of a letter
-	 */
-	struct Box
-	{
-		Box (int x1, int y1, int x2, int y2) :
-			low (x1, y1), high (x2, y2) {}
-		Pixel low, high;
-	};
-
-	/**
-	 * @param[in] point Pixel to check
-	 * @return whether the specified Pixel is a foreground pixel.
-	 */
-	bool isForeground (Pixel point);
-
-	/**
-	 * Returns whether the specified Pixel
-	 * has been marked as visited, and marks
-	 * it as visited if it is not.
-	 * @param[in] p Pixel to check
-	 * @return whether this Pixel has been visited already.
-	 */
-	bool isVisited (Pixel p);
-
-	/**
-	 * @param[in] p Pixel to find neighbors of
-	 * @return the next neighbor of the specified Pixel
-	 */
-	Pixel nextNeighbor (Pixel p);
-
-	/**
-	 * Finds the extent of a contiguous shape, starting at the specified Pixel.
-	 * @param[in] start Pixel to start at
-	 * @return a Box representing the extent of the letter
-	 */
-	Box findContiguousShape (Pixel start);
-
 	/// the image
 	BMP & image;
 	/// the lines of text
 	std::vector<TextLine> lines;
-	/// array indicating which pixels have been visited
-	bool ** visited;
+	/// The resulting text
+	std::string result;
 };
 
-}; // namespace GraphemeResolver
+} // namespace OCR
 #endif /*TEXTPAGE_H_*/

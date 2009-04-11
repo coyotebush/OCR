@@ -46,8 +46,69 @@ public:
 	 * @param[in] y2  bottom coordinate
 	 */
 	Grapheme(BMP & img, int x1, int y1, int x2, int y2);
+
+	/**
+	 * Recognizes the character.
+	 * @return the character.
+	 */
+	char Read();
+
+private:
+	/**
+	 * Represents the position
+	 * of a pixel in the image
+	 */
+	struct Point
+	{
+		Point(int left, int top) :
+			x(left), y(top)
+		{
+		}
+		bool operator!=(const Point & rhs) const
+		{
+			return this->x != rhs.x || this->y != rhs.y;
+		}
+		int x, y;
+	};
+
+	/**
+	 * Represents a rectangle,
+	 * such as the extent of a letter
+	 */
+	struct Box
+	{
+		Box(int x1, int y1, int x2, int y2) :
+			low(x1, y1), high(x2, y2)
+		{
+		}
+		Point low, high;
+	};
+
+	/**
+	 * Finds the extent of a contiguous shape
+	 * starting at a certain point
+	 * @param start starting Point
+	 * @return extent of shape
+	 */
+	Box findContiguousShape(Point start);
+
+	/**
+	 * Determines whether one point is reachable
+	 * from another using pixels of similar color.
+	 * @param start starting point
+	 * @param end   starting point
+	 * @return
+	 */
+	bool isReachable(Point start, Point end);
+
+	/// The image
+	BMP & image;
+	/// The part of the image to use
+	int left, right, bottom, top;
+	/// The resulting character
+	char result;
 };
 
-}; // namespace GraphemeResolver
+} // namespace OCR
 
 #endif /* GRAPHEME_H_ */
