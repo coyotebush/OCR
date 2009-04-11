@@ -24,10 +24,29 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <iostream>
+#include <string>
+#include "EasyBMP/EasyBMP.h"
 #include "TextPage.h"
 using namespace OCR;
+using namespace std;
 
-int main ()
+int main (int argc, char * argv[])
 {
+	if (argc != 2)
+	{
+		cerr << "Usage: " << argv[0] << "<filename>\n";
+		return 1;
+	}
+
+	// Load the page from a bitmap file
+	BMP i;
+	i.ReadFromFile(argv[1]);
+
+	// Read it!
+	TextPage p (i);
+	string s = p.Read();
+
+	cout << s << endl;
 	return 0;
 }
