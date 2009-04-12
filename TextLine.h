@@ -73,10 +73,6 @@ public:
 	std::string Read();
 
 private:
-	/// The letters
-	std::vector<Grapheme> letters;
-	/// The resulting string
-	std::string result;
 	/// The image
 	BMP & image;
 	/// The part of the image

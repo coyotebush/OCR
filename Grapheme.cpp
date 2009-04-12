@@ -89,4 +89,14 @@ Grapheme & Grapheme::operator =(const Grapheme & other)
 	return *this;
 }
 
+/**
+ * Recognizes the character.
+ * @return the character.
+ */
+char Grapheme::Read()
+{
+	// TODO, this is the tricky part.
+	return 'a';
+}
+
 } // namespace GraphemeResolver

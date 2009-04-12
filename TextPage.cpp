@@ -73,7 +73,7 @@ std::string TextPage::Read()
 		// Search for a foreground pixel in this row
 		bool fgFound = false;
 		for (int col = 0; col < image.TellWidth() && !fgFound; ++col)
-			if (isForeground(image(row, col)))
+			if (isForeground(image(col, row)))
 				fgFound = true;
 
 		if (fgFound && !inRow)
@@ -85,7 +85,7 @@ std::string TextPage::Read()
 		else if (!fgFound && inRow)
 		// End of a row
 		{
-			bottom = row - 1;
+			bottom = row;
 			lines.push_back(TextLine(image, top, bottom));
 			inRow = false;
 		}
