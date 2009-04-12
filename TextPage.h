@@ -4,6 +4,7 @@
  * @date Spring 2009
  * @brief The interface and documentation of the TextPage class.
  * @see TextPage.cpp for the implementation.
+ * @version $Id$
  */
 /*
  * Copyright 2009 Corey Ford

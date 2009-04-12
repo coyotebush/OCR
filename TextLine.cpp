@@ -4,6 +4,7 @@
  * @author Corey Ford <fordco@sonoma.edu>
  * @brief The implementation of the TextLine class.
  * @see TextLine.h for the interface and documentation.
+ * @version $Id$
  */
 /*
  * Copyright 2009 Corey Ford

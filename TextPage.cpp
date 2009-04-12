@@ -4,6 +4,7 @@
  * @date Spring 2009
  * @brief The implementation of the TextPage class.
  * @see TextPage.h for the interface and documentation.
+ * @version $Id$
  */
 /*
  * Copyright 2009 Corey Ford

@@ -4,6 +4,7 @@
  * @author Corey Ford <fordco@sonoma.edu>
  * @brief The interface and documentation of the Grapheme class.
  * @see Grapheme.cpp for the implementation.
+ * @version $Id$
  */
 /*
  * Copyright 2009 Corey Ford
