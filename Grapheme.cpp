@@ -97,7 +97,37 @@ Grapheme & Grapheme::operator =(const Grapheme & other)
  */
 char Grapheme::Read()
 {
+	pareDown();
 	return 'a';
+}
+
+/**
+ * Sets the left, right, bottom, and top coordinates
+ * such that they surround the foreground pixels contained
+ */
+void Grapheme::pareDown ()
+{
+	bool fgFound;
+	// Pare top
+	for (fgFound = false; top <= bottom && !fgFound; ++top)
+		for (int col = left; col <= right; ++col)
+			if (isForeground(image(col, top)))
+				fgFound = true;
+	// Pare bottom
+	for (fgFound = false; bottom >= top && !fgFound; --bottom)
+		for (int col = left; col <= right; ++col)
+			if (isForeground(image(col, top)))
+				fgFound = true;
+	// Pare left
+	for (fgFound = false; left <= right && !fgFound; ++left)
+		for (int row = top; row <= bottom; ++row)
+			if (isForeground(image(left, row)))
+				fgFound = true;
+	// Pare right
+	for (fgFound = false; right >= left && !fgFound; --right)
+		for (int row = top; row <= bottom; ++row)
+			if (isForeground(image(right, row)))
+				fgFound = true;
 }
 
 } // namespace GraphemeResolver
