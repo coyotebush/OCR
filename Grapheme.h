@@ -112,6 +112,12 @@ private:
 	};
 
 	/**
+	 * Sets the left, right, bottom, and top coordinates
+	 * such that they surround the foreground pixels contained
+	 */
+	void pareDown ();
+
+	/**
 	 * Finds the extent of a contiguous shape
 	 * starting at a certain point
 	 * @param start starting Point
