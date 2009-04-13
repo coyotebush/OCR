@@ -37,7 +37,8 @@ namespace OCR
  */
 bool isForeground(RGBApixel * pixel)
 {
-	return (pixel->Red < 100 && pixel->Green < 100 && pixel->Blue < 100);
+	return (pixel->Red < FG_THRESHOLD && pixel->Green < FG_THRESHOLD
+			&& pixel->Blue < FG_THRESHOLD);
 }
 
 /**
@@ -105,7 +106,7 @@ char Grapheme::Read()
  * Sets the left, right, bottom, and top coordinates
  * such that they surround the foreground pixels contained
  */
-void Grapheme::pareDown ()
+void Grapheme::pareDown()
 {
 	bool fgFound;
 	// Pare top

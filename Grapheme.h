@@ -34,6 +34,11 @@ namespace OCR
 {
 
 /**
+ * R, G, B must be >= this for a foreground pixel
+ */
+const int FG_THRESHOLD = 85;
+
+/**
  * Determines whether a pixel is a foreground pixel.
  * @param pixel a pixel
  * @return whether this is a foreground pixel
@@ -115,7 +120,7 @@ private:
 	 * Sets the left, right, bottom, and top coordinates
 	 * such that they surround the foreground pixels contained
 	 */
-	void pareDown ();
+	void pareDown();
 
 	/**
 	 * Finds the extent of a contiguous shape
