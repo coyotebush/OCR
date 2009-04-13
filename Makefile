@@ -1,41 +1,59 @@
 # @file Makefile
 # @author Corey Ford <fordco@sonoma.edu>
 # @date Spring 2009
+# @brief The makefile for the OCR project
+# @version $Id$
+
+#
+# Copyright 2009 Corey Ford
+#
+# This file is part of Omophagic Content Reader.
+#
+# Omophagic Content Reader is free software: you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Omophagic Content Reader is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Omophagic Content Reader.
+# If not, see <http://www.gnu.org/licenses/>.
+#
 
 # Primary target
 all: ocr
 
-# List all object files
-OBJS = build/main.o build/TextPage.o build/TextLine.o \
+# all object files
+objs = build/main.o build/TextPage.o build/TextLine.o \
 	build/Grapheme.o build/EasyBMP.o
 
 # Main program
-ocr: $(OBJS)
-	$(CXX) $(CXXFLAGS) -o ocr $(OBJS)
+ocr: $(objs)
+	$(CXX) $(objs) -o ocr $(CXXFLAGS) $(LDFLAGS)
 
 # Application program
 build/main.o: main.cpp TextPage.h
-	$(CXX) $(CXXFLAGS) -c -o build/main.o main.cpp
+	$(CXX) main.cpp -c -o build/main.o $(CXXFLAGS)
 
 # EasyBMP
 build/EasyBMP.o: EasyBMP/EasyBMP.cpp EasyBMP/EasyBMP.h
-	$(CXX) $(CXXFLAGS) -c -o build/EasyBMP.o EasyBMP/EasyBMP.cpp
+	$(CXX) EasyBMP/EasyBMP.cpp -c -o build/EasyBMP.o $(CXXFLAGS)
 
 # TextPage
 build/TextPage.o: TextPage.cpp TextPage.h TextLine.h Grapheme.h
-	$(CXX) $(CXXFLAGS) -c -o build/TextPage.o TextPage.cpp
+	$(CXX) TextPage.cpp -c -o build/TextPage.o $(CXXFLAGS)
 
 # TextLine
 build/TextLine.o: TextLine.cpp TextLine.h Grapheme.h
-	$(CXX) $(CXXFLAGS) -c -o build/TextLine.o TextLine.cpp
+	$(CXX) TextLine.cpp -c -o build/TextLine.o $(CXXFLAGS)
 
 # Grapheme
 build/Grapheme.o: Grapheme.cpp Grapheme.h
-	$(CXX) $(CXXFLAGS) -c -o build/Grapheme.o Grapheme.cpp
-
-# General rules for classes
-#build/%.o: %.cpp %.h
-#	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CXX) Grapheme.cpp -c -o build/Grapheme.o $(CXXFLAGS)
 
 # Documentation
 doc: *.cpp *.h
