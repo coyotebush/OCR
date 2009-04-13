@@ -92,11 +92,11 @@ Grapheme & Grapheme::operator =(const Grapheme & other)
 
 /**
  * Recognizes the character.
- * @return the character.
+ * @return the character
+ * @todo Implement! This is the tricky part.
  */
 char Grapheme::Read()
 {
-	// TODO, this is the tricky part.
 	return 'a';
 }
 
