@@ -37,23 +37,23 @@ ocr: $(objs)
 
 # Application program
 build/main.o: main.cpp TextPage.h
-	$(CXX) main.cpp -c -o build/main.o $(CXXFLAGS)
+	$(CXX) main.cpp -c -o build/main.o $(CPPFLAGS) $(CXXFLAGS)
 
 # EasyBMP
 build/EasyBMP.o: EasyBMP/EasyBMP.cpp EasyBMP/EasyBMP.h
-	$(CXX) EasyBMP/EasyBMP.cpp -c -o build/EasyBMP.o $(CXXFLAGS)
+	$(CXX) EasyBMP/EasyBMP.cpp -c -o build/EasyBMP.o $(CPPFLAGS) $(CXXFLAGS)
 
 # TextPage
 build/TextPage.o: TextPage.cpp TextPage.h TextLine.h Grapheme.h
-	$(CXX) TextPage.cpp -c -o build/TextPage.o $(CXXFLAGS)
+	$(CXX) TextPage.cpp -c -o build/TextPage.o $(CPPFLAGS) $(CXXFLAGS)
 
 # TextLine
 build/TextLine.o: TextLine.cpp TextLine.h Grapheme.h
-	$(CXX) TextLine.cpp -c -o build/TextLine.o $(CXXFLAGS)
+	$(CXX) TextLine.cpp -c -o build/TextLine.o $(CPPFLAGS) $(CXXFLAGS)
 
 # Grapheme
 build/Grapheme.o: Grapheme.cpp Grapheme.h
-	$(CXX) Grapheme.cpp -c -o build/Grapheme.o $(CXXFLAGS)
+	$(CXX) Grapheme.cpp -c -o build/Grapheme.o $(CPPFLAGS) $(CXXFLAGS)
 
 # Documentation
 doc: *.cpp *.h
