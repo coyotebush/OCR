@@ -28,9 +28,9 @@
 
 #ifndef TEXTPAGE_H_
 #define TEXTPAGE_H_
-#include <queue>
 #include <vector>
 #include <string>
+#include <sstream>
 #include "EasyBMP/EasyBMP.h"
 #include "TextLine.h"
 
@@ -61,6 +61,14 @@ public:
 	 * @return text of the image.
 	 */
 	std::string Read();
+
+	/**
+	 * Recognizes the text to an output stream
+	 * @param outs output stream
+	 * @param t TextPage object
+	 * @return the output stream
+	 */
+	friend std::ostream & operator <<(std::ostream & outs, const TextPage & t);
 
 private:
 	/// the image

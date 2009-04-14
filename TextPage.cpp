@@ -63,18 +63,29 @@ TextPage & TextPage::operator =(const TextPage & other)
  */
 std::string TextPage::Read()
 {
-	result = "";
-	lines.clear();
+	std::stringstream r(std::stringstream::out);
+	r << *this;
+	return r.str();
+}
+
+/**
+ * Recognizes the text to an output stream
+ * @param outs output stream
+ * @param t TextPage object
+ * @return the output stream
+ */
+std::ostream & operator <<(std::ostream & outs, const TextPage & t)
+{
 	// Divide into lines
 	int top = 0, bottom = 0; // of the current line of text
 	bool inRow = false; // Whether in a row
 
-	for (int row = 0; row < image.TellHeight(); ++row)
+	for (int row = 0; row < t.image.TellHeight(); ++row)
 	{
 		// Search for a foreground pixel in this row
 		bool fgFound = false;
-		for (int col = 0; col < image.TellWidth() && !fgFound; ++col)
-			if (isForeground(image(col, row)))
+		for (int col = 0; col < t.image.TellWidth() && !fgFound; ++col)
+			if (isForeground(t.image(col, row)))
 				fgFound = true;
 
 		if (fgFound && !inRow)
@@ -87,14 +98,11 @@ std::string TextPage::Read()
 		// End of a row
 		{
 			bottom = row;
-			lines.push_back(TextLine(image, top, bottom));
+			outs << TextLine(t.image, top, bottom);
 			inRow = false;
 		}
 	}
-	// Read each line and concatenate results
-	for (std::vector<TextLine>::iterator i = lines.begin(); i != lines.end(); ++i)
-		result += i->Read() + '\n';
-	return result;
+	return outs;
 }
 
 } // namespace OCR
