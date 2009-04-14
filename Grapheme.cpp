@@ -103,18 +103,6 @@ char Grapheme::Read()
 }
 
 /**
- * Recognizes the text to an output stream
- * @param outs output stream
- * @param t TextLine object
- * @return the output stream
- */
-std::ostream & operator <<(std::ostream & outs, Grapheme & t)
-{
-	outs << t.Read();
-	return outs;
-}
-
-/**
  * Sets the left, right, bottom, and top coordinates
  * such that they surround the foreground pixels contained
  */

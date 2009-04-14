@@ -46,8 +46,8 @@ int main (int argc, char * argv[])
 
 	// Read it!
 	TextPage p (i);
-	cout << p << endl;
-	//string s = p.Read();
-	//cout << s << endl;
+	string s = p.Read();
+
+	cout << s << endl;
 	return 0;
 }

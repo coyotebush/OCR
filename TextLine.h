@@ -30,7 +30,6 @@
 #define TEXTLINE_H_
 #include <vector>
 #include <string>
-#include <sstream>
 #include "EasyBMP/EasyBMP.h"
 #include "Grapheme.h"
 
@@ -73,14 +72,6 @@ public:
 	 * @return text of the line.
 	 */
 	std::string Read();
-
-	/**
-	 * Recognizes the text to an output stream
-	 * @param outs output stream
-	 * @param t TextLine object
-	 * @return the output stream
-	 */
-	friend std::ostream & operator <<(std::ostream & outs, const TextLine & t);
 
 private:
 	/// The image

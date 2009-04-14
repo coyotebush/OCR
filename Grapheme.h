@@ -85,14 +85,6 @@ public:
 	 */
 	char Read();
 
-	/**
-	 * Recognizes the text to an output stream
-	 * @param outs output stream
-	 * @param t Grapheme object
-	 * @return the output stream
-	 */
-	friend std::ostream & operator <<(std::ostream & outs, Grapheme & t);
-
 private:
 	/**
 	 * Represents the position

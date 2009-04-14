@@ -78,51 +78,40 @@ TextLine & TextLine::operator =(const TextLine & other)
  */
 std::string TextLine::Read()
 {
-	std::stringstream result(std::stringstream::out);
-	result << *this;
-	return result.str();
-}
-
-/**
- * Recognizes the text to an output stream
- * @param outs output stream
- * @param t TextLine object
- * @return the output stream
- */
-std::ostream & operator <<(std::ostream & outs, const TextLine & t)
-{
+	std::string result = "";
 	// Divide into lines
 	int left = 0, right = 0; // of the current grapheme
 	bool inSymbol = false; // Whether in a symbol
 
 	// Split horizontally into letters, read each and concatenate
-	for (int col = 0; col < t.image.TellWidth(); ++col)
+	for (int col = 0; col < image.TellWidth(); ++col)
 	{
 		// Search for a foreground pixel in this column
 		bool fgFound = false;
-		for (int row = t.top; row < t.bottom && !fgFound; ++row)
-			if (isForeground(t.image(col, row)))
+		for (int row = top; row < bottom && !fgFound; ++row)
+			if (isForeground(image(col, row)))
 				fgFound = true;
 
 		if (fgFound && !inSymbol)
 		// Starting a new symbol
 		{
 			left = col;
-			if (left - right > 0.3 * (t.bottom - t.top))
-				// Large space, add a space character to the result
-				outs << ' ';
+			if (left - right > 0.3 * (bottom - top))
+			// Large space, add a space character to the result
+				result += ' ';
 			inSymbol = true;
 		}
 		else if (!fgFound && inSymbol)
 		// End of a symbol
 		{
 			right = col;
-			Grapheme sym(t.image, left, t.top, right, t.bottom);
-			outs << sym;
+			Grapheme sym (image, left, top, right, bottom);
+			result += sym.Read();
 			inSymbol = false;
 		}
 	}
-	return outs;
+
+	return result;
 }
 
 } // namespace GraphemeResolver
