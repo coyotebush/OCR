@@ -29,6 +29,8 @@
 #ifndef GRAPHEME_H_
 #define GRAPHEME_H_
 #include <vector>
+#include <queue>
+#include <set>
 #include "EasyBMP/EasyBMP.h"
 
 namespace OCR
@@ -45,6 +47,14 @@ const int FG_THRESHOLD = 85;
  * @return whether this is a foreground pixel
  */
 bool isForeground(RGBApixel * pixel);
+
+/**
+ * Determines whether two pixels are similar in color
+ * @param a first pixel
+ * @param b second pixel
+ * @return whether they should be considered similar
+ */
+bool isSimilar(RGBApixel * a, RGBApixel * b);
 
 /**
  * A character in the image.
@@ -97,9 +107,17 @@ private:
 			x(left), y(top)
 		{
 		}
+		bool operator==(const Point & rhs) const
+		{
+			return this->x == rhs.x || this->y == rhs.y;
+		}
 		bool operator!=(const Point & rhs) const
 		{
 			return this->x != rhs.x || this->y != rhs.y;
+		}
+		bool operator<(const Point & rhs) const
+		{
+			return this->x < rhs.x && this->y < rhs.y;
 		}
 		int x, y;
 	};
@@ -129,7 +147,7 @@ private:
 	 * @param start starting Point
 	 * @return extent of shape
 	 */
-	Box findContiguousShape(Point start);
+	Box findContiguousShape(const Point start);
 
 	/**
 	 * Determines whether one point is reachable
@@ -150,7 +168,7 @@ private:
 	 * Finds the straight lines in the letter
 	 * @return angles of straight lines
 	 */
-	vector<unsigned short> findStraightLines();
+	std::vector<unsigned short> findStraightLines();
 
 	/// The image
 	BMP & image;
