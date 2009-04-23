@@ -28,6 +28,7 @@
 
 #ifndef GRAPHEME_H_
 #define GRAPHEME_H_
+#include <vector>
 #include "EasyBMP/EasyBMP.h"
 
 namespace OCR
@@ -138,6 +139,18 @@ private:
 	 * @return
 	 */
 	bool isReachable(Point start, Point end);
+
+	/**
+	 * Counts the number of "holes" in the letter
+	 * @return number of holes
+	 */
+	unsigned short countHoles();
+
+	/**
+	 * Finds the straight lines in the letter
+	 * @return angles of straight lines
+	 */
+	vector<unsigned short> findStraightLines();
 
 	/// The image
 	BMP & image;
