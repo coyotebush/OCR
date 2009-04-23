@@ -151,6 +151,65 @@ void Grapheme::pareDown()
 			if (isForeground(image(right, row)))
 				fgFound = true;
 }
+
+/**
+ * Performs a breadth-first search among similar pixels
+ * @param start starting pixel
+ * @param searchtype see Search_Type
+ * @param[out] extent extent of search
+ * @param end ending pixel for TO_PIXEL
+ * @return whether destination (if any) reached
+ */
+bool Grapheme::breadthFirstSearch(const Point start, Search_Type searchtype,
+		Box& extent, const Point end)
+{
+	// Initialize queue and box
+	std::queue<Point> Q;
+	// Keep track of which pixels have been visited
+	int width = right - left;
+	std::vector<bool> visited(width * (bottom - top));
+
+	// Add the starting pixel to the queue
+	Q.push(start);
+
+	while (!Q.empty())
+	{
+		// Take a pixel
+		Point p = Q.front();
+		Q.pop();
+		// Is this an ending point
+		if (p.x == left || p.x == right - 1 || p.y == top || p.y == bottom - 1)
+			return true; // Yay
+		// Extend the current extent Box if necessary
+		if (p.x < extent.low.x)
+			extent.low.x = p.x;
+		if (p.x > extent.high.x)
+			extent.high.x = p.x;
+		if (p.y < extent.low.y)
+			extent.low.y = p.y;
+		if (p.y > extent.high.y)
+			extent.high.y = p.y;
+		// Get all its neighbors
+		int lowX = (p.x - 1 > left ? p.x - 1 : left);
+		int highX = (p.x + 1 < right - 1 ? p.x + 1 : right - 1);
+		int lowY = (p.y - 1 > top ? p.y - 1 : top);
+		int highY = (p.y + 1 < bottom - 1 ? p.y + 1 : bottom);
+		for (int x = lowX; x <= highX; ++x)
+		{
+			for (int y = lowY; y <= highY; ++y)
+			{
+				Point n(x, y);
+				if (!visited[width * (y - top) + (x - left)] && isSimilar(image(start.x,
+						start.y), image(n.x, n.y)))
+				{
+					Q.push(n);
+					visited[width * (y - top) + (x - left)] = true;
+				}
+			}
+		}
+	}
+	return false;
+}
 /**
  * Finds the extent of a contiguous shape
  * starting at a certain point
