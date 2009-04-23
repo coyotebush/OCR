@@ -118,7 +118,8 @@ char Grapheme::Read()
 {
 	pareDown();
 	unsigned short holes = countHoles();
-	std::vector<unsigned short> angles = findStraightLines();
+	std::cout << "Holes: " << holes << std::endl;
+	//std::vector<unsigned short> angles = findStraightLines();
 	return 'a';
 }
 
@@ -162,10 +163,8 @@ Grapheme::Box Grapheme::findContiguousShape(const Point start)
 	std::queue<Point> Q;
 	Box extent(start.x, start.y, start.x, start.y);
 	// Keep track of which pixels have been visited
-	bool ** visited;
-	visited = new bool*[right - left];
-	for (int i = 0; i < right - left; ++i)
-		visited[i] = new bool[bottom - top];
+	int width = right - left;
+	std::vector<bool> visited(width * (bottom - top));
 
 	// Add the starting pixel to the queue
 	Q.push(start);
@@ -194,11 +193,11 @@ Grapheme::Box Grapheme::findContiguousShape(const Point start)
 			for (int y = lowY; y <= highY; ++y)
 			{
 				Point n(x, y);
-				if (!visited[x - left][y - top] && isSimilar(image(start.x,
+				if (!visited[width * (y - top) + (x - left)] && isSimilar(image(start.x,
 						start.y), image(n.x, n.y)))
 				{
 					Q.push(n);
-					visited[x - left][y - top] = true;
+					visited[width * (y - top) + (x - left)] = true;
 				}
 			}
 		}
@@ -215,13 +214,11 @@ Grapheme::Box Grapheme::findContiguousShape(const Point start)
  */
 bool Grapheme::isReachable(Point start, Point end)
 {
-	// Initialize queue and box
+	// Initialize queue
 	std::queue<Point> Q;
 	// Keep track of which pixels have been visited
-	bool ** visited;
-	visited = new bool*[right - left];
-	for (int i = 0; i < right - left; ++i)
-		visited[i] = new bool[bottom - top];
+	int width = right - left;
+	std::vector<bool> visited(width * (bottom - top));
 
 	// Add the starting pixel to the queue
 	Q.push(start);
@@ -244,11 +241,11 @@ bool Grapheme::isReachable(Point start, Point end)
 			for (int y = lowY; y <= highY; ++y)
 			{
 				Point n(x, y);
-				if (!visited[x - left][y - top] && isSimilar(image(start.x,
+				if (!visited[width * (y - top) + (x - left)] && isSimilar(image(start.x,
 						start.y), image(n.x, n.y)))
 				{
 					Q.push(n);
-					visited[x - left][y - top] = true;
+					visited[width * (y - top) + (x - left)] = true;
 				}
 			}
 		}
@@ -259,13 +256,63 @@ bool Grapheme::isReachable(Point start, Point end)
 }
 
 /**
+ * Determines whether a pixel at the edge of the bounding box
+ * is reachable from another pixel
+ * @param start starting point
+ * @return whether edge reachable
+ */
+bool Grapheme::isEdgeReachable(const Point start)
+{
+	// Initialize queue
+	std::queue<Point> Q;
+	// Keep track of which pixels have been visited
+	int width = right - left;
+	std::vector<bool> visited(width * (bottom - top));
+
+	// Add the starting pixel to the queue
+	Q.push(start);
+
+	while (!Q.empty())
+	{
+		// Take a pixel
+		Point p = Q.front();
+		Q.pop();
+		// Is this at the edge?
+		if (p.x == left || p.x == right - 1 || p.y == top || p.y == bottom - 1)
+			return true; // Yay
+		// Get all its neighbors
+		int lowX = (p.x - 1 > left ? p.x - 1 : left);
+		int highX = (p.x + 1 < right - 1 ? p.x + 1 : right - 1);
+		int lowY = (p.y - 1 > top ? p.y - 1 : top);
+		int highY = (p.y + 1 < bottom - 1 ? p.y + 1 : bottom);
+		for (int x = lowX; x <= highX; ++x)
+		{
+			for (int y = lowY; y <= highY; ++y)
+			{
+				Point n(x, y);
+				if (!visited[width * (y - top) + (x - left)] && isSimilar(
+						image(start.x, start.y), image(n.x, n.y)))
+				{
+					Q.push(n);
+					visited[width * (y - top) + (x - left)] = true;
+				}
+			}
+		}
+	}
+	// Now we have looked at all similar pixels reachable
+	// from the starting point and have not found the end point
+	return false;
+}
+/**
  * Counts the number of "holes" in the letter
  * @return number of holes
  */
 unsigned short Grapheme::countHoles()
 {
 	// Try only some pixels
-	int spacing = (right - left) / 10;
+	int spacing = (right - left) / 5;
+	if (spacing < 1)
+		spacing = 1;
 	// Determine which of these are unreachable
 	std::set<Point> unreachables;
 	Point corner(left, top);
@@ -273,13 +320,17 @@ unsigned short Grapheme::countHoles()
 	{
 		for (int y = top; y < bottom; y += spacing)
 		{
-			Point current(x, y);
-			if (!isReachable(corner, current))
-				unreachables.insert(current);
+			if (!isForeground(image(x, y)))
+			{
+				Point current(x, y);
+				if (!isEdgeReachable(current))
+					unreachables.insert(current);
+			}
 		}
 	}
 	// Check whether any of these pixels are reachable from each other (N! time)
-	for (std::set<Point>::iterator i = unreachables.begin(); i != unreachables.end();)
+	for (std::set<Point>::iterator i = unreachables.begin(); i
+			!= unreachables.end();)
 	{
 		// Make a copy of the iterator, then advance it
 		std::set<Point>::iterator subject = i;

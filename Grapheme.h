@@ -135,11 +135,14 @@ private:
 		Point low, high;
 	};
 
+
+
 	/**
 	 * Sets the left, right, bottom, and top coordinates
 	 * such that they surround the foreground pixels contained
 	 */
 	void pareDown();
+
 
 	/**
 	 * Finds the extent of a contiguous shape
@@ -157,6 +160,14 @@ private:
 	 * @return
 	 */
 	bool isReachable(Point start, Point end);
+
+	/**
+	 * Determines whether a pixel at the edge of the bounding box
+	 * is reachable from another pixel
+	 * @param start starting point
+	 * @return whether edge reachable
+	 */
+	bool isEdgeReachable(const Point start);
 
 	/**
 	 * Counts the number of "holes" in the letter
