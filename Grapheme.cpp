@@ -31,37 +31,6 @@ namespace OCR
 {
 
 /**
- * Determines whether a pixel is a foreground pixel.
- * @param pixel a pixel
- * @return whether this is a foreground pixel
- */
-bool isForeground(RGBApixel * pixel)
-{
-	return (pixel->Red < FG_THRESHOLD && pixel->Green < FG_THRESHOLD
-			&& pixel->Blue < FG_THRESHOLD);
-}
-
-/**
- * Determines whether two pixels are similar in color
- * @param a first pixel
- * @param b second pixel
- * @return whether they should be considered similar
- */
-bool isSimilar(RGBApixel * a, RGBApixel * b)
-{
-	int red = a->Red - b->Red;
-	int green = a->Green - b->Green;
-	int blue = a->Blue - b->Blue;
-	if (red < 0)
-		red = -red;
-	if (green < 0)
-		green = -green;
-	if (blue < 0)
-		blue = -blue;
-	return (red < 10 && green < 10 && blue < 10);
-}
-
-/**
  * Initializes the object using an entire image
  * @param img reference to a BMP
  */
@@ -199,8 +168,8 @@ bool Grapheme::breadthFirstSearch(const Point start, Search_Type searchtype,
 			for (int y = lowY; y <= highY; ++y)
 			{
 				Point n(x, y);
-				if (!visited[width * (y - top) + (x - left)] && isSimilar(image(start.x,
-						start.y), image(n.x, n.y)))
+				if (!visited[width * (y - top) + (x - left)] && isSimilar(
+						image(start.x, start.y), image(n.x, n.y)))
 				{
 					Q.push(n);
 					visited[width * (y - top) + (x - left)] = true;
@@ -252,8 +221,8 @@ Grapheme::Box Grapheme::findContiguousShape(const Point start)
 			for (int y = lowY; y <= highY; ++y)
 			{
 				Point n(x, y);
-				if (!visited[width * (y - top) + (x - left)] && isSimilar(image(start.x,
-						start.y), image(n.x, n.y)))
+				if (!visited[width * (y - top) + (x - left)] && isSimilar(
+						image(start.x, start.y), image(n.x, n.y)))
 				{
 					Q.push(n);
 					visited[width * (y - top) + (x - left)] = true;
@@ -300,8 +269,8 @@ bool Grapheme::isReachable(Point start, Point end)
 			for (int y = lowY; y <= highY; ++y)
 			{
 				Point n(x, y);
-				if (!visited[width * (y - top) + (x - left)] && isSimilar(image(start.x,
-						start.y), image(n.x, n.y)))
+				if (!visited[width * (y - top) + (x - left)] && isSimilar(
+						image(start.x, start.y), image(n.x, n.y)))
 				{
 					Q.push(n);
 					visited[width * (y - top) + (x - left)] = true;

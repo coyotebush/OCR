@@ -37,26 +37,6 @@ namespace OCR
 {
 
 /**
- * R, G, B must be >= this for a foreground pixel
- */
-const int FG_THRESHOLD = 85;
-
-/**
- * Determines whether a pixel is a foreground pixel.
- * @param pixel a pixel
- * @return whether this is a foreground pixel
- */
-bool isForeground(RGBApixel * pixel);
-
-/**
- * Determines whether two pixels are similar in color
- * @param a first pixel
- * @param b second pixel
- * @return whether they should be considered similar
- */
-bool isSimilar(RGBApixel * a, RGBApixel * b);
-
-/**
  * A character in the image.
  */
 class Grapheme
@@ -155,59 +135,59 @@ private:
 	 * @return whether destination (if any) reached
 	 */
 	bool breadthFirstSearch(const Point start, Search_Type searchtype,
-			Box& extent, const Point end = Point(0,0));
+			Box& extent, const Point end = Point(0, 0));
 
-			/**
-			 * Sets the left, right, bottom, and top coordinates
-			 * such that they surround the foreground pixels contained
-			 */
-			void pareDown();
+	/**
+	 * Sets the left, right, bottom, and top coordinates
+	 * such that they surround the foreground pixels contained
+	 */
+	void pareDown();
 
-			/**
-			 * Finds the extent of a contiguous shape
-			 * starting at a certain point
-			 * @param start starting Point
-			 * @return extent of shape
-			 */
-			Box findContiguousShape(const Point start);
+	/**
+	 * Finds the extent of a contiguous shape
+	 * starting at a certain point
+	 * @param start starting Point
+	 * @return extent of shape
+	 */
+	Box findContiguousShape(const Point start);
 
-			/**
-			 * Determines whether one point is reachable
-			 * from another using pixels of similar color.
-			 * @param start starting point
-			 * @param end   starting point
-			 * @return
-			 */
-			bool isReachable(Point start, Point end);
+	/**
+	 * Determines whether one point is reachable
+	 * from another using pixels of similar color.
+	 * @param start starting point
+	 * @param end   starting point
+	 * @return
+	 */
+	bool isReachable(Point start, Point end);
 
-			/**
-			 * Determines whether a pixel at the edge of the bounding box
-			 * is reachable from another pixel
-			 * @param start starting point
-			 * @return whether edge reachable
-			 */
-			bool isEdgeReachable(const Point start);
+	/**
+	 * Determines whether a pixel at the edge of the bounding box
+	 * is reachable from another pixel
+	 * @param start starting point
+	 * @return whether edge reachable
+	 */
+	bool isEdgeReachable(const Point start);
 
-			/**
-			 * Counts the number of "holes" in the letter
-			 * @return number of holes
-			 */
-			unsigned short countHoles();
+	/**
+	 * Counts the number of "holes" in the letter
+	 * @return number of holes
+	 */
+	unsigned short countHoles();
 
-			/**
-			 * Finds the straight lines in the letter
-			 * @return angles of straight lines
-			 */
-			std::vector<unsigned short> findStraightLines();
+	/**
+	 * Finds the straight lines in the letter
+	 * @return angles of straight lines
+	 */
+	std::vector<unsigned short> findStraightLines();
 
-			/// The image
-			BMP & image;
-			/// The part of the image to use
-			int left, right, bottom, top;
-			/// The resulting character
-			char result;
-		};
+	/// The image
+	BMP & image;
+	/// The part of the image to use
+	int left, right, bottom, top;
+	/// The resulting character
+	char result;
+};
 
-		} // namespace OCR
+} // namespace OCR
 
 #endif /* GRAPHEME_H_ */
