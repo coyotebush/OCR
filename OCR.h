@@ -149,7 +149,7 @@ bool isSimilar(RGBApixel * a, RGBApixel * b);
  * @param[in]     image     the bitmap image
  * @param[in]     start     starting point
  * @param[in,out] visited   which pixels have been visited.
- *                          Should be the same size as the area of limit.
+ *                          Should have the same dimensions as limit.
  * @param[in]     limit     do not search beyond this box
  * @return                  extent of contiguous pixels found
  */
