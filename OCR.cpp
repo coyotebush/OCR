@@ -64,15 +64,18 @@ bool isSimilar(RGBApixel * a, RGBApixel * b)
 }
 
 /**
- * Performs a breadth-first search from a point using similar pixels
+ * Performs a breadth-first search from a point using either foreground
+ * or background pixels
  * @param[in]     image     the bitmap image
  * @param[in]     start     starting point
+ * @param[in]     bg        whether to search background pixels
+ *                          instead of foreground pixels
  * @param[in,out] visited   which pixels have been visited.
  *                          Should have the same dimensions as limit.
  * @param[in]     limit     do not search beyond this box
  * @return                  extent of contiguous pixels found
  */
-Box bfSearch(BMP & image, const Point start, bool ** visited, const Box limit)
+Box bfSearch(BMP & image, const Point start, bool bg, bool ** visited, const Box limit)
 {
 	// Initialize queue and box
 	std::queue<Point> Q;
@@ -107,8 +110,9 @@ Box bfSearch(BMP & image, const Point start, bool ** visited, const Box limit)
 			for (int y = lowY; y <= highY; ++y)
 			{
 				Point n(x, y);
-				if (!visited[x - limit.low.x][y - limit.low.y] && isSimilar(
-						image(start.x, start.y), image(n.x, n.y)))
+				if (!visited[x - limit.low.x][y - limit.low.y] && 
+						(bg ^ isForeground(image(n.x, n.y))))
+						//isSimilar(image(start.x, start.y), image(n.x, n.y)))
 				{
 					Q.push(n);
 					visited[x - limit.low.x][y - limit.low.y] = true;

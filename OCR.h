@@ -44,7 +44,6 @@ struct Point
 	 * Initializes the point.
 	 * @param left X coordinate
 	 * @param top  Y coordinate
-	 * @return
 	 */
 	Point(int left, int top) :
 		x(left), y(top)
@@ -122,7 +121,7 @@ struct Box
 /**
  * R, G, B must be < this for a foreground pixel
  */
-const int FG_THRESHOLD = 85;
+const int FG_THRESHOLD = 100;
 
 /**
  * Difference in R, G, B must be < this for similar pixels
@@ -145,14 +144,17 @@ bool isForeground(RGBApixel * pixel);
 bool isSimilar(RGBApixel * a, RGBApixel * b);
 
 /**
- * Performs a breadth-first search from a point using similar pixels
+ * Performs a breadth-first search from a point using either foreground
+ * or background pixels
  * @param[in]     image     the bitmap image
  * @param[in]     start     starting point
+ * @param[in]     bg        whether to search background pixels
+ *                          instead of foreground pixels
  * @param[in,out] visited   which pixels have been visited.
  *                          Should have the same dimensions as limit.
  * @param[in]     limit     do not search beyond this box
  * @return                  extent of contiguous pixels found
  */
-Box bfSearch(BMP & image, const Point start, bool ** visited, const Box limit);
+Box bfSearch(BMP & image, const Point start, bool bg, bool ** visited, const Box limit);
 
 } // namespace OCR

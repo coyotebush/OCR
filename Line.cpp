@@ -37,7 +37,7 @@ namespace OCR
 Line::Line(BMP & img) :
 	image(img), top(0)
 {
-	bottom = image.TellWidth();
+	bottom = image.TellHeight();
 }
 
 /**

@@ -33,20 +33,33 @@ using namespace std;
 
 int main (int argc, char * argv[])
 {
-	if (argc != 2)
+	string result;
+	if (argc != 3)
 	{
-		cerr << "Usage: " << argv[0] << "<filename>\n";
+		cerr << "Usage: " << argv[0] << " [plc] <filename>\n";
 		return 1;
 	}
 
 	// Load the page from a bitmap file
 	BMP img;
-	img.ReadFromFile(argv[1]);
+	img.ReadFromFile(argv[2]);
 
 	// Read it!
-	OCR::Page page (img);
-	string s = page.Read();
+	if (string(argv[1]) == "p")
+	{
+		OCR::Page page(img);
+		cout << page.Read() << endl;
+	}
+	else if (string(argv[1]) == "l")
+	{
+		OCR::Line line(img);
+		cout << line.Read() << endl;
+	}
+	else if (string(argv[1]) == "c")
+	{
+		OCR::Grapheme letter(img);
+		cout << letter.Read() << endl;
+	}
 
-	cout << s << endl;
 	return 0;
 }
