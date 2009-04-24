@@ -40,10 +40,17 @@ namespace OCR
  */
 struct Point
 {
+	/**
+	 * Initializes the point.
+	 * @param left X coordinate
+	 * @param top  Y coordinate
+	 * @return
+	 */
 	Point(int left, int top) :
 		x(left), y(top)
 	{
 	}
+
 	bool operator==(const Point & rhs) const
 	{
 		return this->x == rhs.x || this->y == rhs.y;
@@ -65,9 +72,21 @@ struct Point
  */
 struct Box
 {
+	/**
+	 * Initializes the box.
+	 * @param x1 Low X  (left)
+	 * @param y1 Low Y  (top)
+	 * @param x2 High X (right)
+	 * @param y2 High Y (bottom)
+	 * @return
+	 */
 	Box(int x1, int y1, int x2, int y2) :
 		low(x1, y1), high(x2, y2)
 	{
+	}
+	bool operator==(const Box & rhs) const
+	{
+		return this->low == rhs.low && this->high == rhs.high;
 	}
 	Point low, high;
 };

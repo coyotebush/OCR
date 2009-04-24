@@ -37,8 +37,6 @@ namespace OCR
 Grapheme::Grapheme(BMP & img) :
 	image(img), part(0, 0, image.TellWidth(), image.TellHeight())
 {
-	right = image.TellWidth();
-	bottom = image.TellHeight();
 }
 
 /**
@@ -50,7 +48,7 @@ Grapheme::Grapheme(BMP & img) :
  * @param[in] y2  bottom coordinate
  */
 Grapheme::Grapheme(BMP & img, int x1, int y1, int x2, int y2) :
-	image(img), left(x1), right(x2), bottom(y2), top(y1)
+	image(img), part(x1, y1, x2, y2)
 {
 }
 
@@ -59,8 +57,7 @@ Grapheme::Grapheme(BMP & img, int x1, int y1, int x2, int y2) :
  * @param other a Grapheme object
  */
 Grapheme::Grapheme(const Grapheme & other) :
-	image(other.image), left(other.left), right(other.right), bottom(
-			other.bottom), top(other.top)
+	image(other.image), part(other.part)
 {
 }
 
