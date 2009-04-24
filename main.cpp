@@ -28,7 +28,7 @@
 #include <iostream>
 #include <string>
 #include "EasyBMP/EasyBMP.h"
-#include "TextPage.h"
+#include "Page.h"
 using namespace std;
 
 int main (int argc, char * argv[])
@@ -40,11 +40,11 @@ int main (int argc, char * argv[])
 	}
 
 	// Load the page from a bitmap file
-	BMP i;
-	i.ReadFromFile(argv[1]);
+	BMP img;
+	img.ReadFromFile(argv[1]);
 
 	// Read it!
-	OCR::TextPage page (i);
+	OCR::Page page (img);
 	string s = page.Read();
 
 	cout << s << endl;

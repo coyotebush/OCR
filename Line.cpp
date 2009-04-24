@@ -1,9 +1,9 @@
 /**
- * @file TextLine.cpp
+ * @file Line.cpp
  * @date Spring 2009
  * @author Corey Ford <fordco@sonoma.edu>
- * @brief The implementation of the TextLine class.
- * @see TextLine.h for the interface and documentation.
+ * @brief The implementation of the Line class.
+ * @see Line.h for the interface and documentation.
  * @version $Id$
  */
 /*
@@ -26,7 +26,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "TextLine.h"
+#include "Line.h"
 namespace OCR
 {
 
@@ -34,7 +34,7 @@ namespace OCR
  * Initializes the object using an entire image
  * @param img reference to a BMP
  */
-TextLine::TextLine(BMP & img) :
+Line::Line(BMP & img) :
 	image(img), top(0)
 {
 	bottom = image.TellWidth();
@@ -46,25 +46,25 @@ TextLine::TextLine(BMP & img) :
  * @param[in] y1  top coordinate
  * @param[in] y2  bottom coordinate
  */
-TextLine::TextLine(BMP & img, int y1, int y2) :
+Line::Line(BMP & img, int y1, int y2) :
 	image(img), top(y1), bottom(y2)
 {
 }
 
 /**
  * Initializes the object as a copy of another
- * @param other a TextLine object
+ * @param other a Line object
  */
-TextLine::TextLine(const TextLine & other) :
+Line::Line(const Line & other) :
 	image(other.image), top(other.top), bottom(other.bottom)
 {
 }
 
 /**
  * Copies the members of another object
- * @param other a TextLine object
+ * @param other a Line object
  */
-TextLine & TextLine::operator =(const TextLine & other)
+Line & Line::operator =(const Line & other)
 {
 	image = other.image;
 	top = other.top;
@@ -76,7 +76,7 @@ TextLine & TextLine::operator =(const TextLine & other)
  * Recognizes the text.
  * @return text of the line.
  */
-std::string TextLine::Read()
+std::string Line::Read()
 {
 	std::string result = "";
 	// Divide into lines

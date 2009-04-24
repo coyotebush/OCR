@@ -28,6 +28,7 @@
  */
 
 #include <vector>
+#include <queue>
 #include "EasyBMP/EasyBMP.h"
 
 namespace OCR
@@ -100,11 +101,11 @@ bool isSimilar(RGBApixel * a, RGBApixel * b);
  * Performs a breadth-first search from a point using similar pixels
  * @param[in]     image     the bitmap image
  * @param[in]     start     starting point
- * @param[in,out] visited   which pixels have been visited
+ * @param[in,out] visited   which pixels have been visited.
+ *                          Should be the same size as the area of limit.
  * @param[in]     limit     do not search beyond this box
  * @return                  extent of contiguous pixels found
  */
-Box bfSearch(const BMP & image, const Point start,
-		std::vector<std::vector<int> > & visited, const Box limit);
+Box bfSearch(BMP & image, const Point start, bool ** visited, const Box limit);
 
 } // namespace OCR

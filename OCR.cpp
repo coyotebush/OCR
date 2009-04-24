@@ -67,20 +67,16 @@ bool isSimilar(RGBApixel * a, RGBApixel * b)
  * Performs a breadth-first search from a point using similar pixels
  * @param[in]     image     the bitmap image
  * @param[in]     start     starting point
- * @param[in,out] visited   which pixels have been visited
+ * @param[in,out] visited   which pixels have been visited.
+ *                          Should be the same size as the area of limit.
  * @param[in]     limit     do not search beyond this box
  * @return                  extent of contiguous pixels found
  */
-Box bfSearch(const BMP & image, const Point start,
-		std::vector<std::vector<int> > & visited, const Box limit)
+Box bfSearch(BMP & image, const Point start, bool ** visited, const Box limit)
 {
 	// Initialize queue and box
 	std::queue<Point> Q;
 	Box extent(start.x, start.y, start.x, start.y);
-
-	// Keep track of which pixels have been visited
-	// @todo 2D vector or 2D dynamic array?
-	int width = right - left;
 
 	// Add the starting pixel to the queue
 	Q.push(start);
@@ -101,20 +97,20 @@ Box bfSearch(const BMP & image, const Point start,
 		if (p.y > extent.high.y)
 			extent.high.y = p.y;
 		// Get all its neighbors
-		int lowX = (p.x - 1 > left ? p.x - 1 : left);
-		int highX = (p.x + 1 < right - 1 ? p.x + 1 : right - 1);
-		int lowY = (p.y - 1 > top ? p.y - 1 : top);
-		int highY = (p.y + 1 < bottom - 1 ? p.y + 1 : bottom);
+		int lowX = (p.x - 1 > limit.low.x ? p.x - 1 : limit.low.x);
+		int highX = (p.x + 1 < limit.high.x ? p.x + 1 : limit.high.x);
+		int lowY = (p.y - 1 > limit.low.y ? p.y - 1 : limit.low.y);
+		int highY = (p.y + 1 < limit.high.y ? p.y + 1 : limit.high.y);
 		for (int x = lowX; x <= highX; ++x)
 		{
 			for (int y = lowY; y <= highY; ++y)
 			{
 				Point n(x, y);
-				if (!visited[width * (y - top) + (x - left)] && isSimilar(
+				if (!visited[x - limit.low.x][y - limit.low.y] && isSimilar(
 						image(start.x, start.y), image(n.x, n.y)))
 				{
 					Q.push(n);
-					visited[width * (y - top) + (x - left)] = true;
+					visited[x - limit.low.x][y - limit.low.y] = true;
 				}
 			}
 		}

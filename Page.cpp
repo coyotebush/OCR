@@ -1,9 +1,9 @@
 /**
- * @file TextPage.cpp
+ * @file Page.cpp
  * @author Corey Ford <fordco@sonoma.edu>
  * @date Spring 2009
- * @brief The implementation of the TextPage class.
- * @see TextPage.h for the interface and documentation.
+ * @brief The implementation of the Page class.
+ * @see Page.h for the interface and documentation.
  * @version $Id$
  */
 /*
@@ -26,32 +26,32 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "TextPage.h"
+#include "Page.h"
 namespace OCR
 {
 
 /**
  * Initializes the class with a BMP image
  */
-TextPage::TextPage(BMP & img) :
+Page::Page(BMP & img) :
 	image(img)
 {
 }
 
 /**
  * Initializes the object as a copy of another
- * @param other a TextPage object
+ * @param other a Page object
  */
-TextPage::TextPage(const TextPage & other) :
+Page::Page(const Page & other) :
 	image(other.image)
 {
 }
 
 /**
  * Copies the members of another object
- * @param other a TextPage object
+ * @param other a Page object
  */
-TextPage & TextPage::operator =(const TextPage & other)
+Page & Page::operator =(const Page & other)
 {
 	image = other.image;
 	return *this;
@@ -61,7 +61,7 @@ TextPage & TextPage::operator =(const TextPage & other)
  * Processes the image.
  * @return text of the image.
  */
-std::string TextPage::Read()
+std::string Page::Read()
 {
 	result = "";
 	lines.clear();
@@ -87,12 +87,12 @@ std::string TextPage::Read()
 		// End of a row
 		{
 			bottom = row;
-			lines.push_back(TextLine(image, top, bottom));
+			lines.push_back(Line(image, top, bottom));
 			inRow = false;
 		}
 	}
 	// Read each line and concatenate results
-	for (std::vector<TextLine>::iterator i = lines.begin(); i != lines.end(); ++i)
+	for (std::vector<Line>::iterator i = lines.begin(); i != lines.end(); ++i)
 		result += i->Read() + '\n';
 	return result;
 }

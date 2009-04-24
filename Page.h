@@ -1,9 +1,9 @@
 /**
- * @file TextLine.h
- * @date Spring 2009
+ * @file Page.h
  * @author Corey Ford <fordco@sonoma.edu>
- * @brief The interface and documentation for the TextLine class.
- * @see TextLine.cpp for the implementation.
+ * @date Spring 2009
+ * @brief The interface and documentation of the Page class.
+ * @see Page.cpp for the implementation.
  * @version $Id$
  */
 /*
@@ -26,59 +26,50 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TEXTLINE_H_
-#define TEXTLINE_H_
+#ifndef OCR_PAGE_H_
+#define OCR_PAGE_H_
+#include <queue>
 #include <vector>
 #include <string>
 #include "EasyBMP/EasyBMP.h"
-#include "Grapheme.h"
+#include "Line.h"
 
 namespace OCR
 {
-/**
- * A line of text in the image.
- */
-class TextLine
+class Page
 {
 public:
 	/**
-	 * Initializes the object using an entire image
-	 * @param img reference to a BMP
+	 * Initializes the class with a BMP image
 	 */
-	TextLine(BMP & img);
-
-	/**
-	 * Initializes the object using part of a BMP image
-	 * @param img reference to BMP
-	 * @param y1  top coordinate
-	 * @param y2  bottom coordinate
-	 */
-	TextLine(BMP & img, int y1, int y2);
+	Page(BMP & img);
 
 	/**
 	 * Initializes the object as a copy of another
-	 * @param other a TextLine object
+	 * @param other a Page object
 	 */
-	TextLine(const TextLine & other);
+	Page(const Page & other);
 
 	/**
 	 * Copies the members of another object
-	 * @param other a TextLine object
+	 * @param other a Page object
 	 */
-	TextLine & operator =(const TextLine & other);
+	Page & operator =(const Page & other);
 
 	/**
-	 * Recognizes the text.
-	 * @return text of the line.
+	 * Processes the image.
+	 * @return text of the image.
 	 */
 	std::string Read();
 
 private:
-	/// The image
+	/// the image
 	BMP & image;
-	/// The part of the image
-	int top, bottom;
+	/// the lines of text
+	std::vector<Line> lines;
+	/// The resulting text
+	std::string result;
 };
-} // namespace OCR
 
-#endif /* TEXTLINE_H_ */
+} // namespace OCR
+#endif /*OCR_PAGE_H_*/

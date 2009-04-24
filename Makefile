@@ -28,7 +28,7 @@
 all: ocr
 
 # all object files
-objs = build/main.o build/TextPage.o build/TextLine.o \
+objs = build/main.o build/Page.o build/Line.o \
 	build/Grapheme.o build/EasyBMP.o build/OCR_common.o
 
 # Main program
@@ -36,20 +36,20 @@ ocr: $(objs)
 	$(CXX) $(objs) -o ocr $(CXXFLAGS) $(LDFLAGS)
 
 # Application program
-build/main.o: main.cpp TextPage.h
+build/main.o: main.cpp Page.h
 	$(CXX) main.cpp -c -o build/main.o $(CPPFLAGS) $(CXXFLAGS)
 
 # EasyBMP
 build/EasyBMP.o: EasyBMP/EasyBMP.cpp EasyBMP/EasyBMP.h
 	$(CXX) EasyBMP/EasyBMP.cpp -c -o build/EasyBMP.o $(CPPFLAGS) $(CXXFLAGS)
 
-# TextPage
-build/TextPage.o: TextPage.cpp TextPage.h TextLine.h Grapheme.h
-	$(CXX) TextPage.cpp -c -o build/TextPage.o $(CPPFLAGS) $(CXXFLAGS)
+# Page
+build/Page.o: Page.cpp Page.h Line.h Grapheme.h
+	$(CXX) Page.cpp -c -o build/Page.o $(CPPFLAGS) $(CXXFLAGS)
 
-# TextLine
-build/TextLine.o: TextLine.cpp TextLine.h Grapheme.h
-	$(CXX) TextLine.cpp -c -o build/TextLine.o $(CPPFLAGS) $(CXXFLAGS)
+# Line
+build/Line.o: Line.cpp Line.h Grapheme.h
+	$(CXX) Line.cpp -c -o build/Line.o $(CPPFLAGS) $(CXXFLAGS)
 
 # Grapheme
 build/Grapheme.o: Grapheme.cpp Grapheme.h

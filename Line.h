@@ -1,9 +1,9 @@
 /**
- * @file TextPage.h
- * @author Corey Ford <fordco@sonoma.edu>
+ * @file Line.h
  * @date Spring 2009
- * @brief The interface and documentation of the TextPage class.
- * @see TextPage.cpp for the implementation.
+ * @author Corey Ford <fordco@sonoma.edu>
+ * @brief The interface and documentation for the Line class.
+ * @see Line.cpp for the implementation.
  * @version $Id$
  */
 /*
@@ -26,50 +26,59 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TEXTPAGE_H_
-#define TEXTPAGE_H_
-#include <queue>
+#ifndef OCR_LINE_H_
+#define OCR_LINE_H_
 #include <vector>
 #include <string>
 #include "EasyBMP/EasyBMP.h"
-#include "TextLine.h"
+#include "Grapheme.h"
 
 namespace OCR
 {
-class TextPage
+/**
+ * A line of text in the image.
+ */
+class Line
 {
 public:
 	/**
-	 * Initializes the class with a BMP image
+	 * Initializes the object using an entire image
+	 * @param img reference to a BMP
 	 */
-	TextPage(BMP & img);
+	Line(BMP & img);
+
+	/**
+	 * Initializes the object using part of a BMP image
+	 * @param img reference to BMP
+	 * @param y1  top coordinate
+	 * @param y2  bottom coordinate
+	 */
+	Line(BMP & img, int y1, int y2);
 
 	/**
 	 * Initializes the object as a copy of another
-	 * @param other a TextPage object
+	 * @param other a Line object
 	 */
-	TextPage(const TextPage & other);
+	Line(const Line & other);
 
 	/**
 	 * Copies the members of another object
-	 * @param other a TextPage object
+	 * @param other a Line object
 	 */
-	TextPage & operator =(const TextPage & other);
+	Line & operator =(const Line & other);
 
 	/**
-	 * Processes the image.
-	 * @return text of the image.
+	 * Recognizes the text.
+	 * @return text of the line.
 	 */
 	std::string Read();
 
 private:
-	/// the image
+	/// The image
 	BMP & image;
-	/// the lines of text
-	std::vector<TextLine> lines;
-	/// The resulting text
-	std::string result;
+	/// The part of the image
+	int top, bottom;
 };
-
 } // namespace OCR
-#endif /*TEXTPAGE_H_*/
+
+#endif /*OCR_LINE_H_*/
