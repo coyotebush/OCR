@@ -35,7 +35,7 @@ namespace OCR
  * @param img reference to a BMP
  */
 Grapheme::Grapheme(BMP & img) :
-	image(img), part(0, 0, image.TellWidth(), image.TellHeight())
+	image(img), part(0, 0, image.TellWidth() - 1, image.TellHeight() - 1)
 {
 }
 
@@ -121,6 +121,48 @@ void Grapheme::pareDown()
  */
 unsigned short Grapheme::countHoles()
 {
+	int holeCount = 0;
+	// Initialize visited array
+	bool ** visited = new bool *[part.width()];
+	for (int i = 0; i < part.width(); ++i)
+	{
+		visited[i] = new bool[part.height()];
+		for (int j = 0; j < part.height(); ++j)
+			visited[i][j] = false;
+	}
+
+	// Loop through edge pixels and do a breadth-first search from each
+	for (Point current(part.low.x, part.low.y); current.x <= part.high.x; ++current.x)
+		bfSearch(image, current, visited, part);
+	for (Point current(part.low.x, part.high.y); current.x <= part.high.x; ++current.x)
+		bfSearch(image, current, visited, part);
+	for (Point current(part.low.x, part.low.y); current.y <= part.high.y; ++current.y)
+		bfSearch(image, current, visited, part);
+	for (Point current(part.high.x, part.low.y); current.y <= part.high.y; ++current.y)
+		bfSearch(image, current, visited, part);
+
+	// Loop through every inner pixel
+	for (Point current(part.low.x + 1, part.low.y + 1); current.x < part.high.x; ++current.x)
+	{
+		for (current.y = part.low.y; current.y < part.high.y; ++current.y)
+		{
+			if (!visited[current.x - part.low.x][current.y - part.low.y]
+					&& !isForeground(image(current.x, current.y)))
+			{
+				// If it is an unvisited background pixel,
+				// perform a breadth-first search from it
+				bfSearch(image, current, visited, part);
+				// increment hole count
+				++holeCount;
+			}
+		}
+	}
+	// Deallocate visited array
+	for (int i = 0; i < part.width(); ++i)
+		delete[] visited[i];
+	delete[] visited;
+
+	return holeCount;
 	/*
 	 // Try only some pixels
 	 int spacing = (right - left) / 5;

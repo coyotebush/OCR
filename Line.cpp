@@ -104,7 +104,7 @@ std::string Line::Read()
 		else if (!fgFound && inSymbol)
 		// End of a symbol
 		{
-			right = col;
+			right = col + 1;
 			Grapheme sym (image, left, top, right, bottom);
 			result += sym.Read();
 			inSymbol = false;

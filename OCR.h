@@ -55,14 +55,17 @@ struct Point
 	{
 		return this->x == rhs.x || this->y == rhs.y;
 	}
+
 	bool operator!=(const Point & rhs) const
 	{
 		return this->x != rhs.x || this->y != rhs.y;
 	}
+
 	bool operator<(const Point & rhs) const
 	{
 		return this->x < rhs.x && this->y < rhs.y;
 	}
+
 	int x, y;
 };
 
@@ -84,10 +87,35 @@ struct Box
 		low(x1, y1), high(x2, y2)
 	{
 	}
+
+	/**
+	 * Get the width of the box
+	 * @return box width
+	 */
+	int width() const
+	{
+		return (high.x - low.x) + 1;
+	}
+
+	/**
+	 * Get the height of the box
+	 * @return box height
+	 */
+	int height() const
+	{
+		return (high.y - low.y) + 1;
+	}
+
+	bool onEdge(const Point p) const
+	{
+		return low.x == p.x || low.y == p.y || high.x == p.x || high.y == p.y;
+	}
+
 	bool operator==(const Box & rhs) const
 	{
 		return this->low == rhs.low && this->high == rhs.high;
 	}
+	/// Corners (inclusive)
 	Point low, high;
 };
 

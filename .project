@@ -23,7 +23,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.buildArguments</key>
-					<value>CXXFLAGS=&apos;-g -Wall&apos;</value>
+					<value>CXXFLAGS=&apos;-ggdb -Wall&apos;</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.buildCommand</key>
