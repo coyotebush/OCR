@@ -35,7 +35,7 @@ namespace OCR
  * @param img reference to a BMP
  */
 Grapheme::Grapheme(BMP & img) :
-	image(img), left(0), top(0)
+	image(img), part(0, 0, image.TellWidth(), image.TellHeight())
 {
 	right = image.TellWidth();
 	bottom = image.TellHeight();
@@ -71,10 +71,7 @@ Grapheme::Grapheme(const Grapheme & other) :
 Grapheme & Grapheme::operator =(const Grapheme & other)
 {
 	image = other.image;
-	left = other.left;
-	right = other.right;
-	bottom = other.bottom;
-	top = other.top;
+	part = other.part;
 	return *this;
 }
 
@@ -99,25 +96,25 @@ char Grapheme::Read()
 void Grapheme::pareDown()
 {
 	bool fgFound;
-	// Pare top
-	for (fgFound = false; top <= bottom && !fgFound; ++top)
-		for (int col = left; col <= right; ++col)
-			if (isForeground(image(col, top)))
+	// Pare part.low.y
+	for (fgFound = false; part.low.y <= part.high.y && !fgFound; ++part.low.y)
+		for (int col = part.low.x; col <= part.high.x; ++col)
+			if (isForeground(image(col, part.low.y)))
 				fgFound = true;
-	// Pare bottom
-	for (fgFound = false; bottom >= top && !fgFound; --bottom)
-		for (int col = left; col <= right; ++col)
-			if (isForeground(image(col, top)))
+	// Pare part.high.y
+	for (fgFound = false; part.high.y >= part.low.y && !fgFound; --part.high.y)
+		for (int col = part.low.x; col <= part.high.x; ++col)
+			if (isForeground(image(col, part.low.y)))
 				fgFound = true;
-	// Pare left
-	for (fgFound = false; left <= right && !fgFound; ++left)
-		for (int row = top; row <= bottom; ++row)
-			if (isForeground(image(left, row)))
+	// Pare part.low.x
+	for (fgFound = false; part.low.x <= part.high.x && !fgFound; ++part.low.x)
+		for (int row = part.low.y; row <= part.high.y; ++row)
+			if (isForeground(image(part.low.x, row)))
 				fgFound = true;
-	// Pare right
-	for (fgFound = false; right >= left && !fgFound; --right)
-		for (int row = top; row <= bottom; ++row)
-			if (isForeground(image(right, row)))
+	// Pare part.high.x
+	for (fgFound = false; part.high.x >= part.low.x && !fgFound; --part.high.x)
+		for (int row = part.low.y; row <= part.high.y; ++row)
+			if (isForeground(image(part.high.x, row)))
 				fgFound = true;
 }
 
@@ -127,44 +124,46 @@ void Grapheme::pareDown()
  */
 unsigned short Grapheme::countHoles()
 {
-	// Try only some pixels
-	int spacing = (right - left) / 5;
-	if (spacing < 1)
-		spacing = 1;
-	// Determine which of these are unreachable
-	std::set<Point> unreachables;
-	Point corner(left, top);
-	for (int x = left; x < right; x += spacing)
-	{
-		for (int y = top; y < bottom; y += spacing)
-		{
-			if (!isForeground(image(x, y)))
-			{
-				Point current(x, y);
-				if (!isEdgeReachable(current))
-					unreachables.insert(current);
-			}
-		}
-	}
-	// Check whether any of these pixels are reachable from each other (N! time)
-	for (std::set<Point>::iterator i = unreachables.begin(); i
-			!= unreachables.end();)
-	{
-		// Make a copy of the iterator, then advance it
-		std::set<Point>::iterator subject = i;
-		++i;
-		// Check all pixels from this point
-		for (std::set<Point>::iterator j = i; j != unreachables.end(); ++j)
-		{
-			// and check whether they are reachable from the subject
-			if (isReachable(*subject, *j))
-			{
-				unreachables.erase(*subject);
-				break;
-			}
-		}
-	}
-	return unreachables.size();
+	/*
+	 // Try only some pixels
+	 int spacing = (right - left) / 5;
+	 if (spacing < 1)
+	 spacing = 1;
+	 // Determine which of these are unreachable
+	 std::set<Point> unreachables;
+	 Point corner(left, top);
+	 for (int x = left; x < right; x += spacing)
+	 {
+	 for (int y = top; y < bottom; y += spacing)
+	 {
+	 if (!isForeground(image(x, y)))
+	 {
+	 Point current(x, y);
+	 if (!isEdgeReachable(current))
+	 unreachables.insert(current);
+	 }
+	 }
+	 }
+	 // Check whether any of these pixels are reachable from each other (N! time)
+	 for (std::set<Point>::iterator i = unreachables.begin(); i
+	 != unreachables.end();)
+	 {
+	 // Make a copy of the iterator, then advance it
+	 std::set<Point>::iterator subject = i;
+	 ++i;
+	 // Check all pixels from this point
+	 for (std::set<Point>::iterator j = i; j != unreachables.end(); ++j)
+	 {
+	 // and check whether they are reachable from the subject
+	 if (isReachable(*subject, *j))
+	 {
+	 unreachables.erase(*subject);
+	 break;
+	 }
+	 }
+	 }
+	 return unreachables.size();*/
+
 }
 
 /**

@@ -100,7 +100,7 @@ private:
 	/// The image
 	BMP & image;
 	/// The part of the image to use
-	int left, right, bottom, top;
+	Box part;
 	/// The resulting character
 	char result;
 };
