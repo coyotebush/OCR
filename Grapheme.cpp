@@ -99,7 +99,8 @@ void Grapheme::pareDown()
 		for (int col = part.low.x; col <= part.high.x && !fgFound; ++col)
 			if (isForeground(image(col, part.low.y)))
 				fgFound = true;
-		if (fgFound) break;
+		if (fgFound)
+			break;
 	}
 	// Pare bottom
 	for (fgFound = false; part.high.y >= part.low.y && !fgFound; --part.high.y)
@@ -107,7 +108,8 @@ void Grapheme::pareDown()
 		for (int col = part.low.x; col <= part.high.x && !fgFound; ++col)
 			if (isForeground(image(col, part.low.y)))
 				fgFound = true;
-		if (fgFound) break;
+		if (fgFound)
+			break;
 	}
 	// Pare left
 	for (fgFound = false; part.low.x <= part.high.x; ++part.low.x)
@@ -115,7 +117,8 @@ void Grapheme::pareDown()
 		for (int row = part.low.y; row <= part.high.y && !fgFound; ++row)
 			if (isForeground(image(part.low.x, row)))
 				fgFound = true;
-		if (fgFound) break;
+		if (fgFound)
+			break;
 	}
 	// Pare part.high.x
 	for (fgFound = false; part.high.x >= part.low.x; --part.high.x)
@@ -123,7 +126,8 @@ void Grapheme::pareDown()
 		for (int row = part.low.y; row <= part.high.y && !fgFound; ++row)
 			if (isForeground(image(part.high.x, row)))
 				fgFound = true;
-		if (fgFound) break;
+		if (fgFound)
+			break;
 	}
 }
 

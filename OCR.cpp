@@ -75,7 +75,8 @@ bool isSimilar(RGBApixel * a, RGBApixel * b)
  * @param[in]     limit     do not search beyond this box
  * @return                  extent of contiguous pixels found
  */
-Box bfSearch(BMP & image, const Point start, bool bg, bool ** visited, const Box limit)
+Box bfSearch(BMP & image, const Point start, bool bg, bool ** visited,
+		const Box limit)
 {
 	// Initialize queue and box
 	std::queue<Point> Q;
@@ -110,9 +111,9 @@ Box bfSearch(BMP & image, const Point start, bool bg, bool ** visited, const Box
 			for (int y = lowY; y <= highY; ++y)
 			{
 				Point n(x, y);
-				if (!visited[x - limit.low.x][y - limit.low.y] && 
-						(bg ^ isForeground(image(n.x, n.y))))
-						//isSimilar(image(start.x, start.y), image(n.x, n.y)))
+				if (!visited[x - limit.low.x][y - limit.low.y] && (bg
+						^ isForeground(image(n.x, n.y))))
+				//isSimilar(image(start.x, start.y), image(n.x, n.y)))
 				{
 					Q.push(n);
 					visited[x - limit.low.x][y - limit.low.y] = true;

@@ -31,7 +31,7 @@
 #include "Page.h"
 using namespace std;
 
-int main (int argc, char * argv[])
+int main(int argc, char * argv[])
 {
 	string result;
 	if (argc != 3)

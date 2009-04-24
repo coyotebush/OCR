@@ -97,7 +97,7 @@ std::string Line::Read()
 		{
 			left = col;
 			if (left - right > 0.3 * (bottom - top))
-			// Large space, add a space character to the result
+				// Large space, add a space character to the result
 				result += ' ';
 			inSymbol = true;
 		}
@@ -105,7 +105,7 @@ std::string Line::Read()
 		// End of a symbol
 		{
 			right = col + 1;
-			Grapheme sym (image, left, top, right, bottom);
+			Grapheme sym(image, left, top, right, bottom);
 			result += sym.Read();
 			inSymbol = false;
 		}
