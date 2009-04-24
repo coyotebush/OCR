@@ -81,9 +81,9 @@ char Grapheme::Read()
 {
 	pareDown();
 	unsigned short holes = countHoles();
-	std::cout << holes << ' ';
+	//std::cout << holes << ' ';
 	//std::vector<unsigned short> angles = findStraightLines();
-	return 'a';
+	return '0' + holes;
 }
 
 /**
@@ -93,26 +93,38 @@ char Grapheme::Read()
 void Grapheme::pareDown()
 {
 	bool fgFound;
-	// Pare part.low.y
-	for (fgFound = false; part.low.y <= part.high.y && !fgFound; ++part.low.y)
-		for (int col = part.low.x; col <= part.high.x; ++col)
+	// Pare top
+	for (fgFound = false; part.low.y <= part.high.y; ++part.low.y)
+	{
+		for (int col = part.low.x; col <= part.high.x && !fgFound; ++col)
 			if (isForeground(image(col, part.low.y)))
 				fgFound = true;
-	// Pare part.high.y
+		if (fgFound) break;
+	}
+	// Pare bottom
 	for (fgFound = false; part.high.y >= part.low.y && !fgFound; --part.high.y)
-		for (int col = part.low.x; col <= part.high.x; ++col)
+	{
+		for (int col = part.low.x; col <= part.high.x && !fgFound; ++col)
 			if (isForeground(image(col, part.low.y)))
 				fgFound = true;
-	// Pare part.low.x
-	for (fgFound = false; part.low.x <= part.high.x && !fgFound; ++part.low.x)
-		for (int row = part.low.y; row <= part.high.y; ++row)
+		if (fgFound) break;
+	}
+	// Pare left
+	for (fgFound = false; part.low.x <= part.high.x; ++part.low.x)
+	{
+		for (int row = part.low.y; row <= part.high.y && !fgFound; ++row)
 			if (isForeground(image(part.low.x, row)))
 				fgFound = true;
+		if (fgFound) break;
+	}
 	// Pare part.high.x
-	for (fgFound = false; part.high.x >= part.low.x && !fgFound; --part.high.x)
-		for (int row = part.low.y; row <= part.high.y; ++row)
+	for (fgFound = false; part.high.x >= part.low.x; --part.high.x)
+	{
+		for (int row = part.low.y; row <= part.high.y && !fgFound; ++row)
 			if (isForeground(image(part.high.x, row)))
 				fgFound = true;
+		if (fgFound) break;
+	}
 }
 
 /**

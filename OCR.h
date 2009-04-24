@@ -121,7 +121,7 @@ struct Box
 /**
  * R, G, B must be < this for a foreground pixel
  */
-const int FG_THRESHOLD = 100;
+const int FG_THRESHOLD = 110;
 
 /**
  * Difference in R, G, B must be < this for similar pixels
