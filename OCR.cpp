@@ -60,7 +60,7 @@ bool isSimilar(RGBApixel * a, RGBApixel * b)
 		green = -green;
 	if (blue < 0)
 		blue = -blue;
-	return (red < 10 && green < 10 && blue < 10);
+	return (red < SIMILAR_THRESHOLD && green < SIMILAR_THRESHOLD && blue < SIMILAR_THRESHOLD);
 }
 
 } // namespace OCR

@@ -30,9 +30,14 @@ namespace OCR
 {
 
 /**
- * R, G, B must be >= this for a foreground pixel
+ * R, G, B must be < this for a foreground pixel
  */
 const int FG_THRESHOLD = 85;
+
+/**
+ * Difference in R, G, B must be < this for similar pixels
+ */
+const int SIMILAR_THRESHOLD = 10;
 
 /**
  * Determines whether a pixel is a foreground pixel.
