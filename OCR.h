@@ -27,7 +27,8 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <vector>
+#ifndef OCR_OCR_H_
+#define OCR_OCR_H_
 #include <queue>
 #include "EasyBMP/EasyBMP.h"
 
@@ -213,3 +214,5 @@ Box bfSearch(BMP & image, const Point start, bool bg, bool ** visited,
 		const Box limit);
 
 } // namespace OCR
+
+#endif /*OCR_OCR_H_*/

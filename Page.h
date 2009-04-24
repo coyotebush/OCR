@@ -28,8 +28,7 @@
 
 #ifndef OCR_PAGE_H_
 #define OCR_PAGE_H_
-#include <queue>
-#include <vector>
+#include <deque>
 #include <string>
 #include "EasyBMP/EasyBMP.h"
 #include "Line.h"
@@ -66,7 +65,7 @@ private:
 	/// the image
 	BMP & image;
 	/// the lines of text
-	std::vector<Line> lines;
+	std::deque<Line> lines;
 	/// The resulting text
 	std::string result;
 };

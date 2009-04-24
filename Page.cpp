@@ -92,7 +92,7 @@ std::string Page::Read()
 		}
 	}
 	// Read each line and concatenate results
-	for (std::vector<Line>::iterator i = lines.begin(); i != lines.end(); ++i)
+	for (std::deque<Line>::iterator i = lines.begin(); i != lines.end(); ++i)
 		result += i->Read() + '\n';
 	return result;
 }

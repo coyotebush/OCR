@@ -28,7 +28,6 @@
 
 #ifndef OCR_LINE_H_
 #define OCR_LINE_H_
-#include <vector>
 #include <string>
 #include "EasyBMP/EasyBMP.h"
 #include "Grapheme.h"

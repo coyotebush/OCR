@@ -26,8 +26,8 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GRAPHEME_H_
-#define GRAPHEME_H_
+#ifndef OCR_GRAPHEME_H_
+#define OCR_GRAPHEME_H_
 #include <cmath>
 #include <set>
 #include "EasyBMP/EasyBMP.h"
@@ -114,4 +114,4 @@ private:
 
 } // namespace OCR
 
-#endif /* GRAPHEME_H_ */
+#endif /*OCR_GRAPHEME_H_*/
