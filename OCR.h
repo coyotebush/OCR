@@ -104,7 +104,7 @@ bool isSimilar(RGBApixel * a, RGBApixel * b);
  * @param[in]     limit     do not search beyond this box
  * @return                  extent of contiguous pixels found
  */
-Box bfSearch(const BMP & image, const Point start, std::vector<std::vector<int> > & visited,
-		const Box limit);
+Box bfSearch(const BMP & image, const Point start,
+		std::vector<std::vector<int> > & visited, const Box limit);
 
 } // namespace OCR
