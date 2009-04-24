@@ -76,7 +76,7 @@ public:
 private:
 	/// The image
 	BMP & image;
-	/// The part of the image
+	/// The part of the image (inclusive)
 	int top, bottom;
 };
 } // namespace OCR

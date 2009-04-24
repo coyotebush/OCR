@@ -81,7 +81,7 @@ char Grapheme::Read()
 {
 	pareDown();
 	unsigned short holes = countHoles();
-	std::cout << "Holes: " << holes << std::endl;
+	std::cout << holes << ' ';
 	//std::vector<unsigned short> angles = findStraightLines();
 	return 'a';
 }
@@ -131,15 +131,19 @@ unsigned short Grapheme::countHoles()
 			visited[i][j] = false;
 	}
 
-	// Loop through edge pixels and do a breadth-first search from each
+	// Do a breadth-first search from each background edge pixel
 	for (Point current(part.low.x, part.low.y); current.x <= part.high.x; ++current.x)
-		bfSearch(image, current, visited, part);
+		if (!isForeground(image(current.x, current.y)))
+			bfSearch(image, current, visited, part);
 	for (Point current(part.low.x, part.high.y); current.x <= part.high.x; ++current.x)
-		bfSearch(image, current, visited, part);
+		if (!isForeground(image(current.x, current.y)))
+			bfSearch(image, current, visited, part);
 	for (Point current(part.low.x, part.low.y); current.y <= part.high.y; ++current.y)
-		bfSearch(image, current, visited, part);
+		if (!isForeground(image(current.x, current.y)))
+			bfSearch(image, current, visited, part);
 	for (Point current(part.high.x, part.low.y); current.y <= part.high.y; ++current.y)
-		bfSearch(image, current, visited, part);
+		if (!isForeground(image(current.x, current.y)))
+			bfSearch(image, current, visited, part);
 
 	// Loop through every inner pixel
 	for (Point current(part.low.x + 1, part.low.y + 1); current.x < part.high.x; ++current.x)
@@ -163,46 +167,6 @@ unsigned short Grapheme::countHoles()
 	delete[] visited;
 
 	return holeCount;
-	/*
-	 // Try only some pixels
-	 int spacing = (right - left) / 5;
-	 if (spacing < 1)
-	 spacing = 1;
-	 // Determine which of these are unreachable
-	 std::set<Point> unreachables;
-	 Point corner(left, top);
-	 for (int x = left; x < right; x += spacing)
-	 {
-	 for (int y = top; y < bottom; y += spacing)
-	 {
-	 if (!isForeground(image(x, y)))
-	 {
-	 Point current(x, y);
-	 if (!isEdgeReachable(current))
-	 unreachables.insert(current);
-	 }
-	 }
-	 }
-	 // Check whether any of these pixels are reachable from each other (N! time)
-	 for (std::set<Point>::iterator i = unreachables.begin(); i
-	 != unreachables.end();)
-	 {
-	 // Make a copy of the iterator, then advance it
-	 std::set<Point>::iterator subject = i;
-	 ++i;
-	 // Check all pixels from this point
-	 for (std::set<Point>::iterator j = i; j != unreachables.end(); ++j)
-	 {
-	 // and check whether they are reachable from the subject
-	 if (isReachable(*subject, *j))
-	 {
-	 unreachables.erase(*subject);
-	 break;
-	 }
-	 }
-	 }
-	 return unreachables.size();*/
-
 }
 
 /**

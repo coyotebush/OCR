@@ -78,8 +78,9 @@ Box bfSearch(BMP & image, const Point start, bool ** visited, const Box limit)
 	std::queue<Point> Q;
 	Box extent(start.x, start.y, start.x, start.y);
 
-	// Add the starting pixel to the queue
-	Q.push(start);
+	// Add the starting pixel to the queue, if it has not been visited
+	if (!visited[start.x - limit.low.x][start.y - limit.low.y])
+		Q.push(start);
 
 	while (!Q.empty())
 	{

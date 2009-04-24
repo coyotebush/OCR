@@ -79,7 +79,7 @@ Line & Line::operator =(const Line & other)
 std::string Line::Read()
 {
 	std::string result = "";
-	// Divide into lines
+	// Divide into symbols
 	int left = 0, right = 0; // of the current grapheme
 	bool inSymbol = false; // Whether in a symbol
 
@@ -88,7 +88,7 @@ std::string Line::Read()
 	{
 		// Search for a foreground pixel in this column
 		bool fgFound = false;
-		for (int row = top; row < bottom && !fgFound; ++row)
+		for (int row = top; row <= bottom && !fgFound; ++row)
 			if (isForeground(image(col, row)))
 				fgFound = true;
 

@@ -86,7 +86,7 @@ std::string Page::Read()
 		else if (!fgFound && inRow)
 		// End of a row
 		{
-			bottom = row;
+			bottom = row - 1;
 			lines.push_back(Line(image, top, bottom));
 			inRow = false;
 		}
