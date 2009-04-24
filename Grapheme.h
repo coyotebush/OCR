@@ -28,8 +28,7 @@
 
 #ifndef GRAPHEME_H_
 #define GRAPHEME_H_
-#include <vector>
-#include <queue>
+#include <cmath>
 #include <set>
 #include "EasyBMP/EasyBMP.h"
 #include "OCR.h"
@@ -89,13 +88,21 @@ private:
 	 * Counts the number of "holes" in the letter
 	 * @return number of holes
 	 */
-	unsigned short countHoles();
+	unsigned short countHoles() const;
 
 	/**
 	 * Finds the straight lines in the letter
 	 * @return angles of straight lines
 	 */
-	std::vector<unsigned short> findStraightLines();
+	std::set<unsigned short> findStraightLines() const;
+
+	/**
+	 * Checks for a line of foreground pixels
+	 * @param x X-coordinate of midpoint of line
+	 * @param angle Angle of line
+	 * @return Length of longest dark line
+	 */
+	unsigned int checkLine (unsigned int x, unsigned short angle) const;
 
 	/// The image
 	BMP & image;

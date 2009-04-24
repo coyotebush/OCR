@@ -82,7 +82,7 @@ char Grapheme::Read()
 	pareDown();
 	unsigned short holes = countHoles();
 	//std::cout << holes << ' ';
-	//std::vector<unsigned short> angles = findStraightLines();
+	//std::set<unsigned short> angles = findStraightLines();
 	return '0' + holes;
 }
 
@@ -135,7 +135,7 @@ void Grapheme::pareDown()
  * Counts the number of "holes" in the letter
  * @return number of holes
  */
-unsigned short Grapheme::countHoles()
+unsigned short Grapheme::countHoles() const
 {
 	int holeCount = 0;
 	// Initialize visited array
@@ -190,8 +190,32 @@ unsigned short Grapheme::countHoles()
  * @return angles of straight lines
  * @todo implement
  */
-std::vector<unsigned short> Grapheme::findStraightLines()
+std::set<unsigned short> Grapheme::findStraightLines() const
 {
+}
+
+/**
+ * Checks for a line of foreground pixels
+ * @param x X-coordinate of midpoint of line
+ * @param angle Angle of line
+ * @return Length of longest dark line
+ */
+unsigned int Grapheme::checkLine(unsigned int x, unsigned short angle) const
+{
+	double dY = sin(angle);
+	double dX = cos(angle);
+	unsigned int lineLength = 0;
+	struct
+	{
+		double x, y;
+	} current;
+
+	bool done = false;
+	for (current.x = part.width() / 2, current.y = part.height() / 2; !done; current.x
+			+= dX, current.y += dY)
+	{
+
+	}
 }
 
 } // namespace OCR
