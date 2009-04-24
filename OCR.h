@@ -27,33 +27,11 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <vector>
+#include "EasyBMP/EasyBMP.h"
+
 namespace OCR
 {
-
-/**
- * R, G, B must be < this for a foreground pixel
- */
-const int FG_THRESHOLD = 85;
-
-/**
- * Difference in R, G, B must be < this for similar pixels
- */
-const int SIMILAR_THRESHOLD = 10;
-
-/**
- * Determines whether a pixel is a foreground pixel.
- * @param pixel a pixel
- * @return whether this is a foreground pixel
- */
-bool isForeground(RGBApixel * pixel);
-
-/**
- * Determines whether two pixels are similar in color
- * @param a first pixel
- * @param b second pixel
- * @return whether they should be considered similar
- */
-bool isSimilar(RGBApixel * a, RGBApixel * b);
 
 /**
  * Represents the position
@@ -92,5 +70,40 @@ struct Box
 	}
 	Point low, high;
 };
+
+/**
+ * R, G, B must be < this for a foreground pixel
+ */
+const int FG_THRESHOLD = 85;
+
+/**
+ * Difference in R, G, B must be < this for similar pixels
+ */
+const int SIMILAR_THRESHOLD = 10;
+
+/**
+ * Determines whether a pixel is a foreground pixel.
+ * @param pixel a pixel
+ * @return whether this is a foreground pixel
+ */
+bool isForeground(RGBApixel * pixel);
+
+/**
+ * Determines whether two pixels are similar in color
+ * @param a first pixel
+ * @param b second pixel
+ * @return whether they should be considered similar
+ */
+bool isSimilar(RGBApixel * a, RGBApixel * b);
+
+/**
+ * Performs a breadth-first search from a point using similar pixels
+ * @param[in]     start     starting point
+ * @param[in,out] visited   which pixels have been visited
+ * @param[in]     limit     do not search beyond this box
+ * @return                  extent of contiguous pixels found
+ */
+Box pSearch(const Point start, std::vector<std::vector<int> > & visited,
+		const Box limit);
 
 } // namespace OCR
