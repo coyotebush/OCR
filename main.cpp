@@ -29,7 +29,6 @@
 #include <string>
 #include "EasyBMP/EasyBMP.h"
 #include "TextPage.h"
-using namespace OCR;
 using namespace std;
 
 int main (int argc, char * argv[])
@@ -45,8 +44,8 @@ int main (int argc, char * argv[])
 	i.ReadFromFile(argv[1]);
 
 	// Read it!
-	TextPage p (i);
-	string s = p.Read();
+	OCR::TextPage page (i);
+	string s = page.Read();
 
 	cout << s << endl;
 	return 0;
