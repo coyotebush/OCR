@@ -2,7 +2,8 @@
  * @file OCR.cpp
  * @date Spring 2009
  * @author Corey Ford <fordco@sonoma.edu>
- * @brief The interface and documentation of functions global to the OCR namespace.
+ * @brief The interface and documentation of functions global to the OCR
+ * namespace, as well as the Box and Point classes.
  * @see OCR.cpp for the implementation.
  * @version $Id$
  */
@@ -53,5 +54,43 @@ bool isForeground(RGBApixel * pixel);
  * @return whether they should be considered similar
  */
 bool isSimilar(RGBApixel * a, RGBApixel * b);
+
+/**
+ * Represents the position
+ * of a pixel in the image
+ */
+struct Point
+{
+	Point(int left, int top) :
+		x(left), y(top)
+	{
+	}
+	bool operator==(const Point & rhs) const
+	{
+		return this->x == rhs.x || this->y == rhs.y;
+	}
+	bool operator!=(const Point & rhs) const
+	{
+		return this->x != rhs.x || this->y != rhs.y;
+	}
+	bool operator<(const Point & rhs) const
+	{
+		return this->x < rhs.x && this->y < rhs.y;
+	}
+	int x, y;
+};
+
+/**
+ * Represents a rectangle,
+ * such as the extent of a letter
+ */
+struct Box
+{
+	Box(int x1, int y1, int x2, int y2) :
+		low(x1, y1), high(x2, y2)
+	{
+	}
+	Point low, high;
+};
 
 } // namespace OCR

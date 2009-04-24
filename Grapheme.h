@@ -78,43 +78,6 @@ public:
 	char Read();
 
 private:
-	/**
-	 * Represents the position
-	 * of a pixel in the image
-	 */
-	struct Point
-	{
-		Point(int left, int top) :
-			x(left), y(top)
-		{
-		}
-		bool operator==(const Point & rhs) const
-		{
-			return this->x == rhs.x || this->y == rhs.y;
-		}
-		bool operator!=(const Point & rhs) const
-		{
-			return this->x != rhs.x || this->y != rhs.y;
-		}
-		bool operator<(const Point & rhs) const
-		{
-			return this->x < rhs.x && this->y < rhs.y;
-		}
-		int x, y;
-	};
-
-	/**
-	 * Represents a rectangle,
-	 * such as the extent of a letter
-	 */
-	struct Box
-	{
-		Box(int x1, int y1, int x2, int y2) :
-			low(x1, y1), high(x2, y2)
-		{
-		}
-		Point low, high;
-	};
 
 	/**
 	 * Types of breadth first search.

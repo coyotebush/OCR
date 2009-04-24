@@ -185,7 +185,7 @@ bool Grapheme::breadthFirstSearch(const Point start, Search_Type searchtype,
  * @param start starting Point
  * @return extent of shape
  */
-Grapheme::Box Grapheme::findContiguousShape(const Point start)
+Box Grapheme::findContiguousShape(const Point start)
 {
 	// Initialize queue and box
 	std::queue<Point> Q;
