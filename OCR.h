@@ -50,6 +50,11 @@ struct Point
 	{
 	}
 
+	Point(const Point & other) :
+		x(other.x), y(other.y)
+	{
+	}
+
 	bool operator==(const Point & rhs) const
 	{
 		return this->x == rhs.x || this->y == rhs.y;
@@ -75,6 +80,11 @@ struct Point
 struct Box
 {
 	/**
+	 * Iterates around the edge of a Box
+	 */
+	class edge_iterator;
+
+	/**
 	 * Initializes the box.
 	 * @param x1 Low X  (left)
 	 * @param y1 Low Y  (top)
@@ -84,6 +94,11 @@ struct Box
 	 */
 	Box(int x1, int y1, int x2, int y2) :
 		low(x1, y1), high(x2, y2)
+	{
+	}
+
+	Box(const Box & other) :
+		low(other.low), high(other.high)
 	{
 	}
 
@@ -116,6 +131,45 @@ struct Box
 	}
 	/// Corners (inclusive)
 	Point low, high;
+};
+
+/**
+ * Iterates around the edge of a Box
+ */
+class Box::edge_iterator
+{
+public:
+	/**
+	 * Constructor
+	 * @param b Box to iterate around
+	 */
+	edge_iterator(const Box & b);
+
+	/**
+	 * Dereference operator
+	 * @return current Point
+	 */
+	Point operator*() const;
+
+	/**
+	 * Increments the current Point around the edge
+	 * @return this
+	 */
+	edge_iterator operator++();
+
+	/**
+	 * Determines whether the iterator is done
+	 * @return whether complete
+	 */
+	bool done() const;
+private:
+	/// The box
+	Box box;
+	/// Current location
+	Point current;
+	/// Whether this is still the starting point.
+	bool first;
+
 };
 
 /**

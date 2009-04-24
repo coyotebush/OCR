@@ -148,7 +148,10 @@ unsigned short Grapheme::countHoles() const
 	}
 
 	// Do a breadth-first search from each background edge pixel
-	for (Point current(part.low.x, part.low.y); current.x <= part.high.x; ++current.x)
+	for (Box::edge_iterator i(part); !i.done(); ++i)
+		if (!isForeground(image((*i).x, (*i).y)))
+			bfSearch(image, *i, true, visited, part);
+	/*for (Point current(part.low.x, part.low.y); current.x <= part.high.x; ++current.x)
 		if (!isForeground(image(current.x, current.y)))
 			bfSearch(image, current, true, visited, part);
 	for (Point current(part.low.x, part.high.y); current.x <= part.high.x; ++current.x)
@@ -159,7 +162,7 @@ unsigned short Grapheme::countHoles() const
 			bfSearch(image, current, true, visited, part);
 	for (Point current(part.high.x, part.low.y); current.y <= part.high.y; ++current.y)
 		if (!isForeground(image(current.x, current.y)))
-			bfSearch(image, current, true, visited, part);
+			bfSearch(image, current, true, visited, part);*/
 
 	// Loop through every inner pixel
 	for (Point current(part.low.x + 1, part.low.y + 1); current.x < part.high.x; ++current.x)

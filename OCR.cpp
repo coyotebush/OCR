@@ -2,7 +2,8 @@
  * @file OCR.cpp
  * @date Spring 2009
  * @author Corey Ford <fordco@sonoma.edu>
- * @brief The implementation of functions global to the OCR namespace.
+ * @brief The implementation of functions global to the OCR namespace,
+ *        as well as OCR::Box::edge_iterator.
  * @see OCR.h for the interface and documentation.
  * @version $Id$
  */
@@ -30,6 +31,60 @@
 
 namespace OCR
 {
+
+// OCR::Box::edge_iterator members
+/**
+ * Constructor
+ * @param b Box to iterate around
+ */
+Box::edge_iterator::edge_iterator(const Box & b) :
+	box(b), current(b.low), first(true)
+{
+}
+
+/**
+ * Dereference operator
+ * @return current Point
+ */
+Point Box::edge_iterator::operator*() const
+{
+	return current;
+}
+
+/**
+ * Increments the current Point around the edge
+ * @return this
+ */
+Box::edge_iterator::edge_iterator Box::edge_iterator::operator++()
+{
+	// Top edge
+	if (current.y == box.low.y && current.x < box.high.x)
+		++current.x;
+	// Right edge
+	else if (current.x == box.high.x && current.y < box.high.y)
+		++current.y;
+	// Bottom edge
+	else if (current.y == box.high.y && current.x > box.low.x)
+		--current.x;
+	// Right edge
+	else if (current.x == box.low.x && current.y > box.low.y)
+		--current.y;
+
+	first = false;
+	return *this;
+}
+
+/**
+ * Determines whether the iterator is done
+ * @return whether complete
+ */
+bool Box::edge_iterator::done() const
+{
+	return ((current == box.low) && (!first));
+}
+
+// End OCR::Box::edge_iterator member functions
+
 
 /**
  * Determines whether a pixel is a foreground pixel.
