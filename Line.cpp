@@ -30,6 +30,9 @@
 namespace OCR
 {
 
+/// The relative width of a space character
+const double Line::SPACE = 0.2;
+
 /**
  * Initializes the object using an entire image
  * @param img reference to a BMP
@@ -96,7 +99,7 @@ std::string Line::Read()
 		// Starting a new symbol
 		{
 			left = col;
-			if (left - right > 0.3 * (bottom - top))
+			if (left - right > SPACE * (bottom - top))
 				// Large space, add a space character to the result
 				result += ' ';
 			inSymbol = true;

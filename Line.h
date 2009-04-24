@@ -74,6 +74,8 @@ public:
 	std::string Read();
 
 private:
+	/// The minimum relative width of a space character
+	static const double SPACE;
 	/// The image
 	BMP & image;
 	/// The part of the image (inclusive)
