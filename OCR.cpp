@@ -26,6 +26,9 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "EasyBMP/EasyBMP.h"
+#include "OCR.h"
+
 namespace OCR
 {
 

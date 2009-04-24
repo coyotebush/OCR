@@ -32,6 +32,7 @@
 #include <queue>
 #include <set>
 #include "EasyBMP/EasyBMP.h"
+#include "OCR.h"
 
 namespace OCR
 {
