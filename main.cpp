@@ -1,8 +1,8 @@
 /**
  * @file main.cpp
  * @date Spring 2009
- * @author corey
- * @brief An application program using the GraphemeResolver library.
+ * @author Corey Ford <fordco@sonoma.edu>
+ * @brief An application program using the OCR library.
  * @version $Id$
  */
 /*
@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
 	BMP img;
 	img.ReadFromFile(argv[2]);
 
-	// Read it!
+	// Read either a page, a line, or a character, depending on argument
 	if (string(argv[1]) == "p")
 	{
 		OCR::Page page(img);
