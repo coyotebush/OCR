@@ -176,4 +176,4 @@ std::vector<unsigned short> Grapheme::findStraightLines()
 {
 }
 
-} // namespace GraphemeResolver
+} // namespace OCR

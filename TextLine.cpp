@@ -114,4 +114,4 @@ std::string TextLine::Read()
 	return result;
 }
 
-} // namespace GraphemeResolver
+} // namespace OCR
