@@ -94,6 +94,15 @@ private:
 
 		/// Foreground pixels / total pixels
 		double density;
+		
+		/// Density of each quadrant
+		// a  b
+		// c  d
+		struct qDense { double a,b,c,d; }
+		quadrants;
+		
+		/// Density of border pixels
+		double borderDensity;
 
 	};
 
@@ -122,6 +131,13 @@ private:
 	 * @return density of foreground pixels along the line specified
 	 */
 	double checkLine(Point start, unsigned char angle) const;
+	
+	/**
+	 * Checks the density of foreground pixels within an area
+	 * @param area area to check
+	 * @return density of foreground pixels
+	 */
+	double areaDensity(Box area) const;
 
 	/// The image
 	BMP & image;

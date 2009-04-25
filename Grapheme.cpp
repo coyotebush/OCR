@@ -100,6 +100,42 @@ char Grapheme::Read()
 			if (isForeground(image(x, y)))
 				++foregroundCount;
 	theSymbol.density = foregroundCount / (double) pixelCount;
+	
+	// Find density of border
+	pixelCount = 0; foregroundCount = 0;
+	for (Box::edge_iterator i(part); !i.done(); ++i, ++pixelCount)
+		if (isForeground(image((*i).x, (*i).y)))
+			++foregroundCount;
+	theSymbol.borderDensity = foregroundCount / (double) pixelCount;
+	
+	// Find density of each quadrant
+	pixelCount = 0; foregroundCount = 0;
+	unsigned halfWidth = part.low.x + ((part.high.x - part.low.x)/2);
+	unsigned halfHeight = part.low.y + ((part.high.y - part.low.y)/2);
+	for (int x = part.low.x; x <= halfWidth; ++x)
+		for (int y = part.low.y; y <= halfHeight; ++y, ++foregroundCount)
+			if (isForeground(image(x, y)))
+				++foregroundCount;
+	theSymbol.quadrants.a = foregroundCount / (double) pixelCount;
+	
+	pixelCount = 0; foregroundCount = 0;
+	for (int x = halfWidth; x <= part.high.x; ++x)
+		for (int y = part.low.y; y <= halfHeight; ++y, ++foregroundCount)
+			if (isForeground(image(x, y)))
+				++foregroundCount;
+	theSymbol.quadrants.b = foregroundCount / (double) pixelCount;
+
+	pixelCount = 0; foregroundCount = 0;
+	for (int x = part.low.x; x <= halfWidth; ++x)
+		for (int y = halfHeight; y <= part.high.y; ++y, ++foregroundCount)
+			if (isForeground(image(x, y)))
+				++foregroundCount;
+	theSymbol.quadrants.c
+	pixelCount = 0; foregroundCount = 0;
+	for (int x = part.low.x; x <= part.high.x / 2; ++x)
+		for (int y = part.low.y; y <= part.high.y; ++y, ++foregroundCount)
+			if (isForeground(image(x, y)))
+				++foregroundCount;
 
 	//std::cout << "{' ', " << (int) theSymbol.holes << ", "
 	//		<< theSymbol.proportion << ", " << theSymbol.density << "},\n";
@@ -308,6 +344,22 @@ double Grapheme::checkLine(Point start, unsigned char angle) const
 		if (isForeground(image(curX, curY)))
 			++foregroundCount;
 	}
+	return foregroundCount / (double) pixelCount;
+}
+
+/**
+ * Checks the density of foreground pixels within an area
+ * @param area area to check
+ * @return density of foreground pixels
+ */
+double Grapheme::areaDensity(Box area) const
+{
+	unsigned pixelCount, foregroundCount;
+	Point current(area.low);
+	for (; current.x <= area.high.x; ++current.x)
+		for (current.y = area.low.y; current.y <= area.high.y; ++current.y, ++pixelCount
+			if (isForeground(image(current.x, current.y)))
+				++foregroundCount;
 	return foregroundCount / (double) pixelCount;
 }
 
