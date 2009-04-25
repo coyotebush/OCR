@@ -97,12 +97,12 @@ private:
 	std::set<unsigned short> findStraightLines() const;
 
 	/**
-	 * Checks for a line of foreground pixels
-	 * @param x X-coordinate of midpoint of line
-	 * @param angle Angle of line
-	 * @return Length of longest dark line
+	 * Checks for a segment of consecutive foreground pixels along a line
+	 * @param first  starting point
+	 * @param second ending point
+	 * @return length of longest line
 	 */
-	unsigned int checkLine (unsigned int x, unsigned short angle) const;
+	unsigned int checkLine (Point first, Point second) const;
 
 	/// The image
 	BMP & image;

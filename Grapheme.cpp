@@ -152,17 +152,17 @@ unsigned short Grapheme::countHoles() const
 		if (!isForeground(image((*i).x, (*i).y)))
 			bfSearch(image, *i, true, visited, part);
 	/*for (Point current(part.low.x, part.low.y); current.x <= part.high.x; ++current.x)
-		if (!isForeground(image(current.x, current.y)))
-			bfSearch(image, current, true, visited, part);
-	for (Point current(part.low.x, part.high.y); current.x <= part.high.x; ++current.x)
-		if (!isForeground(image(current.x, current.y)))
-			bfSearch(image, current, true, visited, part);
-	for (Point current(part.low.x, part.low.y); current.y <= part.high.y; ++current.y)
-		if (!isForeground(image(current.x, current.y)))
-			bfSearch(image, current, true, visited, part);
-	for (Point current(part.high.x, part.low.y); current.y <= part.high.y; ++current.y)
-		if (!isForeground(image(current.x, current.y)))
-			bfSearch(image, current, true, visited, part);*/
+	 if (!isForeground(image(current.x, current.y)))
+	 bfSearch(image, current, true, visited, part);
+	 for (Point current(part.low.x, part.high.y); current.x <= part.high.x; ++current.x)
+	 if (!isForeground(image(current.x, current.y)))
+	 bfSearch(image, current, true, visited, part);
+	 for (Point current(part.low.x, part.low.y); current.y <= part.high.y; ++current.y)
+	 if (!isForeground(image(current.x, current.y)))
+	 bfSearch(image, current, true, visited, part);
+	 for (Point current(part.high.x, part.low.y); current.y <= part.high.y; ++current.y)
+	 if (!isForeground(image(current.x, current.y)))
+	 bfSearch(image, current, true, visited, part);*/
 
 	// Loop through every inner pixel
 	for (Point current(part.low.x + 1, part.low.y + 1); current.x < part.high.x; ++current.x)
@@ -195,30 +195,52 @@ unsigned short Grapheme::countHoles() const
  */
 std::set<unsigned short> Grapheme::findStraightLines() const
 {
+	std::set<unsigned short> lines;
+	// Check each combination of points around the edge
+	for (Box::edge_iterator a(part); !a.done(); ++a)
+		for (Box::edge_iterator b = a.next(); !b.done(); ++b)
+		{
+			unsigned int length = checkLine(*a,*b);
+			if (length > LINE_SIGNIFICANCE)
+			{
+				unsigned short angle;
+				lines.insert(angle);
+			}
+		}
+	return lines;
 }
 
 /**
- * Checks for a line of foreground pixels
- * @param x X-coordinate of midpoint of line
- * @param angle Angle of line
- * @return Length of longest dark line
+ * Checks for a segment of consecutive foreground pixels along a line
+ * @param first  starting point
+ * @param second ending point
+ * @return length of longest line
  */
-unsigned int Grapheme::checkLine(unsigned int x, unsigned short angle) const
+unsigned int Grapheme::checkLine(Point first, Point second) const
 {
-	double dY = sin(angle);
-	double dX = cos(angle);
 	unsigned int lineLength = 0;
-	struct
+	// Determine X and Y increments
+	double dY = second.y - first.y;
+	double dX = second.x - first.x;
+	if (abs(dY) > abs(dX))
 	{
-		double x, y;
-	} current;
-
-	bool done = false;
-	for (current.x = part.width() / 2, current.y = part.height() / 2; !done; current.x
-			+= dX, current.y += dY)
-	{
-
+		dX /= dY;
+		dY = 1;
 	}
+	else
+	{
+		dY /= dX;
+		dX = 1;
+	}
+
+	// Travel down the line
+	for (double curX = first.x, curY = first.y; curX != second.x && curY
+			!= second.y; curX += dX, curY += dY)
+		if (isForeground(image(curX, curY)))
+			lineLength = 0;
+		else
+			++lineLength;
+	return lineLength;
 }
 
 } // namespace OCR

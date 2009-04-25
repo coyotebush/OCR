@@ -43,6 +43,14 @@ Box::edge_iterator::edge_iterator(const Box & b) :
 }
 
 /**
+ * Copy constructor
+ * @param other another edge_iterator
+ */
+Box::edge_iterator::edge_iterator(const edge_iterator & other):box(other.box), current(other.current), first(other.first)
+{
+}
+
+/**
  * Dereference operator
  * @return current Point
  */
@@ -57,6 +65,7 @@ Point Box::edge_iterator::operator*() const
  */
 Box::edge_iterator::edge_iterator Box::edge_iterator::operator++()
 {
+	//std::cout << '{' << box.low.x << ", " << box.low.y << "}, {" << box.high.x << ", " << box.high.y << std::endl;//DEBUG
 	// Top edge
 	if (current.y == box.low.y && current.x < box.high.x)
 		++current.x;
@@ -81,6 +90,17 @@ Box::edge_iterator::edge_iterator Box::edge_iterator::operator++()
 bool Box::edge_iterator::done() const
 {
 	return ((current == box.low) && (!first));
+}
+
+/**
+ * Returns an iterator set to the position after the current one
+ * @return an iterator
+ */
+Box::edge_iterator Box::edge_iterator::next()
+{
+	edge_iterator theNext = *this;
+	++theNext;
+	return theNext;
 }
 
 // End OCR::Box::edge_iterator member functions

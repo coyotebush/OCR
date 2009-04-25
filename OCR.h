@@ -58,7 +58,7 @@ struct Point
 
 	bool operator==(const Point & rhs) const
 	{
-		return this->x == rhs.x || this->y == rhs.y;
+		return this->x == rhs.x && this->y == rhs.y;
 	}
 
 	bool operator!=(const Point & rhs) const
@@ -147,6 +147,12 @@ public:
 	edge_iterator(const Box & b);
 
 	/**
+	 * Copy constructor
+	 * @param other another edge_iterator
+	 */
+	edge_iterator(const edge_iterator & other);
+
+	/**
 	 * Dereference operator
 	 * @return current Point
 	 */
@@ -163,6 +169,12 @@ public:
 	 * @return whether complete
 	 */
 	bool done() const;
+
+	/**
+	 * Returns an iterator set to the position after the current one
+	 * @return an iterator
+	 */
+	edge_iterator next();
 private:
 	/// The box
 	Box box;
