@@ -28,8 +28,8 @@
 all: ocr
 
 # all object files
-objs = build/main.o build/Page.o build/Line.o \
-	build/Grapheme.o build/EasyBMP.o build/OCR_common.o
+objs = build/main.o build/Page.o build/Line.o build/Grapheme.o\
+ build/EasyBMP.o build/OCR_common.o build/Font.o
 
 # Main program
 ocr: $(objs)
@@ -58,6 +58,10 @@ build/Grapheme.o: Grapheme.cpp Grapheme.h
 # OCR globals
 build/OCR_common.o: OCR.cpp OCR.h
 	$(CXX) OCR.cpp -c -o build/OCR_common.o  $(CPPFLAGS) $(CXXFLAGS)
+
+# Font
+build/Font.o: Font.cpp Font.h
+	$(CXX) Font.cpp -c -o build/Font.o $(CPPFLAGS) $(CXXFLAGS)
 
 # Documentation
 doc: *.cpp *.h

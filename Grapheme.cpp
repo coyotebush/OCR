@@ -84,7 +84,7 @@ char Grapheme::Read()
 {
 	pareDown();
 
-	Font::SymbolInfo theSymbol;
+	Font::Symbol theSymbol;
 	theSymbol.holes = countHoles();
 	//std::set<unsigned char> angles = findStraightLines();
 
@@ -120,16 +120,16 @@ char Grapheme::Read()
 	char bestMatch = '~';
 	unsigned bestMatchScore = UINT_MAX, currentScore;
 
-	for (unsigned int i = 0; i < ARRAYSIZE(syms); ++i)
+/*	for (unsigned int i = 0; i < ARRAYSIZE(syms); ++i)
 	{
 		if ((currentScore = theSymbol.match(syms[i])) < bestMatchScore)
 		{
 			bestMatchScore = currentScore;
 			bestMatch = syms[i].sym;
 		}
-	}
+	}*/
 
-	return bestMatch;
+	return font.bestMatch(theSymbol).what;
 }
 
 /**
@@ -333,20 +333,6 @@ double Grapheme::areaDensity(Box area) const
 			if (isForeground(image(current.x, current.y)))
 				++foregroundCount;
 	return foregroundCount / (double) pixelCount;
-}
-
-unsigned Grapheme::SymbolInfo::match(const Grapheme::SymbolInfo & other) const
-{
-	unsigned score = 0;
-	score += abs(holes - other.holes) * 1000000;
-	score += fabs(density - other.density) * 1000;
-	score += fabs(proportion - other.proportion) * 1000;
-	score += fabs(borderDensity - other.borderDensity) * 1000;
-	score += fabs(quadrants.a - other.quadrants.a) * 1000;
-	score += fabs(quadrants.b - other.quadrants.b) * 1000;
-	score += fabs(quadrants.c - other.quadrants.c) * 1000;
-	score += fabs(quadrants.d - other.quadrants.d) * 1000;
-	return score;
 }
 
 } // namespace OCR
