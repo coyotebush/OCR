@@ -74,7 +74,7 @@ Point Box::edge_iterator::operator*() const
  * Increments the current Point clockwise around the edge.
  * @return this
  */
-Box::edge_iterator::edge_iterator Box::edge_iterator::operator++()
+Box::edge_iterator Box::edge_iterator::operator++()
 {
 	// Top edge
 	if (current.y == box.low.y && current.x < box.high.x)
@@ -85,7 +85,7 @@ Box::edge_iterator::edge_iterator Box::edge_iterator::operator++()
 	// Bottom edge
 	else if (current.y == box.high.y && current.x > box.low.x)
 		--current.x;
-	// Right edge
+	// Left edge
 	else if (current.x == box.low.x && current.y > box.low.y)
 		--current.y;
 
@@ -119,7 +119,9 @@ bool Box::edge_iterator::operator!=(const Point & p) const
  */
 bool Box::edge_iterator::done() const
 {
-	return ((current == box.low) && (!first));
+	return (current == box.low && !first) || (current.x == box.high.x
+			&& box.height() == 1) || (current.y == box.high.y && box.width()
+			== 1);
 }
 
 /**
@@ -218,7 +220,6 @@ Box bfSearch(BMP & image, const Point start, bool bg, bool ** visited,
 				Point n(x, y);
 				if (!visited[x - limit.low.x][y - limit.low.y] && (bg
 						^ isForeground(image(n.x, n.y))))
-				//isSimilar(image(start.x, start.y), image(n.x, n.y)))
 				{
 					Q.push(n);
 					visited[x - limit.low.x][y - limit.low.y] = true;

@@ -33,7 +33,7 @@ namespace OCR
 const Grapheme::SymbolInfo Grapheme::syms[] =
 {
 #include "font.cpp"
-};
+		};
 
 /**
  * Initializes the object using an entire image
@@ -77,6 +77,7 @@ Grapheme & Grapheme::operator =(const Grapheme & other)
 	return *this;
 }
 
+#define ARRAYSIZE(a) ((sizeof(a))/(sizeof(a[0])))
 /**
  * Recognizes the character.
  * @return the character
@@ -103,13 +104,13 @@ char Grapheme::Read()
 	//std::cout << "{' ', " << (int) theSymbol.holes << ", "
 	//		<< theSymbol.proportion << ", " << theSymbol.density << "},\n";
 	// Find best match
-	char bestMatch;
+	char bestMatch = '~';
 	unsigned bestMatchScore = UINT_MAX;
 
-	for (unsigned int i = 0; i < (sizeof(syms) / sizeof(syms[0])); ++i)
+	for (unsigned int i = 0; i < ARRAYSIZE(syms); ++i)
 	{
 		unsigned int currentScore = 0;
-		currentScore += (fabs(syms[i].holes - theSymbol.holes)) * 10000000.0;
+		currentScore += (abs(syms[i].holes - theSymbol.holes)) * 10000000.0;
 		currentScore += (fabs(syms[i].proportion - theSymbol.proportion))
 				* 100000.0;
 		currentScore += (fabs(theSymbol.density - syms[i].density)) * 10000.0;
@@ -119,6 +120,7 @@ char Grapheme::Read()
 			bestMatch = syms[i].sym;
 		}
 	}
+
 	return bestMatch;
 }
 
