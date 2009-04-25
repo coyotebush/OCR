@@ -88,21 +88,21 @@ private:
 	 * Counts the number of "holes" in the letter
 	 * @return number of holes
 	 */
-	unsigned short countHoles() const;
+	unsigned char countHoles() const;
 
 	/**
 	 * Finds the straight lines in the letter
 	 * @return angles of straight lines
 	 */
-	std::set<unsigned short> findStraightLines() const;
+	std::set<unsigned char> findStraightLines() const;
 
 	/**
-	 * Checks for a segment of consecutive foreground pixels along a line
-	 * @param first  starting point
-	 * @param second ending point
-	 * @return length of longest line
+	 * Checks the density of foreground pixels along a line.
+	 * @param start     edge point on the line
+	 * @param angle     angle of the line (0 <= angle < 180)
+	 * @return density of foreground pixels along the line specified
 	 */
-	unsigned int checkLine (Point first, Point second) const;
+	double checkLine(Point start, unsigned char angle) const;
 
 	/// The image
 	BMP & image;

@@ -126,6 +126,11 @@ struct Box
 		return low.x == p.x || low.y == p.y || high.x == p.x || high.y == p.y;
 	}
 
+	bool contains(const Point p) const
+	{
+		return p.x <= high.x && p.x >= low.x && p.y <= high.y && p.y >= low.y;
+	}
+
 	bool operator==(const Box & rhs) const
 	{
 		return this->low == rhs.low && this->high == rhs.high;
@@ -147,6 +152,13 @@ public:
 	edge_iterator(const Box & b);
 
 	/**
+	 * Constructor
+	 * @param b Box to iterate around
+	 * @param p starting point, should be on b's edge
+	 */
+	edge_iterator(const Box & b, const Point & p);
+
+	/**
 	 * Copy constructor
 	 * @param other another edge_iterator
 	 */
@@ -159,10 +171,24 @@ public:
 	Point operator*() const;
 
 	/**
-	 * Increments the current Point around the edge
+	 * Increments the current Point clockwise around the edge.
 	 * @return this
 	 */
 	edge_iterator operator++();
+
+	/**
+	 * Compares the current position to a Point.
+	 * @param p Point to compare to
+	 * @return whether current position and p are equal
+	 */
+	bool operator==(const Point & p) const;
+
+	/**
+	 * Compares the current position to a Point.
+	 * @param p Point to compare to
+	 * @return whether current position and p are unequal
+	 */
+	bool operator!=(const Point & p) const;
 
 	/**
 	 * Determines whether the iterator is done

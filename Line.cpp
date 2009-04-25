@@ -30,8 +30,8 @@
 namespace OCR
 {
 
-/// The relative width of a space character
-const double Line::SPACE = 0.27;
+/// The minimum width, relative to height, of a space character
+const double Line::SPACE = 0.28;
 
 /**
  * Initializes the object using an entire image

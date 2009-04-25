@@ -43,10 +43,21 @@ Box::edge_iterator::edge_iterator(const Box & b) :
 }
 
 /**
+ * Constructor
+ * @param b Box to iterate around
+ * @param p starting point, should be on b's edge
+ */
+Box::edge_iterator::edge_iterator(const Box & b, const Point & p) :
+	box(b), current(p), first(true)
+{
+}
+
+/**
  * Copy constructor
  * @param other another edge_iterator
  */
-Box::edge_iterator::edge_iterator(const edge_iterator & other):box(other.box), current(other.current), first(other.first)
+Box::edge_iterator::edge_iterator(const edge_iterator & other) :
+	box(other.box), current(other.current), first(other.first)
 {
 }
 
@@ -60,12 +71,11 @@ Point Box::edge_iterator::operator*() const
 }
 
 /**
- * Increments the current Point around the edge
+ * Increments the current Point clockwise around the edge.
  * @return this
  */
 Box::edge_iterator::edge_iterator Box::edge_iterator::operator++()
 {
-	//std::cout << '{' << box.low.x << ", " << box.low.y << "}, {" << box.high.x << ", " << box.high.y << std::endl;//DEBUG
 	// Top edge
 	if (current.y == box.low.y && current.x < box.high.x)
 		++current.x;
@@ -81,6 +91,26 @@ Box::edge_iterator::edge_iterator Box::edge_iterator::operator++()
 
 	first = false;
 	return *this;
+}
+
+/**
+ * Compares the current position to a Point.
+ * @param p Point to compare to
+ * @return whether current position and p are equal
+ */
+bool Box::edge_iterator::operator==(const Point & p) const
+{
+	return current == p;
+}
+
+/**
+ * Compares the current position to a Point.
+ * @param p Point to compare to
+ * @return whether current position and p are unequal
+ */
+bool Box::edge_iterator::operator!=(const Point & p) const
+{
+	return current != p;
 }
 
 /**

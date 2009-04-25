@@ -80,9 +80,29 @@ Grapheme & Grapheme::operator =(const Grapheme & other)
 char Grapheme::Read()
 {
 	pareDown();
+
 	unsigned short holes = countHoles();
-	//std::cout << holes << ' ';
-	//std::set<unsigned short> angles = findStraightLines();
+	//std::set<unsigned char> angles = findStraightLines();
+
+	// Get height/width ratio
+	double ratio = part.height() / (double) part.width();
+
+	// Find density
+	unsigned int pixelCount = 0, foregroundCount = 0;
+	for (int x = part.low.x; x <= part.high.x; ++x)
+		for (int y = part.low.y; y <= part.high.y; ++y, ++pixelCount)
+			if (isForeground(image(x, y)))
+				++foregroundCount;
+	double density = foregroundCount / (double) pixelCount;
+
+	/*DEBUG -v-v
+	 std::cout << "( ";
+	 for (std::set<unsigned char>::iterator i = angles.begin(); i
+	 != angles.end(); ++i)
+	 std::cout << (int)(*i) << ' ';
+	 std::cout << ")\n";
+	 //DEBUG -^-^*/
+
 	return '0' + holes;
 }
 
@@ -135,9 +155,9 @@ void Grapheme::pareDown()
  * Counts the number of "holes" in the letter
  * @return number of holes
  */
-unsigned short Grapheme::countHoles() const
+unsigned char Grapheme::countHoles() const
 {
-	int holeCount = 0;
+	unsigned char holeCount = 0;
 	// Initialize visited array
 	bool ** visited = new bool *[part.width()];
 	for (int i = 0; i < part.width(); ++i)
@@ -191,38 +211,80 @@ unsigned short Grapheme::countHoles() const
 /**
  * Finds the straight lines in the letter
  * @return angles of straight lines
- * @todo implement
  */
-std::set<unsigned short> Grapheme::findStraightLines() const
+std::set<unsigned char> Grapheme::findStraightLines() const
 {
-	std::set<unsigned short> lines;
-	// Check each combination of points around the edge
-	for (Box::edge_iterator a(part); !a.done(); ++a)
-		for (Box::edge_iterator b = a.next(); !b.done(); ++b)
+	static const double SIGNIFICANT_LINE = 0.8;
+	std::set<unsigned char> lines;
+	unsigned char angle;
+	Point current(part.low);
+	bool foundLastTime;
+
+	// Check angle 0 with points on the left edge
+	for (angle = 0, current = part.low, foundLastTime = false; current.y
+			<= part.high.y; ++current.y)
+	{
+		if (checkLine(current, angle) > SIGNIFICANT_LINE && !foundLastTime)
 		{
-			unsigned int length = checkLine(*a,*b);
-			if (length > LINE_SIGNIFICANCE)
-			{
-				unsigned short angle;
-				lines.insert(angle);
-			}
+			lines.insert(angle);
+			foundLastTime = true;
 		}
+		else
+			foundLastTime = false;
+	}
+
+	// Check angle 90 with points on the bottom edge
+	for (angle = 90, current.x = part.low.x, current.y = part.high.y, foundLastTime
+			= false; current.x <= part.high.x; ++current.x)
+	{
+		if (checkLine(current, angle) > SIGNIFICANT_LINE && !foundLastTime)
+		{
+			lines.insert(angle);
+			foundLastTime = true;
+		}
+		else
+			foundLastTime = false;
+	}
+	// Check angles between 0 and 90 with points on the bottom and left edges
+	for (angle = 5; angle < 90; angle += 5)
+	{
+		foundLastTime = false;
+		for (Box::edge_iterator i(part, part.high); i != part.low; ++i)
+		{
+			if (checkLine(*i, angle) > SIGNIFICANT_LINE && !foundLastTime)
+			{
+				lines.insert(angle);
+				foundLastTime = true;
+			}
+			else
+				foundLastTime = false;
+		}
+	}
+	// Check angles between 90 and 180 with points on the bottom and right edges
+	for (angle = 95; angle < 180; angle += 5)
+	{
+
+	}
 	return lines;
 }
 
 /**
- * Checks for a segment of consecutive foreground pixels along a line
- * @param first  starting point
- * @param second ending point
- * @return length of longest line
+ * Checks the density of foreground pixels along a line.
+ * @param start     edge point on the line
+ * @param angle     angle of the line (0 <= angle < 180)
+ * @return density of foreground pixels along the line specified
  */
-unsigned int Grapheme::checkLine(Point first, Point second) const
+double Grapheme::checkLine(Point start, unsigned char angle) const
 {
-	unsigned int lineLength = 0;
+	static const double PI = atan(1.0) * 4.0;
+	static const double DEG2RAD = 180.0 / PI;
+	unsigned int pixelCount = 0, foregroundCount = 0;
+
 	// Determine X and Y increments
-	double dY = second.y - first.y;
-	double dX = second.x - first.x;
-	if (abs(dY) > abs(dX))
+	double dY = sin(angle * DEG2RAD);
+	double dX = cos(angle * DEG2RAD);
+	// Increase one of these to 1
+	if (dY > dX)
 	{
 		dX /= dY;
 		dY = 1;
@@ -234,13 +296,14 @@ unsigned int Grapheme::checkLine(Point first, Point second) const
 	}
 
 	// Travel down the line
-	for (double curX = first.x, curY = first.y; curX != second.x && curY
-			!= second.y; curX += dX, curY += dY)
+	for (double curX = start.x, curY = start.y; part.contains(Point(curX, curY)); curX
+			+= dX, curY += dY)
+	{
+		++pixelCount;
 		if (isForeground(image(curX, curY)))
-			lineLength = 0;
-		else
-			++lineLength;
-	return lineLength;
+			++foregroundCount;
+	}
+	return foregroundCount / (double) pixelCount;
 }
 
 } // namespace OCR
