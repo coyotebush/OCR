@@ -4,6 +4,7 @@
  * @author Corey Ford <fordco@sonoma.edu>
  * @brief The interface for the Font class.
  * @see Font.cpp for the implementation.
+ * @version $Id$
  */
 
 #ifndef OCR_FONT_H_
