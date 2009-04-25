@@ -35,7 +35,6 @@
 
 namespace OCR
 {
-
 /**
  * A character in the image.
  */
@@ -94,16 +93,24 @@ private:
 
 		/// Foreground pixels / total pixels
 		double density;
-		
+
 		/// Density of each quadrant
 		// a  b
 		// c  d
-		struct qDense { double a,b,c,d; }
-		quadrants;
-		
+		struct qDense
+		{
+			double a, b, c, d;
+		} quadrants;
+
 		/// Density of border pixels
 		double borderDensity;
 
+		/**
+		 * Compares this to another
+		 * @param other another SymbolInfo
+		 * @return match score, lower is better
+		 */
+		unsigned match(const SymbolInfo & other) const;
 	};
 
 	/**
@@ -131,7 +138,7 @@ private:
 	 * @return density of foreground pixels along the line specified
 	 */
 	double checkLine(Point start, unsigned char angle) const;
-	
+
 	/**
 	 * Checks the density of foreground pixels within an area
 	 * @param area area to check
@@ -145,9 +152,6 @@ private:
 	Box part;
 	/// The resulting character
 	char result;
-
-	/// Characters in Arial
-	static const SymbolInfo syms[];
 };
 
 } // namespace OCR

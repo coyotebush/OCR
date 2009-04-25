@@ -71,7 +71,7 @@ struct Point
 		return this->x < rhs.x && this->y < rhs.y;
 	}
 
-	int x, y;
+	unsigned x, y;
 };
 
 /**

@@ -94,63 +94,37 @@ char Grapheme::Read()
 	theSymbol.proportion = part.height() / (double) part.width();
 
 	// Find density
-	unsigned int pixelCount = 0, foregroundCount = 0;
-	for (int x = part.low.x; x <= part.high.x; ++x)
-		for (int y = part.low.y; y <= part.high.y; ++y, ++pixelCount)
-			if (isForeground(image(x, y)))
-				++foregroundCount;
-	theSymbol.density = foregroundCount / (double) pixelCount;
-	
+	theSymbol.density = areaDensity(part);
+
 	// Find density of border
-	pixelCount = 0; foregroundCount = 0;
+	unsigned pixelCount = 0;
+	unsigned foregroundCount = 0;
 	for (Box::edge_iterator i(part); !i.done(); ++i, ++pixelCount)
 		if (isForeground(image((*i).x, (*i).y)))
 			++foregroundCount;
 	theSymbol.borderDensity = foregroundCount / (double) pixelCount;
-	
-	// Find density of each quadrant
-	pixelCount = 0; foregroundCount = 0;
-	unsigned halfWidth = part.low.x + ((part.high.x - part.low.x)/2);
-	unsigned halfHeight = part.low.y + ((part.high.y - part.low.y)/2);
-	for (int x = part.low.x; x <= halfWidth; ++x)
-		for (int y = part.low.y; y <= halfHeight; ++y, ++foregroundCount)
-			if (isForeground(image(x, y)))
-				++foregroundCount;
-	theSymbol.quadrants.a = foregroundCount / (double) pixelCount;
-	
-	pixelCount = 0; foregroundCount = 0;
-	for (int x = halfWidth; x <= part.high.x; ++x)
-		for (int y = part.low.y; y <= halfHeight; ++y, ++foregroundCount)
-			if (isForeground(image(x, y)))
-				++foregroundCount;
-	theSymbol.quadrants.b = foregroundCount / (double) pixelCount;
 
-	pixelCount = 0; foregroundCount = 0;
-	for (int x = part.low.x; x <= halfWidth; ++x)
-		for (int y = halfHeight; y <= part.high.y; ++y, ++foregroundCount)
-			if (isForeground(image(x, y)))
-				++foregroundCount;
-	theSymbol.quadrants.c
-	pixelCount = 0; foregroundCount = 0;
-	for (int x = part.low.x; x <= part.high.x / 2; ++x)
-		for (int y = part.low.y; y <= part.high.y; ++y, ++foregroundCount)
-			if (isForeground(image(x, y)))
-				++foregroundCount;
+	// Find density of each quadrant
+	unsigned halfWidth = part.low.x + ((part.high.x - part.low.x) / 2);
+	unsigned halfHeight = part.low.y + ((part.high.y - part.low.y) / 2);
+	theSymbol.quadrants.a = areaDensity(Box(part.low.x, part.low.y, halfWidth,
+			halfHeight));
+	theSymbol.quadrants.b = areaDensity(Box(halfWidth, part.low.y, part.high.x,
+			halfHeight));
+	theSymbol.quadrants.c = areaDensity(Box(part.low.x, halfHeight, halfWidth,
+			part.high.y));
+	theSymbol.quadrants.d = areaDensity(Box(halfWidth, halfHeight, part.high.x,
+			part.high.y));
 
 	//std::cout << "{' ', " << (int) theSymbol.holes << ", "
 	//		<< theSymbol.proportion << ", " << theSymbol.density << "},\n";
 	// Find best match
 	char bestMatch = '~';
-	unsigned bestMatchScore = UINT_MAX;
+	unsigned bestMatchScore = UINT_MAX, currentScore;
 
 	for (unsigned int i = 0; i < ARRAYSIZE(syms); ++i)
 	{
-		unsigned int currentScore = 0;
-		currentScore += (abs(syms[i].holes - theSymbol.holes)) * 10000000.0;
-		currentScore += (fabs(syms[i].proportion - theSymbol.proportion))
-				* 100000.0;
-		currentScore += (fabs(theSymbol.density - syms[i].density)) * 10000.0;
-		if (currentScore < bestMatchScore)
+		if ((currentScore = theSymbol.match(syms[i])) < bestMatchScore)
 		{
 			bestMatchScore = currentScore;
 			bestMatch = syms[i].sym;
@@ -170,7 +144,7 @@ void Grapheme::pareDown()
 	// Pare top
 	for (fgFound = false; part.low.y <= part.high.y; ++part.low.y)
 	{
-		for (int col = part.low.x; col <= part.high.x && !fgFound; ++col)
+		for (unsigned col = part.low.x; col <= part.high.x && !fgFound; ++col)
 			if (isForeground(image(col, part.low.y)))
 				fgFound = true;
 		if (fgFound)
@@ -179,7 +153,7 @@ void Grapheme::pareDown()
 	// Pare bottom
 	for (fgFound = false; part.high.y >= part.low.y && !fgFound; --part.high.y)
 	{
-		for (int col = part.low.x; col <= part.high.x && !fgFound; ++col)
+		for (unsigned col = part.low.x; col <= part.high.x && !fgFound; ++col)
 			if (isForeground(image(col, part.low.y)))
 				fgFound = true;
 		if (fgFound)
@@ -188,7 +162,7 @@ void Grapheme::pareDown()
 	// Pare left
 	for (fgFound = false; part.low.x <= part.high.x; ++part.low.x)
 	{
-		for (int row = part.low.y; row <= part.high.y && !fgFound; ++row)
+		for (unsigned row = part.low.y; row <= part.high.y && !fgFound; ++row)
 			if (isForeground(image(part.low.x, row)))
 				fgFound = true;
 		if (fgFound)
@@ -197,7 +171,7 @@ void Grapheme::pareDown()
 	// Pare right
 	for (fgFound = false; part.high.x >= part.low.x; --part.high.x)
 	{
-		for (int row = part.low.y; row <= part.high.y && !fgFound; ++row)
+		for (unsigned row = part.low.y; row <= part.high.y && !fgFound; ++row)
 			if (isForeground(image(part.high.x, row)))
 				fgFound = true;
 		if (fgFound)
@@ -357,10 +331,24 @@ double Grapheme::areaDensity(Box area) const
 	unsigned pixelCount, foregroundCount;
 	Point current(area.low);
 	for (; current.x <= area.high.x; ++current.x)
-		for (current.y = area.low.y; current.y <= area.high.y; ++current.y, ++pixelCount
+		for (current.y = area.low.y; current.y <= area.high.y; ++current.y, ++pixelCount)
 			if (isForeground(image(current.x, current.y)))
 				++foregroundCount;
 	return foregroundCount / (double) pixelCount;
+}
+
+unsigned Grapheme::SymbolInfo::match(const Grapheme::SymbolInfo & other) const
+{
+	unsigned score = 0;
+	score += abs(holes - other.holes) * 1000000;
+	score += fabs(density - other.density) * 1000;
+	score += fabs(proportion - other.proportion) * 1000;
+	score += fabs(borderDensity - other.borderDensity) * 1000;
+	score += fabs(quadrants.a - other.quadrants.a) * 1000;
+	score += fabs(quadrants.b - other.quadrants.b) * 1000;
+	score += fabs(quadrants.c - other.quadrants.c) * 1000;
+	score += fabs(quadrants.d - other.quadrants.d) * 1000;
+	return score;
 }
 
 } // namespace OCR
