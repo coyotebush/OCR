@@ -31,10 +31,12 @@ namespace OCR
 {
 
 /**
- * Initializes the class with a BMP image
+ * Initializes the class
+ * @param img BMP image to use
+ * @param f   font to use
  */
-Page::Page(BMP & img) :
-	image(img)
+Page::Page(BMP & img, const Font & f) :
+	image(img), font(f)
 {
 }
 
@@ -43,7 +45,7 @@ Page::Page(BMP & img) :
  * @param other a Page object
  */
 Page::Page(const Page & other) :
-	image(other.image)
+	image(other.image), font(other.font)
 {
 }
 
@@ -87,7 +89,7 @@ std::string Page::Read()
 		// End of a row
 		{
 			bottom = row - 1;
-			lines.push_back(Line(image, top, bottom));
+			lines.push_back(Line(image, top, bottom, font));
 			inRow = false;
 		}
 	}

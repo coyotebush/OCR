@@ -32,6 +32,7 @@
 #include <set>
 #include "EasyBMP/EasyBMP.h"
 #include "OCR.h"
+#include "Font.h"
 
 namespace OCR
 {
@@ -44,8 +45,9 @@ public:
 	/**
 	 * Initializes the object using an entire image
 	 * @param img reference to a BMP
+	 * @param f font to use
 	 */
-	Grapheme(BMP & img);
+	Grapheme(BMP & img, const Font & f);
 
 	/**
 	 * Initializes the object using part of a BMP image
@@ -54,8 +56,9 @@ public:
 	 * @param[in] y1  top coordinate
 	 * @param[in] x2  right coordinate
 	 * @param[in] y2  bottom coordinate
+	 * @param[in] f   font to use
 	 */
-	Grapheme(BMP & img, int x1, int y1, int x2, int y2);
+	Grapheme(BMP & img, int x1, int y1, int x2, int y2, const Font & f);
 
 	/**
 	 * Initializes the object as a copy of another
@@ -76,42 +79,6 @@ public:
 	char Read();
 
 private:
-
-	/**
-	 * Information about a symbol
-	 */
-	struct SymbolInfo
-	{
-		/// The character
-		char sym;
-
-		/// Number of holes
-		unsigned char holes;
-
-		/// Height / width
-		double proportion;
-
-		/// Foreground pixels / total pixels
-		double density;
-
-		/// Density of each quadrant
-		// a  b
-		// c  d
-		struct qDense
-		{
-			double a, b, c, d;
-		} quadrants;
-
-		/// Density of border pixels
-		double borderDensity;
-
-		/**
-		 * Compares this to another
-		 * @param other another SymbolInfo
-		 * @return match score, lower is better
-		 */
-		unsigned match(const SymbolInfo & other) const;
-	};
 
 	/**
 	 * Sets the left, right, bottom, and top coordinates
@@ -150,8 +117,8 @@ private:
 	BMP & image;
 	/// The part of the image to use
 	Box part;
-	/// The resulting character
-	char result;
+	/// The font to use
+	const Font & font;
 };
 
 } // namespace OCR

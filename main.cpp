@@ -28,38 +28,34 @@
 #include <iostream>
 #include <string>
 #include "EasyBMP/EasyBMP.h"
+#include "Font.h"
 #include "Page.h"
-using namespace std;
+using std::cout;
+using std::cerr;
+using std::endl;
+using std::string;
+using OCR::Page;
+using OCR::Font;
 
 int main(int argc, char * argv[])
 {
 	string result;
 	if (argc != 3)
 	{
-		cerr << "Usage: " << argv[0] << " [plc] <filename>\n";
+		cerr << "Usage: " << argv[0] << " <font name> <bitmap name>\n";
 		return 1;
 	}
+
+	// Load the font
+	Font f(argv[1]);
 
 	// Load the page from a bitmap file
 	BMP img;
 	img.ReadFromFile(argv[2]);
 
-	// Read either a page, a line, or a character, depending on argument
-	if (string(argv[1]) == "p")
-	{
-		OCR::Page page(img);
-		cout << page.Read() << endl;
-	}
-	else if (string(argv[1]) == "l")
-	{
-		OCR::Line line(img);
-		cout << line.Read() << endl;
-	}
-	else if (string(argv[1]) == "c")
-	{
-		OCR::Grapheme letter(img);
-		cout << letter.Read() << endl;
-	}
+	// Read the page
+	Page page(img, f);
+	cout << page.Read() << endl;
 
 	return 0;
 }

@@ -36,21 +36,23 @@ const double Line::SPACE = 0.28;
 /**
  * Initializes the object using an entire image
  * @param img reference to a BMP
+ * @param f font to use
  */
-Line::Line(BMP & img) :
-	image(img), top(0)
+Line::Line(BMP & img, const Font & f) :
+	image(img), top(0), font(f)
 {
 	bottom = image.TellHeight();
 }
 
 /**
  * Initializes the object using part of a BMP image
- * @param[in] img reference to BMP
- * @param[in] y1  top coordinate
- * @param[in] y2  bottom coordinate
+ * @param img reference to BMP
+ * @param y1  top coordinate
+ * @param y2  bottom coordinate
+ * @param f font to use
  */
-Line::Line(BMP & img, int y1, int y2) :
-	image(img), top(y1), bottom(y2)
+Line::Line(BMP & img, int y1, int y2, const Font & f) :
+	image(img), top(y1), bottom(y2), font(f)
 {
 }
 
@@ -59,7 +61,7 @@ Line::Line(BMP & img, int y1, int y2) :
  * @param other a Line object
  */
 Line::Line(const Line & other) :
-	image(other.image), top(other.top), bottom(other.bottom)
+	image(other.image), top(other.top), bottom(other.bottom), font(other.font)
 {
 }
 
@@ -108,7 +110,7 @@ std::string Line::Read()
 		// End of a symbol
 		{
 			right = col + 1;
-			Grapheme sym(image, left, top, right, bottom);
+			Grapheme sym(image, left, top, right, bottom, font);
 			result += sym.Read();
 			inSymbol = false;
 		}

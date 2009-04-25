@@ -30,6 +30,8 @@
 #define OCR_LINE_H_
 #include <string>
 #include "EasyBMP/EasyBMP.h"
+#include "OCR.h"
+#include "Font.h"
 #include "Grapheme.h"
 
 namespace OCR
@@ -43,16 +45,18 @@ public:
 	/**
 	 * Initializes the object using an entire image
 	 * @param img reference to a BMP
+	 * @param f font to use
 	 */
-	Line(BMP & img);
+	Line(BMP & img, const Font & f);
 
 	/**
 	 * Initializes the object using part of a BMP image
 	 * @param img reference to BMP
 	 * @param y1  top coordinate
 	 * @param y2  bottom coordinate
+	 * @param f font to use
 	 */
-	Line(BMP & img, int y1, int y2);
+	Line(BMP & img, int y1, int y2, const Font & f);
 
 	/**
 	 * Initializes the object as a copy of another
@@ -79,6 +83,8 @@ private:
 	BMP & image;
 	/// The part of the image (inclusive)
 	int top, bottom;
+	/// The font to use
+	const Font & font;
 };
 } // namespace OCR
 

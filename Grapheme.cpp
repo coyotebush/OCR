@@ -30,17 +30,14 @@
 namespace OCR
 {
 
-const Grapheme::SymbolInfo Grapheme::syms[] =
-{
-#include "font.cpp"
-		};
-
 /**
  * Initializes the object using an entire image
  * @param img reference to a BMP
+ * @param f font to use
  */
-Grapheme::Grapheme(BMP & img) :
-	image(img), part(0, 0, image.TellWidth() - 1, image.TellHeight() - 1)
+Grapheme::Grapheme(BMP & img, const Font & f) :
+	image(img), part(0, 0, image.TellWidth() - 1, image.TellHeight() - 1),
+			font(f)
 {
 }
 
@@ -51,9 +48,10 @@ Grapheme::Grapheme(BMP & img) :
  * @param[in] y1  top coordinate
  * @param[in] x2  right coordinate
  * @param[in] y2  bottom coordinate
+ * @param[in] f   font to use
  */
-Grapheme::Grapheme(BMP & img, int x1, int y1, int x2, int y2) :
-	image(img), part(x1, y1, x2, y2)
+Grapheme::Grapheme(BMP & img, int x1, int y1, int x2, int y2, const Font & f) :
+	image(img), part(x1, y1, x2, y2), font(f)
 {
 }
 
@@ -62,7 +60,7 @@ Grapheme::Grapheme(BMP & img, int x1, int y1, int x2, int y2) :
  * @param other a Grapheme object
  */
 Grapheme::Grapheme(const Grapheme & other) :
-	image(other.image), part(other.part)
+	image(other.image), part(other.part), font(other.font)
 {
 }
 
@@ -86,7 +84,7 @@ char Grapheme::Read()
 {
 	pareDown();
 
-	SymbolInfo theSymbol;
+	Font::SymbolInfo theSymbol;
 	theSymbol.holes = countHoles();
 	//std::set<unsigned char> angles = findStraightLines();
 

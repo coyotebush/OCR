@@ -39,9 +39,11 @@ class Page
 {
 public:
 	/**
-	 * Initializes the class with a BMP image
+	 * Initializes the class
+	 * @param img BMP image to use
+	 * @param f   font to use
 	 */
-	Page(BMP & img);
+	Page(BMP & img, const Font & f);
 
 	/**
 	 * Initializes the object as a copy of another
@@ -68,6 +70,8 @@ private:
 	std::deque<Line> lines;
 	/// The resulting text
 	std::string result;
+	/// The font to use
+	const Font & font;
 };
 
 } // namespace OCR
