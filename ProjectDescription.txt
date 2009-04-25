@@ -30,7 +30,7 @@ The general steps involved in the algorithm will include
     - noise removal
     - determining threshold level
 3. Dividing page horizontally into lines
-4. Dividing lines vertically into letters
+4. Dividing lines into letters
 4. Identifying letters
 
 Identifying letters
@@ -46,11 +46,11 @@ fonts.
 Identifying if and how many holes are in the image would also be helpful.
 The breadth-first search would come in useful here.
 
-Calculating the height/width ratio of a letter seems like a reliable way to
-narrow down the options.
+Calculating the height/width ratio and density of a letter seem like reliable
+ways to narrow down the options.
 
 Possible class and method structure
 -----
-* TextPage - Recognizes a page of text
-* TextLine - Recognizes a line of text
+* Page - Recognizes a page of text
+* Line - Recognizes a line of text
 * Grapheme - Recognizes a single letter
