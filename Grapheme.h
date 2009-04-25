@@ -79,6 +79,25 @@ public:
 private:
 
 	/**
+	 * Information about a symbol
+	 */
+	struct SymbolInfo
+	{
+		/// The character
+		char sym;
+
+		/// Number of holes
+		unsigned char holes;
+
+		/// Height / width
+		double proportion;
+
+		/// Foreground pixels / total pixels
+		double density;
+
+	};
+
+	/**
 	 * Sets the left, right, bottom, and top coordinates
 	 * such that they surround the foreground pixels contained
 	 */
@@ -110,6 +129,9 @@ private:
 	Box part;
 	/// The resulting character
 	char result;
+
+	/// Characters in Arial
+	static const SymbolInfo syms[];
 };
 
 } // namespace OCR

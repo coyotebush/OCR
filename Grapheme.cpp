@@ -30,6 +30,88 @@
 namespace OCR
 {
 
+const Grapheme::SymbolInfo Grapheme::syms[] =
+{
+{ 'A', 1, 1.5, 0.265 },
+{ 'B', 2, 1.875, 0.383333 },
+{ 'C', 0, 1.57895, 0.222807 },
+{ 'D', 1, 1.57895, 0.307018 },
+{ 'E', 0, 2, 0.308889 },
+{ 'F', 0, 2.30769, 0.274359 },
+{ 'G', 0, 1.5, 0.263333 },
+{ 'H', 0, 1.66667, 0.3 },
+{ 'I', 0, 6, 0.473333 },
+{ 'J', 0, 3.75, 0.4 },
+{ 'K', 0, 1.66667, 0.294444 },
+{ 'L', 0, 2.14286, 0.242857 },
+{ 'M', 0, 1.42857, 0.365079 },
+{ 'N', 0, 1.66667, 0.377778 },
+{ 'O', 1, 1.42857, 0.260317 },
+{ 'P', 1, 2, 0.304444 },
+{ 'Q', 1, 1.42857, 0.284127 },
+{ 'R', 1, 1.66667, 0.311111 },
+{ 'S', 0, 1.875, 0.2875 },
+{ 'T', 0, 1.5, 0.171667 },
+{ 'U', 0, 1.66667, 0.281481 },
+{ 'V', 0, 1.5, 0.23 },
+{ 'W', 0, 1.03448, 0.28046 },
+{ 'X', 0, 1.36364, 0.221212 },
+{ 'Y', 0, 1.42857, 0.166667 },
+{ 'Z', 0, 1.57895, 0.259649 },
+{ 'a', 1, 1.66667, 0.362667 },
+{ 'b', 1, 1.9375, 0.330645 },
+{ 'c', 0, 1.78571, 0.251429 },
+{ 'd', 1, 1.9375, 0.330645 },
+{ 'e', 1, 1.5625, 0.315 },
+{ 'f', 0, 2.81818, 0.272727 },
+{ 'g', 1, 1.5625, 0.46 },
+{ 'h', 0, 2.06667, 0.305376 },
+{ 'i', 0, 10.3333, 0.709677 },
+{ 'j', 0, 5.16667, 0.483871 },
+{ 'k', 0, 2.06667, 0.296774 },
+{ 'l', 0, 10.3333, 0.774194 },
+{ 'm', 0, 1, 0.3104 },
+{ 'n', 0, 1.66667, 0.330667 },
+{ 'o', 1, 1.5625, 0.32 },
+{ 'p', 1, 1.5625, 0.4125 },
+{ 'q', 1, 1.5625, 0.4125 },
+{ 'r', 0, 2.5, 0.288 },
+{ 's', 0, 1.92308, 0.32 },
+{ 't', 0, 2.63636, 0.285266 },
+{ 'u', 0, 1.66667, 0.328 },
+{ 'v', 0, 1.47059, 0.24 },
+{ 'w', 0, 1.08696, 0.302609 },
+{ 'x', 0, 1.5625, 0.275 },
+{ 'y', 0, 1.5625, 0.3075 },
+{ 'z', 0, 1.78571, 0.288571 },
+{ '0', 1, 1.4375, 0.410326 },
+{ '1', 0, 1.76923, 0.374582 },
+{ '2', 0, 1.53333, 0.376812 },
+{ '3', 0, 1.53333, 0.356522 },
+{ '4', 1, 1.4375, 0.388587 },
+{ '5', 0, 1.53333, 0.382609 },
+{ '6', 1, 1.4375, 0.429348 },
+{ '7', 0, 1.53333, 0.281159 },
+{ '8', 2, 1.4375, 0.464674 },
+{ '9', 1, 1.4375, 0.404891 },
+{ ';', 0, 6, 0.34375 },
+{ '.', 0, 4, 0.333333 },
+{ '|', 0, 10.6667, 1 },
+{ '!', 0, 10.3333, 0.645161 },
+{ '@', 1, 1.07143, 0.333333 },
+{ '#', 1, 1.40909, 0.244868 },
+{ '$', 2, 2.13333, 0.339583 },
+{ '%', 2, 1.14815, 0.237754 },
+{ '^', 0, 1.72222, 0.0949821 },
+{ '&', 1, 1.40909, 0.266862 },
+{ '*', 0, 2.21429, 0.165899 },
+{ '(', 0, 4.57143, 0.352679 },
+{ ')', 0, 4.57143, 0.352679 },
+{ '_', 0, 0.117647, 1 },
+{ '+', 0, 1.4, 0.167857 },
+{ '-', 0, 2.25, 0.111111 },
+{ '=', 0, 1.15, 0.173913 } };
+
 /**
  * Initializes the object using an entire image
  * @param img reference to a BMP
@@ -81,11 +163,12 @@ char Grapheme::Read()
 {
 	pareDown();
 
-	unsigned short holes = countHoles();
+	SymbolInfo theSymbol;
+	theSymbol.holes = countHoles();
 	//std::set<unsigned char> angles = findStraightLines();
 
 	// Get height/width ratio
-	double ratio = part.height() / (double) part.width();
+	theSymbol.proportion = part.height() / (double) part.width();
 
 	// Find density
 	unsigned int pixelCount = 0, foregroundCount = 0;
@@ -93,17 +176,25 @@ char Grapheme::Read()
 		for (int y = part.low.y; y <= part.high.y; ++y, ++pixelCount)
 			if (isForeground(image(x, y)))
 				++foregroundCount;
-	double density = foregroundCount / (double) pixelCount;
+	theSymbol.density = foregroundCount / (double) pixelCount;
 
-	/*DEBUG -v-v
-	 std::cout << "( ";
-	 for (std::set<unsigned char>::iterator i = angles.begin(); i
-	 != angles.end(); ++i)
-	 std::cout << (int)(*i) << ' ';
-	 std::cout << ")\n";
-	 //DEBUG -^-^*/
+	// Find best match
+	char bestMatch;
+	long double bestMatchScore = UINT_MAX;
 
-	return '0' + holes;
+	for (unsigned int i = 0; i < (sizeof(syms)/sizeof(syms[0])); ++i)
+	{
+		long double currentScore = 0;
+		currentScore += abs(syms[i].holes - theSymbol.holes);
+		currentScore += abs(syms[i].proportion - theSymbol.proportion);
+		currentScore += abs(syms[i].density - theSymbol.density);
+		if (currentScore < bestMatchScore)
+		{
+			bestMatchScore = currentScore;
+			bestMatch = syms[i].sym;
+		}
+	}
+	return bestMatch;
 }
 
 /**
