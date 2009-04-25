@@ -113,22 +113,11 @@ char Grapheme::Read()
 			part.high.y));
 	theSymbol.quadrants.d = areaDensity(Box(halfWidth, halfHeight, part.high.x,
 			part.high.y));
-
-	//std::cout << "{' ', " << (int) theSymbol.holes << ", "
-	//		<< theSymbol.proportion << ", " << theSymbol.density << "},\n";
+#ifdef FONTGEN
+	// Dump symbol info
+	std::cout << theSymbol
+#endif
 	// Find best match
-	char bestMatch = '~';
-	unsigned bestMatchScore = UINT_MAX, currentScore;
-
-/*	for (unsigned int i = 0; i < ARRAYSIZE(syms); ++i)
-	{
-		if ((currentScore = theSymbol.match(syms[i])) < bestMatchScore)
-		{
-			bestMatchScore = currentScore;
-			bestMatch = syms[i].sym;
-		}
-	}*/
-
 	return font.bestMatch(theSymbol).what;
 }
 

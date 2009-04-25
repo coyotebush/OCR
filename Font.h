@@ -12,6 +12,7 @@
 #include <string>
 #include <deque>
 #include <fstream>
+#include <iostream>
 #include <cmath>
 
 namespace OCR
@@ -29,8 +30,6 @@ public:
 	 */
 	struct Symbol
 	{
-		/// The character
-		char what;
 		/// Number of holes
 		unsigned char holes;
 		/// Height / width
@@ -50,6 +49,9 @@ public:
 			}
 			double a, b, c, d;
 		} quadrants;
+
+		/// The character
+		char what;
 
 		/**
 		 * Initializes the data fields
@@ -82,6 +84,14 @@ public:
 		 * @return input stream
 		 */
 		friend std::istream & operator>>(std::istream & ins, Symbol & s);
+
+		/**
+		 * Writes symbol information to an output stream
+		 * @param outs output stream
+		 * @param s    symbol
+		 * @return output stream
+		 */
+		friend std::ostream & operator<<(std::ostream & outs, Font::Symbol & s);
 	};
 
 	/**
@@ -89,7 +99,7 @@ public:
 	 * @param name
 	 * @return
 	 */
-	Font(const std::string name);
+	Font(std::string name);
 
 	/**
 	 * Finds the best match for a symbol
@@ -109,6 +119,14 @@ private:
  * @return input stream
  */
 std::istream & operator>>(std::istream & ins, Font::Symbol & s);
+
+/**
+ * Writes symbol information to an output stream
+ * @param outs output stream
+ * @param s    symbol
+ * @return output stream
+ */
+std::ostream & operator<<(std::ostream & outs, Font::Symbol & s);
 
 } // namespace OCR
 

@@ -17,8 +17,9 @@ namespace OCR
  * @param name
  * @return
  */
-Font::Font(const std::string name)
+Font::Font(std::string name)
 {
+	name = "font/" + name + ".font";
 	std::ifstream infile(name.c_str());
 	Symbol incoming;
 	while (infile >> incoming)
@@ -46,7 +47,8 @@ Font::Symbol::Symbol() :
  */
 Font::Symbol::Symbol(unsigned char h, double p, double d, double b, qDense q,
 		char c) :
-	holes(h), proportion(p), density(d), borderDensity(b), quadrants(q)
+	holes(h), proportion(p), density(d), borderDensity(b), quadrants(q),
+			what(c)
 {
 }
 
@@ -96,9 +98,23 @@ unsigned Font::Symbol::match(const Font::Symbol & other) const
  */
 std::istream & operator>>(std::istream & ins, Font::Symbol & s)
 {
-	ins >> s.what >> s.holes >> s.proportion >> s.density >> s.borderDensity
-			>> s.quadrants.a >> s.quadrants.b >> s.quadrants.c >> s.quadrants.d;
+	ins >> s.what >> s.holes >> s.proportion >> s.density;/* >> s.borderDensity
+	 >> s.quadrants.a >> s.quadrants.b >> s.quadrants.c >> s.quadrants.d;*/
 	return ins;
+}
+/**
+ * Writes symbol information to an output stream
+ * @param outs output stream
+ * @param s    symbol
+ * @return output stream
+ */
+std::ostream & operator<<(std::ostream & outs, Font::Symbol & s)
+{
+	outs << s.what << ' ' << s.holes << ' ' << s.proportion << ' ' << s.density
+			<< ' ' << s.borderDensity << ' ' << s.quadrants.a << ' '
+			<< s.quadrants.b << ' ' << s.quadrants.c << ' ' << s.quadrants.d
+			<< ' ';
+	return outs;
 }
 
 }
