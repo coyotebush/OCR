@@ -6,20 +6,20 @@ OCR
 Input
 -----
 Input will consist of a bitmap image containing text
-in the Arial font.
+in one of the supported fonts.
 
 Output
 -----
 Output will consist of the text identified in the image.
 
-Title
+Usage
 -----
-Titles under consideration include
+    ocr <font name> <bitmap filename>
 
-- OCR
-- Ocular Conformation Resolver
-- Grapheme Resolver
-- Omophagic Content Reader
+Supported fonts
+-----
+ - FreeSans
+ - Arial
 
 Steps
 -----
