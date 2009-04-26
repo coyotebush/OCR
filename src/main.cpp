@@ -56,9 +56,7 @@ int main(int argc, char * argv[])
 	// Read the page
 	Page page(img, f);
 	result = page.Read();
-#ifndef FONTGEN
 	cout << result << endl;
-#endif
 
 	return 0;
 }

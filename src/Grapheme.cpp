@@ -116,7 +116,7 @@ char Grapheme::Read()
 	// Dump symbol info
 	static unsigned char theASCII = '!'; // ASCII 33
 	if (theASCII > 126) theASCII = 33; // reset
-	std::cout << theASCII++ << ' ' << theSymbol << std::endl;
+	std::cerr << theASCII++ << ' ' << theSymbol << std::endl;
 #endif
 	// Find best match
 	return font.bestMatch(theSymbol).what;
