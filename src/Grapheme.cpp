@@ -91,7 +91,7 @@ char Grapheme::Read()
 	theSymbol.proportion = part.height() / (double) part.width();
 
 	// Find density
-	theSymbol.density = areaDensity(part);
+	theSymbol.density.total = areaDensity(part);
 
 	// Find density of border
 	unsigned pixelCount = 0;
@@ -99,23 +99,37 @@ char Grapheme::Read()
 	for (Box::edge_iterator i(part); !i.done(); ++i, ++pixelCount)
 		if (isForeground(image((*i).x, (*i).y)))
 			++foregroundCount;
-	theSymbol.borderDensity = foregroundCount / (double) pixelCount;
+	theSymbol.density.border = foregroundCount / (double) pixelCount;
 
 	// Find density of each quadrant
-	unsigned halfWidth = part.low.x + ((part.high.x - part.low.x) / 2);
-	unsigned halfHeight = part.low.y + ((part.high.y - part.low.y) / 2);
-	theSymbol.quadrants.a = areaDensity(Box(part.low.x, part.low.y, halfWidth,
-			halfHeight));
-	theSymbol.quadrants.b = areaDensity(Box(halfWidth, part.low.y, part.high.x,
-			halfHeight));
-	theSymbol.quadrants.c = areaDensity(Box(part.low.x, halfHeight, halfWidth,
+	unsigned midWidth = part.low.x + ((part.high.x - part.low.x) / 2);
+	unsigned midHeight = part.low.y + ((part.high.y - part.low.y) / 2);
+	theSymbol.density.q2 = areaDensity(Box(part.low.x, part.low.y, midWidth,
+			midHeight));
+	theSymbol.density.q1 = areaDensity(Box(midWidth, part.low.y, part.high.x,
+			midHeight));
+	theSymbol.density.q3 = areaDensity(Box(part.low.x, midHeight, midWidth,
 			part.high.y));
-	theSymbol.quadrants.d = areaDensity(Box(halfWidth, halfHeight, part.high.x,
+	theSymbol.density.q4 = areaDensity(Box(midWidth, midHeight, part.high.x,
 			part.high.y));
+
+	// Find density of diagonals
+	/*theSymbol.density.diag1 = checkLine(part.high, atan(part.height()
+	 / (-part.width())));
+	 theSymbol.density.diag2 = checkLine(Point(part.low.x, part.high.y), atan(
+	 part.height() / part.width()));*/
+
+	// Find density of middle points
+	theSymbol.density.mid1 = areaDensity(Box(midWidth, part.low.y, midWidth,
+			part.high.y));
+	theSymbol.density.mid2 = areaDensity(Box(part.low.x, midHeight,
+			part.high.x, midHeight));
+
 #ifdef FONTGEN
 	// Dump symbol info
 	static unsigned char theASCII = '!'; // ASCII 33
-	if (theASCII > 126) theASCII = 33; // reset
+	if (theASCII > 126)
+		theASCII = 33; // reset
 	std::cerr << theASCII++ << ' ' << theSymbol << std::endl;
 #endif
 	// Find best match

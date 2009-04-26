@@ -30,24 +30,7 @@ Font::Font(std::string name)
  * Initializes the data fields
  */
 Font::Symbol::Symbol() :
-	holes(0), proportion(0), density(0), borderDensity(0),
-			quadrants(0, 0, 0, 0), what(' ')
-{
-}
-
-/**
- * Sets the data fields
- * @param h number of holes
- * @param p proportion
- * @param d overall density
- * @param b border density
- * @param q quadrant densities
- * @param c character
- */
-Font::Symbol::Symbol(unsigned short h, double p, double d, double b, qDense q,
-		char c) :
-	holes(h), proportion(p), density(d), borderDensity(b), quadrants(q),
-			what(c)
+	holes(0), proportion(0), what(' ')
 {
 }
 
@@ -79,13 +62,15 @@ unsigned Font::Symbol::match(const Font::Symbol & other) const
 {
 	unsigned score = 0;
 	score += abs(holes - other.holes) * 1000;
-	score += fabs(density - other.density) * 100;
-	//score += fabs(proportion - other.proportion) * 1000;
-	score += fabs(borderDensity - other.borderDensity) * 100;
-	score += fabs(quadrants.a - other.quadrants.a) * 100;
-	score += fabs(quadrants.b - other.quadrants.b) * 100;
-	score += fabs(quadrants.c - other.quadrants.c) * 100;
-	score += fabs(quadrants.d - other.quadrants.d) * 100;
+	score += fabs(density.total - other.density.total) * 100;
+	score += fabs(proportion - other.proportion) * 1000;
+	score += fabs(density.border - other.density.border) * 100;
+	score += fabs(density.q1 - other.density.q1) * 100;
+	score += fabs(density.q2 - other.density.q2) * 100;
+	score += fabs(density.q3 - other.density.q3) * 100;
+	score += fabs(density.q4 - other.density.q4) * 100;
+	//score += fabs(density.diag1 - other.density.diag1) * 100;
+	//score += fabs(density.diag1 - other.density.diag1) * 100;
 	return score;
 }
 
@@ -97,8 +82,9 @@ unsigned Font::Symbol::match(const Font::Symbol & other) const
  */
 std::istream & operator>>(std::istream & ins, Font::Symbol & s)
 {
-	ins >> s.what >> s.holes >> s.proportion >> s.density >> s.borderDensity
-			>> s.quadrants.a >> s.quadrants.b >> s.quadrants.c >> s.quadrants.d;
+	ins >> s.what >> s.holes >> s.proportion >> s.density.total
+			>> s.density.border >> s.density.q1 >> s.density.q2 >> s.density.q3
+			>> s.density.q4 >> s.density.mid1 >> s.density.mid2;
 	return ins;
 }
 /**
@@ -109,10 +95,10 @@ std::istream & operator>>(std::istream & ins, Font::Symbol & s)
  */
 std::ostream & operator<<(std::ostream & outs, Font::Symbol & s)
 {
-	outs << (int) s.holes << ' ' << s.proportion << ' '
-			<< s.density << ' ' << s.borderDensity << ' ' << s.quadrants.a
-			<< ' ' << s.quadrants.b << ' ' << s.quadrants.c << ' '
-			<< s.quadrants.d;
+	outs << (int) s.holes << ' ' << s.proportion << ' ' << s.density.total
+			<< ' ' << s.density.border << ' ' << s.density.q1 << ' '
+			<< s.density.q2 << ' ' << s.density.q3 << ' ' << s.density.q4
+			<< ' ' << s.density.mid1 << ' ' << s.density.mid2;
 	return outs;
 }
 

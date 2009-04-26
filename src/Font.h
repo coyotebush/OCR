@@ -38,20 +38,11 @@ public:
 		/// Height / width
 		double proportion;
 		/// Foreground pixels / total pixels
-		double density;
-		/// Density of border pixels
-		double borderDensity;
-		/// Density of each quadrant
-		// a  b
-		// c  d
-		struct qDense
+		struct
 		{
-			qDense(int m, int n, int o, int p) :
-				a(m), b(n), c(o), d(p)
-			{
-			}
-			double a, b, c, d;
-		} quadrants;
+			double total, border, q1, q2, q3, q4, mid1, mid2;
+		} density;
+
 
 		/// The character
 		char what;
@@ -60,18 +51,6 @@ public:
 		 * Initializes the data fields
 		 */
 		Symbol();
-
-		/**
-		 * Sets the data fields
-		 * @param h number of holes
-		 * @param p proportion
-		 * @param d overall density
-		 * @param b border density
-		 * @param q quadrant densities
-		 * @param c character
-		 */
-		Symbol(unsigned short h, double p, double d, double b, qDense q, char c =
-				' ');
 
 		/**
 		 * Compares this to another

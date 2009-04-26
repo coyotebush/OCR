@@ -64,14 +64,14 @@ build/Font.o: src/Font.cpp src/Font.h
 	$(CXX) src/Font.cpp -c -o build/Font.o $(CPPFLAGS) $(CXXFLAGS)
 
 # Documentation
-doc: *.cpp *.h
+doc: src/*.cpp src/*.h
 	doxygen Doxyfile
 
 # Clean
 clean-all: clean clean-doc
 
 clean-doc: doc
-	$(RM) -r doc/
+	$(RM) -r doc/*
 
 clean:
 	$(RM) -r build/*.o *.o ocr
