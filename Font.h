@@ -15,6 +15,9 @@
 #include <iostream>
 #include <cmath>
 
+// For font generation
+//#define FONTGEN 1
+
 namespace OCR
 {
 
@@ -31,7 +34,7 @@ public:
 	struct Symbol
 	{
 		/// Number of holes
-		unsigned char holes;
+		unsigned short holes;
 		/// Height / width
 		double proportion;
 		/// Foreground pixels / total pixels
@@ -67,7 +70,7 @@ public:
 		 * @param q quadrant densities
 		 * @param c character
 		 */
-		Symbol(unsigned char h, double p, double d, double b, qDense q, char c =
+		Symbol(unsigned short h, double p, double d, double b, qDense q, char c =
 				' ');
 
 		/**

@@ -75,7 +75,6 @@ Grapheme & Grapheme::operator =(const Grapheme & other)
 	return *this;
 }
 
-#define ARRAYSIZE(a) ((sizeof(a))/(sizeof(a[0])))
 /**
  * Recognizes the character.
  * @return the character
@@ -115,7 +114,8 @@ char Grapheme::Read()
 			part.high.y));
 #ifdef FONTGEN
 	// Dump symbol info
-	std::cout << theSymbol
+	static unsigned char theASCII = '!'; // ASCII 33
+	std::cout << theASCII++ << ' ' << theSymbol << std::endl;
 #endif
 	// Find best match
 	return font.bestMatch(theSymbol).what;
@@ -315,7 +315,7 @@ double Grapheme::checkLine(Point start, unsigned char angle) const
  */
 double Grapheme::areaDensity(Box area) const
 {
-	unsigned pixelCount, foregroundCount;
+	unsigned pixelCount = 0, foregroundCount = 0;
 	Point current(area.low);
 	for (; current.x <= area.high.x; ++current.x)
 		for (current.y = area.low.y; current.y <= area.high.y; ++current.y, ++pixelCount)

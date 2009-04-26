@@ -36,7 +36,7 @@ ocr: $(objs)
 	$(CXX) $(objs) -o ocr $(CXXFLAGS) $(LDFLAGS)
 
 # Application program
-build/main.o: main.cpp Page.h
+build/main.o: main.cpp Page.h Line.h Grapheme.h OCR.h Font.h
 	$(CXX) main.cpp -c -o build/main.o $(CPPFLAGS) $(CXXFLAGS)
 
 # EasyBMP
@@ -44,15 +44,15 @@ build/EasyBMP.o: EasyBMP/EasyBMP.cpp EasyBMP/EasyBMP.h
 	$(CXX) EasyBMP/EasyBMP.cpp -c -o build/EasyBMP.o $(CPPFLAGS) $(CXXFLAGS)
 
 # Page
-build/Page.o: Page.cpp Page.h Line.h Grapheme.h
+build/Page.o: Page.cpp Page.h Line.h Grapheme.h OCR.h Font.h
 	$(CXX) Page.cpp -c -o build/Page.o $(CPPFLAGS) $(CXXFLAGS)
 
 # Line
-build/Line.o: Line.cpp Line.h Grapheme.h
+build/Line.o: Line.cpp Line.h Grapheme.h OCR.h Font.h
 	$(CXX) Line.cpp -c -o build/Line.o $(CPPFLAGS) $(CXXFLAGS)
 
 # Grapheme
-build/Grapheme.o: Grapheme.cpp Grapheme.h
+build/Grapheme.o: Grapheme.cpp Grapheme.h OCR.h Font.h
 	$(CXX) Grapheme.cpp -c -o build/Grapheme.o $(CPPFLAGS) $(CXXFLAGS)
 
 # OCR globals

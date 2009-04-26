@@ -14,8 +14,7 @@ namespace OCR
 
 /**
  * Loads font information from a file
- * @param name
- * @return
+ * @param name font name
  */
 Font::Font(std::string name)
 {
@@ -32,7 +31,7 @@ Font::Font(std::string name)
  */
 Font::Symbol::Symbol() :
 	holes(0), proportion(0), density(0), borderDensity(0),
-			quadrants(0, 0, 0, 0)
+			quadrants(0, 0, 0, 0), what(' ')
 {
 }
 
@@ -45,7 +44,7 @@ Font::Symbol::Symbol() :
  * @param q quadrant densities
  * @param c character
  */
-Font::Symbol::Symbol(unsigned char h, double p, double d, double b, qDense q,
+Font::Symbol::Symbol(unsigned short h, double p, double d, double b, qDense q,
 		char c) :
 	holes(h), proportion(p), density(d), borderDensity(b), quadrants(q),
 			what(c)
@@ -79,14 +78,14 @@ Font::Symbol Font::bestMatch(const Symbol & unknownSymbol) const
 unsigned Font::Symbol::match(const Font::Symbol & other) const
 {
 	unsigned score = 0;
-	score += abs(holes - other.holes) * 1000000;
-	score += fabs(density - other.density) * 1000;
-	score += fabs(proportion - other.proportion) * 1000;
-	score += fabs(borderDensity - other.borderDensity) * 1000;
-	score += fabs(quadrants.a - other.quadrants.a) * 1000;
-	score += fabs(quadrants.b - other.quadrants.b) * 1000;
-	score += fabs(quadrants.c - other.quadrants.c) * 1000;
-	score += fabs(quadrants.d - other.quadrants.d) * 1000;
+	score += abs(holes - other.holes) * 1000;
+	score += fabs(density - other.density) * 100;
+	//score += fabs(proportion - other.proportion) * 1000;
+	score += fabs(borderDensity - other.borderDensity) * 100;
+	score += fabs(quadrants.a - other.quadrants.a) * 100;
+	score += fabs(quadrants.b - other.quadrants.b) * 100;
+	score += fabs(quadrants.c - other.quadrants.c) * 100;
+	score += fabs(quadrants.d - other.quadrants.d) * 100;
 	return score;
 }
 
@@ -98,8 +97,8 @@ unsigned Font::Symbol::match(const Font::Symbol & other) const
  */
 std::istream & operator>>(std::istream & ins, Font::Symbol & s)
 {
-	ins >> s.what >> s.holes >> s.proportion >> s.density;/* >> s.borderDensity
-	 >> s.quadrants.a >> s.quadrants.b >> s.quadrants.c >> s.quadrants.d;*/
+	ins >> s.what >> s.holes >> s.proportion >> s.density >> s.borderDensity
+			>> s.quadrants.a >> s.quadrants.b >> s.quadrants.c >> s.quadrants.d;
 	return ins;
 }
 /**
@@ -110,10 +109,10 @@ std::istream & operator>>(std::istream & ins, Font::Symbol & s)
  */
 std::ostream & operator<<(std::ostream & outs, Font::Symbol & s)
 {
-	outs << s.what << ' ' << s.holes << ' ' << s.proportion << ' ' << s.density
-			<< ' ' << s.borderDensity << ' ' << s.quadrants.a << ' '
-			<< s.quadrants.b << ' ' << s.quadrants.c << ' ' << s.quadrants.d
-			<< ' ';
+	outs << (int) s.holes << ' ' << s.proportion << ' '
+			<< s.density << ' ' << s.borderDensity << ' ' << s.quadrants.a
+			<< ' ' << s.quadrants.b << ' ' << s.quadrants.c << ' '
+			<< s.quadrants.d;
 	return outs;
 }
 
