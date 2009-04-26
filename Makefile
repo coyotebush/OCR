@@ -36,32 +36,32 @@ ocr: $(objs)
 	$(CXX) $(objs) -o ocr $(CXXFLAGS) $(LDFLAGS)
 
 # Application program
-build/main.o: main.cpp Page.h Line.h Grapheme.h OCR.h Font.h
-	$(CXX) main.cpp -c -o build/main.o $(CPPFLAGS) $(CXXFLAGS)
+build/main.o: src/main.cpp src/Page.h src/Line.h src/Grapheme.h src/OCR.h src/Font.h
+	$(CXX) src/main.cpp -c -o build/main.o $(CPPFLAGS) $(CXXFLAGS)
 
 # EasyBMP
-build/EasyBMP.o: EasyBMP/EasyBMP.cpp EasyBMP/EasyBMP.h
-	$(CXX) EasyBMP/EasyBMP.cpp -c -o build/EasyBMP.o $(CPPFLAGS) $(CXXFLAGS)
+build/EasyBMP.o: src/EasyBMP/EasyBMP.cpp src/EasyBMP/EasyBMP.h
+	$(CXX) src/EasyBMP/EasyBMP.cpp -c -o build/EasyBMP.o $(CPPFLAGS) $(CXXFLAGS)
 
 # Page
-build/Page.o: Page.cpp Page.h Line.h Grapheme.h OCR.h Font.h
-	$(CXX) Page.cpp -c -o build/Page.o $(CPPFLAGS) $(CXXFLAGS)
+build/Page.o: src/Page.cpp src/Page.h src/Line.h src/Grapheme.h src/OCR.h src/Font.h
+	$(CXX) src/Page.cpp -c -o build/Page.o $(CPPFLAGS) $(CXXFLAGS)
 
 # Line
-build/Line.o: Line.cpp Line.h Grapheme.h OCR.h Font.h
-	$(CXX) Line.cpp -c -o build/Line.o $(CPPFLAGS) $(CXXFLAGS)
+build/Line.o: src/Line.cpp src/Line.h src/Grapheme.h src/OCR.h src/Font.h
+	$(CXX) src/Line.cpp -c -o build/Line.o $(CPPFLAGS) $(CXXFLAGS)
 
 # Grapheme
-build/Grapheme.o: Grapheme.cpp Grapheme.h OCR.h Font.h
-	$(CXX) Grapheme.cpp -c -o build/Grapheme.o $(CPPFLAGS) $(CXXFLAGS)
+build/Grapheme.o: src/Grapheme.cpp src/Grapheme.h src/OCR.h src/Font.h
+	$(CXX) src/Grapheme.cpp -c -o build/Grapheme.o $(CPPFLAGS) $(CXXFLAGS)
 
 # OCR globals
-build/OCR_common.o: OCR.cpp OCR.h
-	$(CXX) OCR.cpp -c -o build/OCR_common.o  $(CPPFLAGS) $(CXXFLAGS)
+build/OCR_common.o: src/OCR.cpp src/OCR.h
+	$(CXX) src/OCR.cpp -c -o build/OCR_common.o  $(CPPFLAGS) $(CXXFLAGS)
 
 # Font
-build/Font.o: Font.cpp Font.h
-	$(CXX) Font.cpp -c -o build/Font.o $(CPPFLAGS) $(CXXFLAGS)
+build/Font.o: src/Font.cpp src/Font.h
+	$(CXX) src/Font.cpp -c -o build/Font.o $(CPPFLAGS) $(CXXFLAGS)
 
 # Documentation
 doc: *.cpp *.h
