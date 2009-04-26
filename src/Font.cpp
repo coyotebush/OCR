@@ -69,8 +69,8 @@ unsigned Font::Symbol::match(const Font::Symbol & other) const
 	score += fabs(density.q2 - other.density.q2) * 100;
 	score += fabs(density.q3 - other.density.q3) * 100;
 	score += fabs(density.q4 - other.density.q4) * 100;
-	//score += fabs(density.diag1 - other.density.diag1) * 100;
-	//score += fabs(density.diag1 - other.density.diag1) * 100;
+	score += fabs(density.mid1 - other.density.mid1) * 100;
+	score += fabs(density.mid1 - other.density.mid1) * 100;
 	return score;
 }
 
