@@ -29,7 +29,7 @@
 #ifndef OCR_FONT_H_
 #define OCR_FONT_H_
 #include <string>
-#include <deque>
+#include <vector>
 #include <fstream>
 #include <iostream>
 #include <cmath>
@@ -110,7 +110,7 @@ public:
 	Symbol bestMatch(const Symbol & unknownSymbol) const;
 private:
 	/// The symbols of this font
-	std::deque<Symbol> symbols;
+	std::vector<Symbol> symbols;
 };
 
 /**

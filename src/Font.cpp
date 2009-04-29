@@ -35,7 +35,8 @@ namespace OCR
  * Loads font information from a file
  * @param name font name
  */
-Font::Font(std::string name)
+Font::Font(std::string name) :
+symbols(100)
 {
 	name = "font/" + name + ".font";
 	std::ifstream infile(name.c_str());
@@ -62,7 +63,7 @@ Font::Symbol Font::bestMatch(const Symbol & unknownSymbol) const
 {
 	Symbol bestMatch;
 	unsigned bestMatchScore = UINT_MAX, currentScore;
-	for (std::deque<Symbol>::const_iterator i = symbols.begin(); i
+	for (std::vector<Symbol>::const_iterator i = symbols.begin(); i
 			!= symbols.end(); ++i)
 		if ((currentScore = i->match(unknownSymbol)) < bestMatchScore)
 		{
@@ -80,16 +81,16 @@ Font::Symbol Font::bestMatch(const Symbol & unknownSymbol) const
 unsigned Font::Symbol::match(const Font::Symbol & other) const
 {
 	unsigned score = 0;
-	score += abs(holes - other.holes) * 1000;
+	score += abs(holes - other.holes) * 10000;
 	score += fabs(density.total - other.density.total) * 100;
-	score += fabs(proportion - other.proportion) * 1000;
+	score += fabs(proportion - other.proportion) * 100;
 	score += fabs(density.border - other.density.border) * 100;
 	score += fabs(density.q1 - other.density.q1) * 100;
 	score += fabs(density.q2 - other.density.q2) * 100;
 	score += fabs(density.q3 - other.density.q3) * 100;
 	score += fabs(density.q4 - other.density.q4) * 100;
 	score += fabs(density.mid1 - other.density.mid1) * 100;
-	score += fabs(density.mid1 - other.density.mid1) * 100;
+	score += fabs(density.mid2 - other.density.mid2) * 100;
 	return score;
 }
 
