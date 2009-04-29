@@ -107,14 +107,6 @@ private:
 	double checkLine(Point start, unsigned char angle) const;
 
 	/**
-	 * Checks the density of foreground pixels along a line.
-	 * @param start starting point
-	 * @param end   ending point
-	 * @return density
-	 */
-	//double checkLine(Point start, Point end) const;
-
-	/**
 	 * Checks the density of foreground pixels within an area
 	 * @param area area to check
 	 * @return density of foreground pixels
