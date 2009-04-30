@@ -34,7 +34,7 @@
 #include "Page.h"
 
 const std::string letters =
-        "./0123456789?@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz";
+        "./0";//123456789?@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz";
 int main(int argc, char * argv[])
 {
 	using OCR::Font;
@@ -56,11 +56,15 @@ int main(int argc, char * argv[])
 	// Load each line and read its statistics
 	for (int fileNum = 1; fileNum < argc; ++fileNum)
 	{
+		// Create line
 		img.ReadFromFile(argv[fileNum]);
 		OCR::Line line(img, bogus);
+		// Create vector for symbol info
 		std::vector<Font::Symbol> symbols;
 		symbols.reserve(letters.size());
+		// Do the reading
 		line.Read(&symbols);
+		// Loop through and add to the "average"
 		std::vector<Font::Symbol>::iterator itr = symbols.begin();
 		for (unsigned charIndex = 0; itr != symbols.end() && charIndex
 		        < letters.size(); ++itr, ++charIndex)
@@ -69,11 +73,12 @@ int main(int argc, char * argv[])
 		}
 	}
 
-	// Now divide the total statistics by the number of lines, and print information
+	// Now divide the total statistics by the number of lines,
+	// and print information
 	for (std::map<char, Font::Symbol>::iterator itr = average.begin(); itr
 	        != average.end(); ++itr)
 	{
-		(*itr).second /= argc - 1;
+		(*itr).second /= (argc - 1);
 		std::cout << (*itr).first << ' ' << (*itr).second << std::endl;
 	}
 
