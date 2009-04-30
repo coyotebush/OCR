@@ -47,8 +47,9 @@ public:
 	/**
 	 * Information about a symbol
 	 */
-	struct Symbol
+	class Symbol
 	{
+	public:
 		/// Number of holes
 		unsigned short holes;
 		/// Height / width
@@ -71,6 +72,20 @@ public:
 		 */
 		unsigned match(const Symbol & other) const;
 
+		/**
+		 * Adds another symbol's statistics
+		 * @param other other symbol
+		 * @return this
+		 */
+		Symbol operator+= (const Symbol & other);
+		
+		/**
+		 * Divides all statistics by an integer
+		 * @param divisor number to divide by
+		 * @return this
+		 */
+		Symbol operator/= (int divisor);
+		
 		/**
 		 * Reads symbol information from an input stream
 		 * @param ins input stream

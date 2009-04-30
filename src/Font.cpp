@@ -95,6 +95,46 @@ unsigned Font::Symbol::match(const Font::Symbol & other) const
 }
 
 /**
+ * Adds another symbol's statistics
+ * @param other other symbol
+ * @return this
+ */
+Font::Symbol Font::Symbol::operator+= (const Symbol & other)
+{
+	holes += other.holes;
+	proportion += other.proportion;
+	density.total += other.density.total;
+	density.border += other.density.border;
+	density.q1 += other.density.q1;
+	density.q2 += other.density.q2;
+	density.q3 += other.density.q3;
+	density.q4 += other.density.q4;
+	density.mid1 += other.density.mid1;
+	density.mid2 += other.density.mid2;
+	return *this;
+}
+
+/**
+ * Divides all statistics by an integer
+ * @param divisor number to divide by
+ * @return this
+ */
+Font::Symbol Font::Symbol::operator/= (int divisor)
+{
+	holes /= divisor;
+	proportion /= divisor;
+	density.total /= divisor;
+	density.border /= divisor;
+	density.q1 /= divisor;
+	density.q2 /= divisor;
+	density.q3 /= divisor;
+	density.q4 /= divisor;
+	density.mid1 /= divisor;
+	density.mid2 /= divisor;
+	return *this;
+}
+
+/**
  * Reads symbol information from an input stream
  * @param ins input stream
  * @param s   symbol
