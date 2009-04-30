@@ -23,6 +23,7 @@ images, each containing the characters in "characters.txt" in
 the desired font. Font data will be printed to standard output
 and should be redirected to a file.
 Usage:
+
     ocr-learn <image file>... > font/myfont.font
 
 Supported fonts
@@ -31,3 +32,4 @@ The text in the input image must be in a supported font.
 Currently, the fonts supported are:
 
  - FreeSans
+ - FreeMono
