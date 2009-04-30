@@ -147,7 +147,7 @@ void Grapheme::pareDown()
 	for (fgFound = false; part.high.y >= part.low.y && !fgFound; --part.high.y)
 	{
 		for (unsigned col = part.low.x; col <= part.high.x && !fgFound; ++col)
-			if (isForeground(image(col, part.low.y)))
+			if (isForeground(image(col, part.high.y)))
 				fgFound = true;
 		if (fgFound)
 			break;

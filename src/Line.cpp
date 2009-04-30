@@ -116,8 +116,6 @@ std::string Line::Read(std::vector<Font::Symbol> * symData)
 			// If storing symbol data, add this
 			if (symData)
 				symData->push_back(sym.theSymbol);
-			// DEBUG
-			std::cout << sym.theSymbol.proportion << ' ';
 			inSymbol = false;
 		}
 	}
