@@ -27,14 +27,17 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 #include <map>
 #include "EasyBMP/EasyBMP.h"
 #include "Font.h"
 #include "Page.h"
 
+const std::string letters =
+        "./0123456789?@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz";
 int main(int argc, char * argv[])
 {
-	using OCR::Font::Symbol;
+	using OCR::Font;
 
 	if (argc < 2)
 	{
@@ -43,7 +46,7 @@ int main(int argc, char * argv[])
 	}
 
 	// Average symbol information
-	std::map<char, Symbol> average;
+	std::map<char, Font::Symbol> average;
 	// Image
 	BMP img;
 
@@ -55,21 +58,23 @@ int main(int argc, char * argv[])
 	{
 		img.ReadFromFile(argv[fileNum]);
 		OCR::Line line(img, bogus);
-		std::vector<Symbol> symbols(100);
+		std::vector<Font::Symbol> symbols;
+		symbols.reserve(letters.size());
 		line.Read(&symbols);
-		std::vector<Symbol>::iterator itr = symbols.begin();
-		for (char character = '!'; itr != symbols.end(); ++itr, ++character)
+		std::vector<Font::Symbol>::iterator itr = symbols.begin();
+		for (unsigned charIndex = 0; itr != symbols.end() && charIndex
+		        < letters.size(); ++itr, ++charIndex)
 		{
-			average[character] += *itr;
+			average[letters[charIndex]] += *itr;
 		}
 	}
 
 	// Now divide the total statistics by the number of lines, and print information
-	for (std::map<char, Symbol>::iterator itr = average.begin(); itr
+	for (std::map<char, Font::Symbol>::iterator itr = average.begin(); itr
 	        != average.end(); ++itr)
 	{
-		(*it).second /= argc - 1;
-		std::cout << (*it).first << ' ' << (*it).second << std::endl;
+		(*itr).second /= argc - 1;
+		std::cout << (*itr).first << ' ' << (*itr).second << std::endl;
 	}
 
 	return 0;

@@ -41,7 +41,7 @@ const double Line::SPACE = 0.28;
 Line::Line(BMP & img, const Font & f) :
 	image(img), top(0), font(f)
 {
-	bottom = image.TellHeight();
+	bottom = image.TellHeight() - 1;
 }
 
 /**
@@ -82,7 +82,7 @@ Line & Line::operator =(const Line & other)
  * @param symData optionally store symbol data in a vector
  * @return text of the line.
  */
-std::string Read(std::vector<Font::Symbol> * symData = NULL)
+std::string Line::Read(std::vector<Font::Symbol> * symData)
 {
 	std::string result = "";
 	// Divide into symbols

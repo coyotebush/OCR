@@ -29,7 +29,7 @@
 #ifndef OCR_FONT_H_
 #define OCR_FONT_H_
 #include <string>
-#include <vector>
+#include <map>
 #include <fstream>
 #include <iostream>
 #include <cmath>
@@ -55,8 +55,13 @@ public:
 		/// Height / width
 		double proportion;
 		/// Foreground pixels / total pixels
-		struct
+		struct dense
 		{
+			dense() :
+				total(0), border(0), q1(0), q2(0), q3(0), q4(0), mid1(0), mid2(
+				        0)
+			{
+			}
 			double total, border, q1, q2, q3, q4, mid1, mid2;
 		} density;
 

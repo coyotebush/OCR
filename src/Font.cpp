@@ -35,14 +35,14 @@ namespace OCR
  * Loads font information from a file
  * @param name font name
  */
-Font::Font(std::string name) :
-	symbols(100)
+Font::Font(std::string name)
 {
 	name = "font/" + name + ".font";
 	std::ifstream infile(name.c_str());
 	Symbol incoming;
-	while (infile >> incoming)
-		symbols.push_back(incoming);
+	char character;
+	while (infile >> character >> incoming)
+		symbols[character] = incoming;
 	infile.close();
 }
 
@@ -50,7 +50,7 @@ Font::Font(std::string name) :
  * Initializes the data fields
  */
 Font::Symbol::Symbol() :
-	holes(0), proportion(0)
+	holes(0), proportion(0), density()
 {
 }
 
@@ -61,14 +61,14 @@ Font::Symbol::Symbol() :
  */
 char Font::bestMatch(const Symbol & unknownSymbol) const
 {
-	Symbol bestMatch;
+	char bestMatch;
 	unsigned bestMatchScore = UINT_MAX, currentScore;
 	for (std::map<char, Symbol>::const_iterator i = symbols.begin(); i
 	        != symbols.end(); ++i)
-		if ((currentScore = i->first.match(unknownSymbol)) < bestMatchScore)
+		if ((currentScore = (*i).second.match(unknownSymbol)) < bestMatchScore)
 		{
 			bestMatchScore = currentScore;
-			bestMatch = i->second;
+			bestMatch = i->first;
 		}
 	return bestMatch;
 }
@@ -142,7 +142,7 @@ Font::Symbol Font::Symbol::operator/=(int divisor)
  */
 std::istream & operator>>(std::istream & ins, Font::Symbol & s)
 {
-	ins >> s.what >> s.holes >> s.proportion >> s.density.total
+	ins >> s.holes >> s.proportion >> s.density.total
 	        >> s.density.border >> s.density.q1 >> s.density.q2 >> s.density.q3
 	        >> s.density.q4 >> s.density.mid1 >> s.density.mid2;
 	return ins;
