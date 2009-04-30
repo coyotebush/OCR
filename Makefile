@@ -24,20 +24,31 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
-# Primary target
-all: ocr
+all: ocr ocr-learn
 
-# all object files
-objs = build/main.o build/Page.o build/Line.o build/Grapheme.o\
+# all OCR library files
+ocrobjs = build/Page.o build/Line.o build/Grapheme.o\
  build/EasyBMP.o build/OCR_common.o build/Font.o
 
 # Main program
-ocr: $(objs)
-	$(CXX) $(objs) -o ocr $(CXXFLAGS) $(LDFLAGS)
+ocr: build/main.o $(ocrobjs)
+	$(CXX) build/main.o $(ocrobjs) -o ocr $(CXXFLAGS) $(LDFLAGS)
+
+# Learning program
+ocr-learn: build/learn.o $(ocrobjs)
+	$(CXX) build/learn.o $(ocrobjs) -o ocr-learn $(CXXFLAGS) $(LDFLAGS)
+
+
+
+
 
 # Application program
 build/main.o: src/main.cpp src/Page.h src/Line.h src/Grapheme.h src/OCR.h src/Font.h
 	$(CXX) src/main.cpp -c -o build/main.o $(CPPFLAGS) $(CXXFLAGS)
+
+# Learning application
+build/learn.o: src/learn.cpp src/Page.h src/Line.h src/Grapheme.h src/OCR.h src/Font.h
+	$(CXX) src/learn.cpp -c -o build/learn.o $(CPPFLAGS) $(CXXFLAGS)
 
 # EasyBMP
 build/EasyBMP.o: src/EasyBMP/EasyBMP.cpp src/EasyBMP/EasyBMP.h
