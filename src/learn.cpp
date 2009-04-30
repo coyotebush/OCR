@@ -33,8 +33,7 @@
 #include "Font.h"
 #include "Page.h"
 
-const std::string letters =
-        "./0";//123456789?@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz";
+const std::string letters = "./0";//123456789?@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz";
 int main(int argc, char * argv[])
 {
 	using OCR::Font;
@@ -71,6 +70,15 @@ int main(int argc, char * argv[])
 		{
 			average[letters[charIndex]] += *itr;
 		}
+
+		// DEBUG - dump symbol information
+		std::cout << std::endl;
+		for (std::map<char, Font::Symbol>::iterator itr = average.begin(); itr
+		        != average.end(); ++itr)
+		{
+			std::cout << itr->first << ' ' << itr->second
+			        << std::endl;
+		}
 	}
 
 	// Now divide the total statistics by the number of lines,
@@ -78,8 +86,8 @@ int main(int argc, char * argv[])
 	for (std::map<char, Font::Symbol>::iterator itr = average.begin(); itr
 	        != average.end(); ++itr)
 	{
-		(*itr).second /= (argc - 1);
-		std::cout << (*itr).first << ' ' << (*itr).second << std::endl;
+		itr->second /= (argc - 1);
+		std::cout << itr->first << ' ' << itr->second << std::endl;
 	}
 
 	return 0;

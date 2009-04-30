@@ -84,7 +84,6 @@ char Grapheme::Read()
 	pareDown();
 
 	theSymbol.holes = countHoles();
-	//std::set<unsigned char> angles = findStraightLines();
 
 	// Get height/width ratio
 	theSymbol.proportion = part.height() / (double) part.width();
