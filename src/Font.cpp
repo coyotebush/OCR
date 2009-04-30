@@ -36,7 +36,7 @@ namespace OCR
  * @param name font name
  */
 Font::Font(std::string name) :
-symbols(100)
+	symbols(100)
 {
 	name = "font/" + name + ".font";
 	std::ifstream infile(name.c_str());
@@ -64,7 +64,7 @@ char Font::bestMatch(const Symbol & unknownSymbol) const
 	Symbol bestMatch;
 	unsigned bestMatchScore = UINT_MAX, currentScore;
 	for (std::map<char, Symbol>::const_iterator i = symbols.begin(); i
-			!= symbols.end(); ++i)
+	        != symbols.end(); ++i)
 		if ((currentScore = i->first.match(unknownSymbol)) < bestMatchScore)
 		{
 			bestMatchScore = currentScore;
@@ -99,7 +99,7 @@ unsigned Font::Symbol::match(const Font::Symbol & other) const
  * @param other other symbol
  * @return this
  */
-Font::Symbol Font::Symbol::operator+= (const Symbol & other)
+Font::Symbol Font::Symbol::operator+=(const Symbol & other)
 {
 	holes += other.holes;
 	proportion += other.proportion;
@@ -119,7 +119,7 @@ Font::Symbol Font::Symbol::operator+= (const Symbol & other)
  * @param divisor number to divide by
  * @return this
  */
-Font::Symbol Font::Symbol::operator/= (int divisor)
+Font::Symbol Font::Symbol::operator/=(int divisor)
 {
 	holes /= divisor;
 	proportion /= divisor;
@@ -143,8 +143,8 @@ Font::Symbol Font::Symbol::operator/= (int divisor)
 std::istream & operator>>(std::istream & ins, Font::Symbol & s)
 {
 	ins >> s.what >> s.holes >> s.proportion >> s.density.total
-			>> s.density.border >> s.density.q1 >> s.density.q2 >> s.density.q3
-			>> s.density.q4 >> s.density.mid1 >> s.density.mid2;
+	        >> s.density.border >> s.density.q1 >> s.density.q2 >> s.density.q3
+	        >> s.density.q4 >> s.density.mid1 >> s.density.mid2;
 	return ins;
 }
 /**
@@ -156,9 +156,9 @@ std::istream & operator>>(std::istream & ins, Font::Symbol & s)
 std::ostream & operator<<(std::ostream & outs, Font::Symbol & s)
 {
 	outs << (int) s.holes << ' ' << s.proportion << ' ' << s.density.total
-			<< ' ' << s.density.border << ' ' << s.density.q1 << ' '
-			<< s.density.q2 << ' ' << s.density.q3 << ' ' << s.density.q4
-			<< ' ' << s.density.mid1 << ' ' << s.density.mid2;
+	        << ' ' << s.density.border << ' ' << s.density.q1 << ' '
+	        << s.density.q2 << ' ' << s.density.q3 << ' ' << s.density.q4
+	        << ' ' << s.density.mid1 << ' ' << s.density.mid2;
 	return outs;
 }
 

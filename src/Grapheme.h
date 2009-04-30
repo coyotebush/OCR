@@ -80,7 +80,7 @@ public:
 
 	/// The symbol statistics
 	Font::Symbol theSymbol;
-	
+
 private:
 
 	/**

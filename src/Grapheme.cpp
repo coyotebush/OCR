@@ -37,7 +37,7 @@ namespace OCR
  */
 Grapheme::Grapheme(BMP & img, const Font & f) :
 	image(img), part(0, 0, image.TellWidth() - 1, image.TellHeight() - 1),
-			font(f)
+	        font(f)
 {
 }
 
@@ -104,13 +104,13 @@ char Grapheme::Read()
 	unsigned midWidth = part.low.x + ((part.high.x - part.low.x) / 2);
 	unsigned midHeight = part.low.y + ((part.high.y - part.low.y) / 2);
 	theSymbol.density.q2 = areaDensity(Box(part.low.x, part.low.y, midWidth,
-			midHeight));
+	        midHeight));
 	theSymbol.density.q1 = areaDensity(Box(midWidth, part.low.y, part.high.x,
-			midHeight));
+	        midHeight));
 	theSymbol.density.q3 = areaDensity(Box(part.low.x, midHeight, midWidth,
-			part.high.y));
+	        part.high.y));
 	theSymbol.density.q4 = areaDensity(Box(midWidth, midHeight, part.high.x,
-			part.high.y));
+	        part.high.y));
 
 	// Find density of diagonals
 	/*theSymbol.density.diag1 = checkLine(part.high, atan(part.height()
@@ -120,9 +120,9 @@ char Grapheme::Read()
 
 	// Find density of middle points
 	theSymbol.density.mid1 = areaDensity(Box(midWidth, part.low.y, midWidth,
-			part.high.y));
+	        part.high.y));
 	theSymbol.density.mid2 = areaDensity(Box(part.low.x, midHeight,
-			part.high.x, midHeight));
+	        part.high.x, midHeight));
 
 	// Find best match
 	return font.bestMatch(theSymbol);
@@ -200,7 +200,7 @@ unsigned char Grapheme::countHoles() const
 		for (current.y = part.low.y; current.y < part.high.y; ++current.y)
 		{
 			if (!visited[current.x - part.low.x][current.y - part.low.y]
-					&& !isForeground(image(current.x, current.y)))
+			        && !isForeground(image(current.x, current.y)))
 			{
 				// If it is an unvisited background pixel,
 				// perform a breadth-first search from it
@@ -232,7 +232,7 @@ std::set<unsigned char> Grapheme::findStraightLines() const
 
 	// Check angle 0 with points on the left edge
 	for (angle = 0, current = part.low, foundLastTime = false; current.y
-			<= part.high.y; ++current.y)
+	        <= part.high.y; ++current.y)
 	{
 		if (checkLine(current, angle) > SIGNIFICANT_LINE && !foundLastTime)
 		{
@@ -245,7 +245,7 @@ std::set<unsigned char> Grapheme::findStraightLines() const
 
 	// Check angle 90 with points on the bottom edge
 	for (angle = 90, current.x = part.low.x, current.y = part.high.y, foundLastTime
-			= false; current.x <= part.high.x; ++current.x)
+	        = false; current.x <= part.high.x; ++current.x)
 	{
 		if (checkLine(current, angle) > SIGNIFICANT_LINE && !foundLastTime)
 		{
@@ -306,7 +306,7 @@ double Grapheme::checkLine(Point start, unsigned char angle) const
 
 	// Travel down the line
 	for (double curX = start.x, curY = start.y; part.contains(Point(curX, curY)); curX
-			+= dX, curY += dY)
+	        += dX, curY += dY)
 	{
 		++pixelCount;
 		if (isForeground(image(curX, curY)))

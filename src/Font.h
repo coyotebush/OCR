@@ -77,15 +77,15 @@ public:
 		 * @param other other symbol
 		 * @return this
 		 */
-		Symbol operator+= (const Symbol & other);
-		
+		Symbol operator+=(const Symbol & other);
+
 		/**
 		 * Divides all statistics by an integer
 		 * @param divisor number to divide by
 		 * @return this
 		 */
-		Symbol operator/= (int divisor);
-		
+		Symbol operator/=(int divisor);
+
 		/**
 		 * Reads symbol information from an input stream
 		 * @param ins input stream

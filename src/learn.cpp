@@ -41,7 +41,7 @@ int main(int argc, char * argv[])
 		std::cerr << "Usage: " << argv[0] << " <font image>...\n";
 		return 1;
 	}
-	
+
 	// Average symbol information
 	std::map<char, Symbol> average;
 	// Image
@@ -57,15 +57,16 @@ int main(int argc, char * argv[])
 		OCR::Line line(img, bogus);
 		std::vector<Symbol> symbols(100);
 		line.Read(&symbols);
-		for(std::vector<Symbol>::iterator itr=symbols.begin(), char character='!';
-			itr!=symbols.end();++itr,++character)
+		std::vector<Symbol>::iterator itr = symbols.begin();
+		for (char character = '!'; itr != symbols.end(); ++itr, ++character)
 		{
 			average[character] += *itr;
 		}
 	}
-	
+
 	// Now divide the total statistics by the number of lines, and print information
-	for (std::map<char, Symbol>::iterator itr=average.begin(); itr != average.end(); ++itr)
+	for (std::map<char, Symbol>::iterator itr = average.begin(); itr
+	        != average.end(); ++itr)
 	{
 		(*it).second /= argc - 1;
 		std::cout << (*it).first << ' ' << (*it).second << std::endl;
