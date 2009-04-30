@@ -34,9 +34,6 @@
 #include <iostream>
 #include <cmath>
 
-// For font generation
-//#define FONTGEN 1
-
 namespace OCR
 {
 
@@ -61,10 +58,6 @@ public:
 		{
 			double total, border, q1, q2, q3, q4, mid1, mid2;
 		} density;
-
-
-		/// The character
-		char what;
 
 		/**
 		 * Initializes the data fields
@@ -107,10 +100,10 @@ public:
 	 * @param unknownSymbol statistics on an unknown symbol
 	 * @return best matching symbol
 	 */
-	Symbol bestMatch(const Symbol & unknownSymbol) const;
+	char bestMatch(const Symbol & unknownSymbol) const;
 private:
 	/// The symbols of this font
-	std::vector<Symbol> symbols;
+	std::map<char, Symbol> symbols;
 };
 
 /**

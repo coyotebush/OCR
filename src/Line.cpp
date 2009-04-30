@@ -79,9 +79,10 @@ Line & Line::operator =(const Line & other)
 
 /**
  * Recognizes the text.
+ * @param symData optionally store symbol data in a vector
  * @return text of the line.
  */
-std::string Line::Read()
+std::string Read(std::vector<Font::Symbol> * symData = NULL)
 {
 	std::string result = "";
 	// Divide into symbols
@@ -112,6 +113,9 @@ std::string Line::Read()
 			right = col + 1;
 			Grapheme sym(image, left, top, right, bottom, font);
 			result += sym.Read();
+			// If storing symbol data, add this
+			if (symData)
+				symData->push_back(sym.theSymbol);
 			inSymbol = false;
 		}
 	}

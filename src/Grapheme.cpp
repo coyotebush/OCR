@@ -83,7 +83,6 @@ char Grapheme::Read()
 {
 	pareDown();
 
-	Font::Symbol theSymbol;
 	theSymbol.holes = countHoles();
 	//std::set<unsigned char> angles = findStraightLines();
 
@@ -125,15 +124,8 @@ char Grapheme::Read()
 	theSymbol.density.mid2 = areaDensity(Box(part.low.x, midHeight,
 			part.high.x, midHeight));
 
-#ifdef FONTGEN
-	// Dump symbol info
-	static unsigned char theASCII = '!'; // ASCII 33
-	if (theASCII > 126)
-		theASCII = 33; // reset
-	std::cerr << theASCII++ << ' ' << theSymbol << std::endl;
-#endif
 	// Find best match
-	return font.bestMatch(theSymbol).what;
+	return font.bestMatch(theSymbol);
 }
 
 /**

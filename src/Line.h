@@ -72,9 +72,10 @@ public:
 
 	/**
 	 * Recognizes the text.
+	 * @param symData optionally store symbol data in a vector
 	 * @return text of the line.
 	 */
-	std::string Read();
+	std::string Read(std::vector<Font::Symbol> * symData = NULL);
 
 private:
 	/// The minimum relative width of a space character

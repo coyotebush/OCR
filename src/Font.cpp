@@ -50,7 +50,7 @@ symbols(100)
  * Initializes the data fields
  */
 Font::Symbol::Symbol() :
-	holes(0), proportion(0), what(' ')
+	holes(0), proportion(0)
 {
 }
 
@@ -59,16 +59,16 @@ Font::Symbol::Symbol() :
  * @param unknownSymbol statistics on an unknown symbol
  * @return best matching symbol
  */
-Font::Symbol Font::bestMatch(const Symbol & unknownSymbol) const
+char Font::bestMatch(const Symbol & unknownSymbol) const
 {
 	Symbol bestMatch;
 	unsigned bestMatchScore = UINT_MAX, currentScore;
-	for (std::vector<Symbol>::const_iterator i = symbols.begin(); i
+	for (std::map<char, Symbol>::const_iterator i = symbols.begin(); i
 			!= symbols.end(); ++i)
-		if ((currentScore = i->match(unknownSymbol)) < bestMatchScore)
+		if ((currentScore = i->first.match(unknownSymbol)) < bestMatchScore)
 		{
 			bestMatchScore = currentScore;
-			bestMatch = *i;
+			bestMatch = i->second;
 		}
 	return bestMatch;
 }

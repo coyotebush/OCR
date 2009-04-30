@@ -78,6 +78,9 @@ public:
 	 */
 	char Read();
 
+	/// The symbol statistics
+	Font::Symbol theSymbol;
+	
 private:
 
 	/**
