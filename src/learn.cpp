@@ -26,6 +26,7 @@
  */
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
 #include <map>
@@ -33,52 +34,56 @@
 #include "Font.h"
 #include "Page.h"
 
-const std::string letters =
+/// All supported characters.
+/// The input file should contain these characters in order.
+const std::string allSupportedCharacters =
         "./0123456789?@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz";
+
 int main(int argc, char * argv[])
 {
 	using OCR::Font;
 
-	if (argc < 2)
+	if (argc < 3)
 	{
-		std::cerr << "Usage: " << argv[0] << " <font image>...\n";
+		std::cerr << "Usage: " << argv[0] << "<font name> <font image>...\n";
 		return 1;
 	}
 
 	// Average symbol information
 	std::map<char, Font::Symbol> average;
+
 	// Image
 	BMP img;
 
 	// Load a non-existent font
 	OCR::Font bogus("BOGUS");
 
+	// Open file for output
+	std::string outFileName = argv[1];
+	outFileName = "font/" + outFileName + ".font";
+	std::ofstream outFile(outFileName.c_str());
+
 	// Load each line and read its statistics
-	for (int fileNum = 1; fileNum < argc; ++fileNum)
+	for (int fileNum = 2; fileNum < argc; ++fileNum)
 	{
 		// Create line
 		img.ReadFromFile(argv[fileNum]);
 		OCR::Line line(img, bogus);
+
 		// Create vector for symbol info
 		std::vector<Font::Symbol> symbols;
-		symbols.reserve(letters.size());
+		symbols.reserve(allSupportedCharacters.size());
+
 		// Do the reading
 		line.Read(&symbols);
+
 		// Loop through and add to the "average"
 		std::vector<Font::Symbol>::iterator itr = symbols.begin();
 		for (unsigned charIndex = 0; itr != symbols.end() && charIndex
-		        < letters.size(); ++itr, ++charIndex)
+		        < allSupportedCharacters.size(); ++itr, ++charIndex)
 		{
-			average[letters[charIndex]] += *itr;
+			average[allSupportedCharacters[charIndex]] += *itr;
 		}
-
-		// DEBUG - dump symbol information
-		/*std::cout << std::endl;
-		for (std::map<char, Font::Symbol>::iterator itr = average.begin(); itr
-		        != average.end(); ++itr)
-		{
-			std::cout << itr->first << ' ' << itr->second << std::endl;
-		}*/
 	}
 
 	// Now divide the total statistics by the number of lines,
@@ -86,9 +91,10 @@ int main(int argc, char * argv[])
 	for (std::map<char, Font::Symbol>::iterator itr = average.begin(); itr
 	        != average.end(); ++itr)
 	{
-		itr->second /= (argc - 1);
-		std::cout << itr->first << ' ' << itr->second << std::endl;
+		itr->second /= (argc - 2);
+		outFile << itr->first << ' ' << itr->second << std::endl;
 	}
 
+	outFile.close();
 	return 0;
 }
