@@ -55,19 +55,19 @@ build/EasyBMP.o: src/EasyBMP/EasyBMP.cpp src/EasyBMP/EasyBMP.h
 	$(CXX) src/EasyBMP/EasyBMP.cpp -c -o build/EasyBMP.o $(CPPFLAGS) $(CXXFLAGS)
 
 # Page
-build/Page.o: src/Page.cpp src/Page.h src/Line.h src/Grapheme.h src/OCR.h src/Font.h
+build/Page.o: src/Page.cpp src/Page.h src/Line.h src/Grapheme.h src/OCR.h src/Font.h src/EasyBMP/EasyBMP.h
 	$(CXX) src/Page.cpp -c -o build/Page.o $(CPPFLAGS) $(CXXFLAGS)
 
 # Line
-build/Line.o: src/Line.cpp src/Line.h src/Grapheme.h src/OCR.h src/Font.h
+build/Line.o: src/Line.cpp src/Line.h src/Grapheme.h src/OCR.h src/Font.h src/EasyBMP/EasyBMP.h
 	$(CXX) src/Line.cpp -c -o build/Line.o $(CPPFLAGS) $(CXXFLAGS)
 
 # Grapheme
-build/Grapheme.o: src/Grapheme.cpp src/Grapheme.h src/OCR.h src/Font.h
+build/Grapheme.o: src/Grapheme.cpp src/Grapheme.h src/OCR.h src/Font.h src/EasyBMP/EasyBMP.h
 	$(CXX) src/Grapheme.cpp -c -o build/Grapheme.o $(CPPFLAGS) $(CXXFLAGS)
 
 # OCR globals
-build/OCR_common.o: src/OCR.cpp src/OCR.h
+build/OCR_common.o: src/OCR.cpp src/OCR.h src/EasyBMP/EasyBMP.h
 	$(CXX) src/OCR.cpp -c -o build/OCR_common.o  $(CPPFLAGS) $(CXXFLAGS)
 
 # Font
