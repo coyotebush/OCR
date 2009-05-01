@@ -33,6 +33,7 @@
 #include <fstream>
 #include <iostream>
 #include <cmath>
+#include <cstdlib>
 
 namespace OCR
 {

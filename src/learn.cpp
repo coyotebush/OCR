@@ -37,7 +37,7 @@
 /// All supported characters.
 /// The input file should contain these characters in order.
 const std::string allSupportedCharacters =
-        "./0123456789?@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz";
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,?!/@_";
 
 int main(int argc, char * argv[])
 {
@@ -80,7 +80,7 @@ int main(int argc, char * argv[])
 		// Loop through and add to the "average"
 		std::vector<Font::Symbol>::iterator itr = symbols.begin();
 		for (unsigned charIndex = 0; itr != symbols.end() && charIndex
-		        < allSupportedCharacters.size(); ++itr, ++charIndex)
+				< allSupportedCharacters.size(); ++itr, ++charIndex)
 		{
 			average[allSupportedCharacters[charIndex]] += *itr;
 		}
@@ -89,7 +89,7 @@ int main(int argc, char * argv[])
 	// Now divide the total statistics by the number of lines,
 	// and print information
 	for (std::map<char, Font::Symbol>::iterator itr = average.begin(); itr
-	        != average.end(); ++itr)
+			!= average.end(); ++itr)
 	{
 		itr->second /= (argc - 2);
 		outFile << itr->first << ' ' << itr->second << std::endl;

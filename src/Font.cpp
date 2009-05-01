@@ -62,7 +62,7 @@ Font::Symbol::Symbol() :
 char Font::bestMatch(const Symbol & unknownSymbol) const
 {
 	char bestMatch;
-	unsigned bestMatchScore = UINT_MAX, currentScore;
+	unsigned bestMatchScore = -1, currentScore;
 	for (std::map<char, Symbol>::const_iterator i = symbols.begin(); i
 	        != symbols.end(); ++i)
 		if ((currentScore = (*i).second.match(unknownSymbol)) < bestMatchScore)
