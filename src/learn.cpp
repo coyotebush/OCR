@@ -34,15 +34,17 @@
 #include "Font.h"
 #include "Page.h"
 
-/// All supported characters.
-/// The input file should contain these characters in order.
+/**
+ * All supported characters.
+ * 
+ * The input file should contain these characters in order,
+ * or any initial part of this string.
+ */
 const std::string allSupportedCharacters =
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,?!/@_";
 
 int main(int argc, char * argv[])
 {
-	using OCR::Font;
-
 	if (argc < 3)
 	{
 		std::cerr << "Usage: " << argv[0] << "<font name> <font image>...\n";
@@ -50,7 +52,7 @@ int main(int argc, char * argv[])
 	}
 
 	// Average symbol information
-	std::map<char, Font::Symbol> average;
+	std::map<char, OCR::Font::Symbol> average;
 
 	// Image
 	BMP img;
@@ -71,14 +73,14 @@ int main(int argc, char * argv[])
 		OCR::Line line(img, bogus);
 
 		// Create vector for symbol info
-		std::vector<Font::Symbol> symbols;
+		std::vector<OCR::Font::Symbol> symbols;
 		symbols.reserve(allSupportedCharacters.size());
 
 		// Do the reading
 		line.Read(&symbols);
 
 		// Loop through and add to the "average"
-		std::vector<Font::Symbol>::iterator itr = symbols.begin();
+		std::vector<OCR::Font::Symbol>::iterator itr = symbols.begin();
 		for (unsigned charIndex = 0; itr != symbols.end() && charIndex
 				< allSupportedCharacters.size(); ++itr, ++charIndex)
 		{
@@ -88,7 +90,7 @@ int main(int argc, char * argv[])
 
 	// Now divide the total statistics by the number of lines,
 	// and print information
-	for (std::map<char, Font::Symbol>::iterator itr = average.begin(); itr
+	for (std::map<char, OCR::Font::Symbol>::iterator itr = average.begin(); itr
 			!= average.end(); ++itr)
 	{
 		itr->second /= (argc - 2);
