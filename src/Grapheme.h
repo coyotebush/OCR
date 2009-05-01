@@ -1,5 +1,5 @@
 /**
- * @file Grapheme.cpp
+ * @file Grapheme.h
  * @date Spring 2009
  * @author Corey Ford <fordco@sonoma.edu>
  * @brief The interface and documentation of the Grapheme class.

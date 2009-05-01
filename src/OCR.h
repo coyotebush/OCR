@@ -1,5 +1,5 @@
 /**
- * @file OCR.cpp
+ * @file OCR.h
  * @date Spring 2009
  * @author Corey Ford <fordco@sonoma.edu>
  * @brief The interface and documentation of functions global to the OCR
