@@ -1,0 +1,36 @@
+.\" $Id$
+.TH ocr 1 "April 30, 2009" "CS 315" "Sonoma State University"
+.SH NAME
+ocr \- recognize characters in a bitmap image
+.SH SYNOPSIS
+.B ocr
+font image
+.SH DESCRIPTION
+The
+.B ocr
+program identifies text in a bitmap image.
+Given a BMP
+.I image
+and a supported
+.I font
+name, the text recognized in the image will be printed.
+.SH EXAMPLES
+Identify text in the FreeSans font:
+ocr freesans somefile.bmp
+.SH FILES
+Font information is retrieved from files in the
+.I font
+directory in the same directory as the executable. These files have the suffix
+.I .font
+.P
+Font data files can be generated using the
+.B ocr-learn
+program. Several font data files are included with the 
+.B ocr
+programs.
+.SH BUGS
+The algorithm for splitting letters relies on the existence of blank space between letters. Issues will be encountered with fonts whose letters overlap horizontally.
+.P
+Detection of space characters is also somewhat crude. With certain fonts, too few or too many space characters may be detected.
+.SH AUTHOR
+Corey Ford <fordco@sonoma.edu>

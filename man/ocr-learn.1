@@ -1,0 +1,32 @@
+.\" $Id$
+.TH ocr-learn 1 "April 30, 2009" "CS 315" "Sonoma State University"
+.SH NAME
+ocr \- create font data files
+.SH SYNOPSIS
+.B ocr-learn
+font image[...]
+.SH DESCRIPTION
+The
+.B ocr-learn
+program generates font data files for the
+.B ocr
+program. The operands consist of a font name for data storage, followed by the filenames of any number of BMP images, each containing the below characters in the desired font:
+.RS
+ ./0123456789?@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz
+.RE
+.SH EXAMPLES
+Generate data for the FreeSans font using samples in a variety of sizes:
+.RS
+ocr-learn freesans freesans36.bmp freesans48.bmp freesans72.bmp
+.RE
+.SH FILES
+Font information is stored in files in the
+.I font
+directory in the same directory as the executable. These files have the suffix
+.I .font
+.P
+Font data files can be used with the
+.B ocr
+program.
+.SH AUTHOR
+Corey Ford <fordco@sonoma.edu>
