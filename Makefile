@@ -81,7 +81,7 @@ doc: src/*.cpp src/*.h
 # Clean
 clean-all: clean clean-doc
 
-clean-doc: doc
+clean-doc:
 	$(RM) -r doc/*
 
 clean:
