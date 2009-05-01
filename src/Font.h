@@ -106,7 +106,7 @@ public:
 		 * @param s    symbol
 		 * @return output stream
 		 */
-		friend std::ostream & operator<<(std::ostream & outs, Font::Symbol & s);
+		friend std::ostream & operator<<(std::ostream & outs, const Font::Symbol & s);
 	};
 
 	/**
@@ -126,22 +126,6 @@ private:
 	/// The symbols of this font
 	std::map<char, Symbol> symbols;
 };
-
-/**
- * Reads symbol information from an input stream
- * @param ins input stream
- * @param s   symbol
- * @return input stream
- */
-std::istream & operator>>(std::istream & ins, Font::Symbol & s);
-
-/**
- * Writes symbol information to an output stream
- * @param outs output stream
- * @param s    symbol
- * @return output stream
- */
-std::ostream & operator<<(std::ostream & outs, Font::Symbol & s);
 
 } // namespace OCR
 

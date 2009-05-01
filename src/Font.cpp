@@ -65,7 +65,7 @@ char Font::bestMatch(const Symbol & unknownSymbol) const
 	unsigned bestMatchScore = -1, currentScore;
 	for (std::map<char, Symbol>::const_iterator i = symbols.begin(); i
 	        != symbols.end(); ++i)
-		if ((currentScore = (*i).second.match(unknownSymbol)) < bestMatchScore)
+		if ((currentScore = i->second.match(unknownSymbol)) < bestMatchScore)
 		{
 			bestMatchScore = currentScore;
 			bestMatch = i->first;
@@ -153,7 +153,7 @@ std::istream & operator>>(std::istream & ins, Font::Symbol & s)
  * @param s    symbol
  * @return output stream
  */
-std::ostream & operator<<(std::ostream & outs, Font::Symbol & s)
+std::ostream & operator<<(std::ostream & outs, const Font::Symbol & s)
 {
 	outs << (int) s.holes << ' ' << s.proportion << ' ' << s.density.total
 	        << ' ' << s.density.border << ' ' << s.density.q1 << ' '
