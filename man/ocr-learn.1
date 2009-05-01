@@ -1,7 +1,7 @@
 .\" $Id$
-.TH ocr-learn 1 "April 30, 2009" "CS 315" "Sonoma State University"
+.TH ocr-learn 1 "May 1, 2009" "CS 315" "Sonoma State University"
 .SH NAME
-ocr \- create font data files
+ocr-learn \- create font data files
 .SH SYNOPSIS
 .B ocr-learn
 font image[...]
@@ -10,9 +10,15 @@ The
 .B ocr-learn
 program generates font data files for the
 .B ocr
-program. The operands consist of a font name for data storage, followed by the filenames of any number of BMP images, each containing the below characters in the desired font:
+program. The operands consist of a
+.I font
+name for data storage, followed by the filenames of any number of BMP
+.I images
+as samples of the font.
+.P
+Each image must contain the same characters in the same order, and in the desired font. The characters in the images must be the following string, or any initial part of it.
 .RS
- ./0123456789?@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,?!/@_
 .RE
 .SH EXAMPLES
 Generate data for the FreeSans font using samples in a variety of sizes:
