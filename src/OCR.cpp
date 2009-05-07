@@ -217,14 +217,13 @@ Box bfSearch(BMP & image, const Point start, bool bg, bool ** visited,
 
 		for (Point current(neighbors.low); current.x <= neighbors.high.x; ++current.x)
 		{
-			for (; current.y <= neighbors.high.y; ++current.y)
+			for (current.y = neighbors.low.y; current.y <= neighbors.high.y; ++current.y)
 			{
 				//DEBUG
 				if (!limit.contains(current))
 					std::cerr << '!';
-				if ((bg ^ isForeground(image(current.x, current.y)))
-				        && !visited[current.x - limit.low.x][current.y
-				                - limit.low.y])
+				if (!visited[current.x - limit.low.x][current.y - limit.low.y]
+				        && (bg ^ isForeground(image(current.x, current.y))))
 				{
 					Q.push(current);
 					visited[current.x - limit.low.x][current.y - limit.low.y]
