@@ -36,12 +36,12 @@
 
 /**
  * All supported characters.
- * 
+ *
  * The input file should contain these characters in order,
  * or any initial part of this string.
  */
-const std::string allSupportedCharacters =
-		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,?!/@_";
+const std::string ALPHABET =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,?!/@_";
 
 int main(int argc, char * argv[])
 {
@@ -74,7 +74,7 @@ int main(int argc, char * argv[])
 
 		// Create vector for symbol info
 		std::vector<OCR::Font::Symbol> symbols;
-		symbols.reserve(allSupportedCharacters.size());
+		symbols.reserve(ALPHABET.size());
 
 		// Do the reading
 		line.Read(&symbols);
@@ -82,18 +82,18 @@ int main(int argc, char * argv[])
 		// Loop through and add to the "average"
 		std::vector<OCR::Font::Symbol>::iterator itr = symbols.begin();
 		for (unsigned charIndex = 0; itr != symbols.end() && charIndex
-				< allSupportedCharacters.size(); ++itr, ++charIndex)
+		        < ALPHABET .size(); ++itr, ++charIndex)
 		{
-			average[allSupportedCharacters[charIndex]] += *itr;
+			average[ALPHABET[charIndex]] += *itr;
 		}
 	}
 
-	// Now divide the total statistics by the number of lines,
-	// and print information
 	for (std::map<char, OCR::Font::Symbol>::iterator itr = average.begin(); itr
-			!= average.end(); ++itr)
+	        != average.end(); ++itr)
 	{
+		// Divide all statistics by number of lines read
 		itr->second /= (argc - 2);
+		// Print the character and its statistics to the file
 		outFile << itr->first << ' ' << itr->second << std::endl;
 	}
 
