@@ -102,13 +102,25 @@ char Grapheme::Read()
 	// Find density of each quadrant
 	unsigned midWidth = part.low.x + ((part.high.x - part.low.x) / 2);
 	unsigned midHeight = part.low.y + ((part.high.y - part.low.y) / 2);
-	theSymbol.density.q2 = areaDensity(Box(part.low.x, part.low.y, midWidth,
+	theSymbol.density.q2 = areaDensity(Box(
+	        part.low.x,
+	        part.low.y,
+	        midWidth,
 	        midHeight));
-	theSymbol.density.q1 = areaDensity(Box(midWidth, part.low.y, part.high.x,
+	theSymbol.density.q1 = areaDensity(Box(
+	        midWidth,
+	        part.low.y,
+	        part.high.x,
 	        midHeight));
-	theSymbol.density.q3 = areaDensity(Box(part.low.x, midHeight, midWidth,
+	theSymbol.density.q3 = areaDensity(Box(
+	        part.low.x,
+	        midHeight,
+	        midWidth,
 	        part.high.y));
-	theSymbol.density.q4 = areaDensity(Box(midWidth, midHeight, part.high.x,
+	theSymbol.density.q4 = areaDensity(Box(
+	        midWidth,
+	        midHeight,
+	        part.high.x,
 	        part.high.y));
 
 	// Find density of diagonals
@@ -118,10 +130,16 @@ char Grapheme::Read()
 	 part.height() / part.width()));*/
 
 	// Find density of middle points
-	theSymbol.density.mid1 = areaDensity(Box(midWidth, part.low.y, midWidth,
+	theSymbol.density.mid1 = areaDensity(Box(
+	        midWidth,
+	        part.low.y,
+	        midWidth,
 	        part.high.y));
-	theSymbol.density.mid2 = areaDensity(Box(part.low.x, midHeight,
-	        part.high.x, midHeight));
+	theSymbol.density.mid2 = areaDensity(Box(
+	        part.low.x,
+	        midHeight,
+	        part.high.x,
+	        midHeight));
 
 	// Find best match
 	return font.bestMatch(theSymbol);

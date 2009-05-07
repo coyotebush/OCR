@@ -182,11 +182,7 @@ bool isSimilar(RGBApixel * a, RGBApixel * b)
  * @param[in]     limit     do not search beyond this box
  * @return                  extent of contiguous pixels found
  */
-Box bfSearch(
-        BMP & image,
-        const Point start,
-        bool bg,
-        bool ** visited,
+Box bfSearch(BMP & image, const Point start, bool bg, bool ** visited,
         const Box limit)
 {
 	// Initialize queue and box
@@ -213,12 +209,13 @@ Box bfSearch(
 		if (p.y > extent.high.y)
 			extent.high.y = p.y;
 		// Get all its neighbors
-		Box neighbors((p.x - 1 > limit.low.x ? p.x - 1 : limit.low.x), (((p.y
-		        - 1) > limit.low.y) ? (p.y - 1) : limit.low.y), (p.x + 1
-		        < limit.high.x ? p.x + 1 : limit.high.x), (p.y + 1
-		        < limit.high.y ? p.y + 1 : limit.high.y));
+		Box neighbors(
+		        (p.x - 1 > limit.low.x ? p.x - 1 : limit.low.x),
+		        (p.y - 1 > limit.low.y ? p.y - 1 : limit.low.y),
+		        (p.x + 1 < limit.high.x ? p.x + 1 : limit.high.x),
+		        (p.y + 1 < limit.high.y ? p.y + 1 : limit.high.y));
 
-		for (Point current(neighbors.low); current.x < neighbors.high.x; ++current.x)
+		for (Point current(neighbors.low); current.x <= neighbors.high.x; ++current.x)
 		{
 			for (; current.y <= neighbors.high.y; ++current.y)
 			{
