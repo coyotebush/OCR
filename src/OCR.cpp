@@ -120,8 +120,8 @@ bool Box::edge_iterator::operator!=(const Point & p) const
 bool Box::edge_iterator::done() const
 {
 	return (current == box.low && !first) || (current.x == box.high.x
-			&& box.height() == 1) || (current.y == box.high.y && box.width()
-			== 1);
+	        && box.height() == 1) || (current.y == box.high.y && box.width()
+	        == 1);
 }
 
 /**
@@ -146,7 +146,7 @@ Box::edge_iterator Box::edge_iterator::next()
 bool isForeground(RGBApixel * pixel)
 {
 	return (pixel->Red < FG_THRESHOLD && pixel->Green < FG_THRESHOLD
-			&& pixel->Blue < FG_THRESHOLD);
+	        && pixel->Blue < FG_THRESHOLD);
 }
 
 /**
@@ -167,7 +167,7 @@ bool isSimilar(RGBApixel * a, RGBApixel * b)
 	if (blue < 0)
 		blue = -blue;
 	return (red < SIMILAR_THRESHOLD && green < SIMILAR_THRESHOLD && blue
-			< SIMILAR_THRESHOLD);
+	        < SIMILAR_THRESHOLD);
 }
 
 /**
@@ -182,8 +182,12 @@ bool isSimilar(RGBApixel * a, RGBApixel * b)
  * @param[in]     limit     do not search beyond this box
  * @return                  extent of contiguous pixels found
  */
-Box bfSearch(BMP & image, const Point start, bool bg, bool ** visited,
-		const Box limit)
+Box bfSearch(
+        BMP & image,
+        const Point start,
+        bool bg,
+        bool ** visited,
+        const Box limit)
 {
 	// Initialize queue and box
 	std::queue<Point> Q;
@@ -209,20 +213,25 @@ Box bfSearch(BMP & image, const Point start, bool bg, bool ** visited,
 		if (p.y > extent.high.y)
 			extent.high.y = p.y;
 		// Get all its neighbors
-		int lowX = (p.x - 1 > limit.low.x ? p.x - 1 : limit.low.x);
-		int highX = (p.x + 1 < limit.high.x ? p.x + 1 : limit.high.x);
-		int lowY = (p.y - 1 > limit.low.y ? p.y - 1 : limit.low.y);
-		int highY = (p.y + 1 < limit.high.y ? p.y + 1 : limit.high.y);
-		for (int x = lowX; x <= highX; ++x)
+		Box neighbors((p.x - 1 > limit.low.x ? p.x - 1 : limit.low.x), (((p.y
+		        - 1) > limit.low.y) ? (p.y - 1) : limit.low.y), (p.x + 1
+		        < limit.high.x ? p.x + 1 : limit.high.x), (p.y + 1
+		        < limit.high.y ? p.y + 1 : limit.high.y));
+
+		for (Point current(neighbors.low); current.x < neighbors.high.x; ++current.x)
 		{
-			for (int y = lowY; y <= highY; ++y)
+			for (; current.y <= neighbors.high.y; ++current.y)
 			{
-				Point n(x, y);
-				if (!visited[x - limit.low.x][y - limit.low.y] && (bg
-						^ isForeground(image(n.x, n.y))))
+				//DEBUG
+				if (!limit.contains(current))
+					std::cerr << '!';
+				if ((bg ^ isForeground(image(current.x, current.y)))
+				        && !visited[current.x - limit.low.x][current.y
+				                - limit.low.y])
 				{
-					Q.push(n);
-					visited[x - limit.low.x][y - limit.low.y] = true;
+					Q.push(current);
+					visited[current.x - limit.low.x][current.y - limit.low.y]
+					        = true;
 				}
 			}
 		}
