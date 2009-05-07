@@ -219,9 +219,6 @@ Box bfSearch(BMP & image, const Point start, bool bg, bool ** visited,
 		{
 			for (current.y = neighbors.low.y; current.y <= neighbors.high.y; ++current.y)
 			{
-				//DEBUG
-				if (!limit.contains(current))
-					std::cerr << '!';
 				if (!visited[current.x - limit.low.x][current.y - limit.low.y]
 				        && (bg ^ isForeground(image(current.x, current.y))))
 				{
