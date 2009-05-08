@@ -160,14 +160,15 @@ void floodFill(BMP & image, const Point start, bool bg, bool ** visited,
 {
 	// Is this Point within our limit?
 	if (!limit.contains(start))
-	return;
+		return;
 	// Has this point been visited already?
 	if (visited[start.x - limit.low.x][start.y - limit.low.y])
-	return;
+		return;
 	// Is this the kind of pixel we're looking for?
 	if (!(bg ^ isForeground(image(start.x, start.y))))
-	return;
+		return;
 
+	// Mark as visited
 	visited[start.x - limit.low.x][start.y - limit.low.y] = true;
 
 	// Recursive calls
@@ -179,48 +180,11 @@ void floodFill(BMP & image, const Point start, bool bg, bool ** visited,
 	// For foreground pixels, use 8 neighbors
 	if(!bg)
 	{
-		floodFill(image, Point(start.x-1, start.y - 1), bg, visited, limit);
-		floodFill(image, Point(start.x+1, start.y - 1), bg, visited, limit);
-		floodFill(image, Point(start.x-1, start.y + 1), bg, visited, limit);
-		floodFill(image, Point(start.x+1, start.y + 1), bg, visited, limit);
+		floodFill(image, Point(start.x - 1, start.y - 1), bg, visited, limit);
+		floodFill(image, Point(start.x + 1, start.y - 1), bg, visited, limit);
+		floodFill(image, Point(start.x - 1, start.y + 1), bg, visited, limit);
+		floodFill(image, Point(start.x + 1, start.y + 1), bg, visited, limit);
 	}
-	/*while (!Q.empty())
-	 {
-	 // Take a pixel
-	 Point p = Q.front();
-	 Q.pop();
-
-	 |* Extend the current extent Box if necessary
-	 if (p.x < extent.low.x)
-	 extent.low.x = p.x;
-	 if (p.x > extent.high.x)
-	 extent.high.x = p.x;
-	 if (p.y < extent.low.y)
-	 extent.low.y = p.y;
-	 if (p.y > extent.high.y)
-	 extent.high.y = p.y;*|
-	 // Get all its neighbors
-	 Box neighbors(
-	 (p.x - 1 > limit.low.x ? p.x - 1 : limit.low.x),
-	 (p.y - 1 > limit.low.y ? p.y - 1 : limit.low.y),
-	 (p.x + 1 < limit.high.x ? p.x + 1 : limit.high.x),
-	 (p.y + 1 < limit.high.y ? p.y + 1 : limit.high.y));
-
-	 for (Point current(neighbors.low); current.x <= neighbors.high.x; ++current.x)
-	 {
-	 for (current.y = neighbors.low.y; current.y <= neighbors.high.y; ++current.y)
-	 {
-	 if (!visited[current.x - limit.low.x][current.y - limit.low.y]
-	 && (bg ^ isForeground(image(current.x, current.y))))
-	 {
-	 Q.push(current);
-	 visited[current.x - limit.low.x][current.y - limit.low.y]
-	 = true;
-	 }
-	 }
-	 }
-	 }
-	 return extent;*/
 }
 
 } // namespace OCR
