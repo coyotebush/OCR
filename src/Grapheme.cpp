@@ -209,7 +209,7 @@ unsigned char Grapheme::countHoles() const
 	// Do a breadth-first search from each background edge pixel
 	for (Box::edge_iterator i(part); !i.done(); ++i)
 		if (!isForeground(image((*i).x, (*i).y)))
-			bfSearch(image, *i, true, visited, part);
+			floodFill(image, *i, true, visited, part);
 
 	// Loop through every inner pixel
 	for (Point current(part.low.x + 1, part.low.y + 1); current.x < part.high.x; ++current.x)
@@ -221,7 +221,7 @@ unsigned char Grapheme::countHoles() const
 			{
 				// If it is an unvisited background pixel,
 				// perform a breadth-first search from it
-				bfSearch(image, current, true, visited, part);
+				floodFill(image, current, true, visited, part);
 				// increment hole count
 				++holeCount;
 			}

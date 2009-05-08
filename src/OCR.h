@@ -246,9 +246,8 @@ bool isSimilar(RGBApixel * a, RGBApixel * b);
  * @param[in,out] visited   which pixels have been visited.
  *                          Should have the same dimensions as limit.
  * @param[in]     limit     do not search beyond this box
- * @return                  extent of contiguous pixels found
  */
-Box bfSearch(BMP & image, const Point start, bool bg, bool ** visited,
+void floodFill(BMP & image, const Point start, bool bg, bool ** visited,
 		const Box limit);
 
 } // namespace OCR
