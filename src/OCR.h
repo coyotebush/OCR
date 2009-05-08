@@ -168,7 +168,10 @@ public:
 	 * Dereference operator
 	 * @return current Point
 	 */
-	Point operator*() const;
+	Point operator*() const
+	{
+		return current;
+	}
 
 	/**
 	 * Increments the current Point clockwise around the edge.
@@ -181,14 +184,20 @@ public:
 	 * @param p Point to compare to
 	 * @return whether current position and p are equal
 	 */
-	bool operator==(const Point & p) const;
+	bool operator==(const Point & p) const
+	{
+		return current == p;
+	}
 
 	/**
 	 * Compares the current position to a Point.
 	 * @param p Point to compare to
 	 * @return whether current position and p are unequal
 	 */
-	bool operator!=(const Point & p) const;
+	bool operator!=(const Point & p) const
+	{
+		return current != p;
+	}
 
 	/**
 	 * Determines whether the iterator is done
@@ -226,7 +235,7 @@ const int SIMILAR_THRESHOLD = 10;
  * @param pixel a pixel
  * @return whether this is a foreground pixel
  */
-bool isForeground(RGBApixel * pixel);
+inline bool isForeground(RGBApixel * pixel);
 
 /**
  * Determines whether two pixels are similar in color

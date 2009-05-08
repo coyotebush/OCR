@@ -62,15 +62,6 @@ Box::edge_iterator::edge_iterator(const edge_iterator & other) :
 }
 
 /**
- * Dereference operator
- * @return current Point
- */
-Point Box::edge_iterator::operator*() const
-{
-	return current;
-}
-
-/**
  * Increments the current Point clockwise around the edge.
  * @return this
  */
@@ -78,42 +69,22 @@ Box::edge_iterator Box::edge_iterator::operator++()
 {
 	// Top edge
 	if (current.y == box.low.y && current.x < box.high.x)
-	++current.x;
+		++current.x;
+	
 	// Right edge
-
 	else if (current.x == box.high.x && current.y < box.high.y)
-	++current.y;
+		++current.y;
+	
 	// Bottom edge
-
 	else if (current.y == box.high.y && current.x> box.low.x)
-	--current.x;
+		--current.x;
+	
 	// Left edge
-
 	else if (current.x == box.low.x && current.y> box.low.y)
-	--current.y;
+		--current.y;
 
 	first = false;
 	return *this;
-}
-
-/**
- * Compares the current position to a Point.
- * @param p Point to compare to
- * @return whether current position and p are equal
- */
-bool Box::edge_iterator::operator==(const Point & p) const
-{
-	return current == p;
-}
-
-/**
- * Compares the current position to a Point.
- * @param p Point to compare to
- * @return whether current position and p are unequal
- */
-bool Box::edge_iterator::operator!=(const Point & p) const
-{
-	return current != p;
 }
 
 /**
@@ -146,7 +117,7 @@ Box::edge_iterator Box::edge_iterator::next()
  * @param pixel a pixel
  * @return whether this is a foreground pixel
  */
-bool isForeground(RGBApixel * pixel)
+inline bool isForeground(RGBApixel * pixel)
 {
 	return (pixel->Red < FG_THRESHOLD && pixel->Green < FG_THRESHOLD
 			&& pixel->Blue < FG_THRESHOLD);
