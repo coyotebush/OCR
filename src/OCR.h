@@ -51,26 +51,46 @@ struct Point
 	{
 	}
 
+	/**
+	 * Copy constructor
+	 * @param other another Point
+	 */
 	Point(const Point & other) :
 		x(other.x), y(other.y)
 	{
 	}
 
+	/**
+	 * Equality operator
+	 * @param rhs another Point
+	 * @return whether equal
+	 */
 	bool operator==(const Point & rhs) const
 	{
 		return this->x == rhs.x && this->y == rhs.y;
 	}
 
+	/**
+	 * Inequality operator
+	 * @param rhs another Point
+	 * @return whether unequal
+	 */
 	bool operator!=(const Point & rhs) const
 	{
 		return this->x != rhs.x || this->y != rhs.y;
 	}
 
+	/**
+	 * Less-than operator
+	 * @param rhs another Point
+	 * @return whether the other point has both greater x and greater y
+	 */
 	bool operator<(const Point & rhs) const
 	{
 		return this->x < rhs.x && this->y < rhs.y;
 	}
 
+	/// Coordinates
 	unsigned x, y;
 };
 
@@ -98,6 +118,10 @@ struct Box
 	{
 	}
 
+	/**
+	 * Copy constructor
+	 * @param other another Box
+	 */
 	Box(const Box & other) :
 		low(other.low), high(other.high)
 	{
@@ -121,20 +145,61 @@ struct Box
 		return (high.y - low.y) + 1;
 	}
 
-	bool onEdge(const Point p) const
+	/**
+	 * Get the area of the box
+	 * @return number of pixels included in the box
+	 */
+	unsigned area() const
+	{
+		return width() * height();
+	}
+
+	/**
+	 * Determines whether a Point is on the edge of this Box
+	 * @param p a Point
+	 * @return whether on the border
+	 */
+	bool onEdge(const Point & p) const
 	{
 		return low.x == p.x || low.y == p.y || high.x == p.x || high.y == p.y;
 	}
 
-	bool contains(const Point p) const
+	/**
+	 * Determines whether this includes a given Point
+	 * @param p a Point
+	 * @return whether included in the Box
+	 */
+	bool contains(const Point & p) const
 	{
 		return p.x <= high.x && p.x >= low.x && p.y <= high.y && p.y >= low.y;
 	}
 
+	/**
+	 * Extends the box to include a given Point
+	 * @param p Point that should be included
+	 */
+	void extendToInclude(const Point & p)
+	{
+		if (p.x < low.x)
+			low.x = p.x;
+		if (p.x > high.x)
+			high.x = p.x;
+		if (p.y < low.y)
+			low.y = p.y;
+		if (p.y > high.y)
+			high.y = p.y;
+	}
+
+	/**
+	 * Compares this to another Box
+	 * @param rhs another Box
+	 * @return whether they refer to the same area.
+	 */
 	bool operator==(const Box & rhs) const
 	{
 		return this->low == rhs.low && this->high == rhs.high;
 	}
+
 	/// Corners (inclusive)
 	Point low, high;
 };
@@ -221,11 +286,6 @@ private:
 };
 
 /**
- * R, G, B must be < this for a foreground pixel
- */
-const int FG_THRESHOLD = 110;
-
-/**
  * Difference in R, G, B must be < this for similar pixels
  */
 const int SIMILAR_THRESHOLD = 10;
@@ -235,15 +295,12 @@ const int SIMILAR_THRESHOLD = 10;
  * @param pixel a pixel
  * @return whether this is a foreground pixel
  */
-inline bool isForeground(RGBApixel * pixel);
-
-/**
- * Determines whether two pixels are similar in color
- * @param a first pixel
- * @param b second pixel
- * @return whether they should be considered similar
- */
-bool isSimilar(RGBApixel * a, RGBApixel * b);
+inline bool isForeground(RGBApixel * pixel)
+{
+	const int FG_THRESHOLD = 110;
+	return (pixel->Red < FG_THRESHOLD && pixel->Green < FG_THRESHOLD
+	        && pixel->Blue < FG_THRESHOLD);
+}
 
 /**
  * Performs a breadth-first search from a point using either foreground
@@ -255,9 +312,10 @@ bool isSimilar(RGBApixel * a, RGBApixel * b);
  * @param[in,out] visited   which pixels have been visited.
  *                          Should have the same dimensions as limit.
  * @param[in]     limit     do not search beyond this box
+ * @return                  extent of contiguous pixels found
  */
-void floodFill(BMP & image, const Point start, bool bg, bool ** visited,
-		const Box limit);
+Box floodFill(BMP & image, const Point start, bool bg, bool ** visited,
+        const Box limit);
 
 } // namespace OCR
 

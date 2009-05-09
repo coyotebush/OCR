@@ -70,17 +70,17 @@ Box::edge_iterator Box::edge_iterator::operator++()
 	// Top edge
 	if (current.y == box.low.y && current.x < box.high.x)
 		++current.x;
-	
+
 	// Right edge
 	else if (current.x == box.high.x && current.y < box.high.y)
 		++current.y;
-	
+
 	// Bottom edge
-	else if (current.y == box.high.y && current.x> box.low.x)
+	else if (current.y == box.high.y && current.x > box.low.x)
 		--current.x;
-	
+
 	// Left edge
-	else if (current.x == box.low.x && current.y> box.low.y)
+	else if (current.x == box.low.x && current.y > box.low.y)
 		--current.y;
 
 	first = false;
@@ -94,8 +94,8 @@ Box::edge_iterator Box::edge_iterator::operator++()
 bool Box::edge_iterator::done() const
 {
 	return (current == box.low && !first) || (current.x == box.high.x
-			&& box.height() == 1) || (current.y == box.high.y && box.width()
-			== 1);
+	        && box.height() == 1) || (current.y == box.high.y && box.width()
+	        == 1);
 }
 
 /**
@@ -111,39 +111,6 @@ Box::edge_iterator Box::edge_iterator::next()
 
 // End OCR::Box::edge_iterator member functions
 
-
-/**
- * Determines whether a pixel is a foreground pixel.
- * @param pixel a pixel
- * @return whether this is a foreground pixel
- */
-inline bool isForeground(RGBApixel * pixel)
-{
-	return (pixel->Red < FG_THRESHOLD && pixel->Green < FG_THRESHOLD
-			&& pixel->Blue < FG_THRESHOLD);
-}
-
-/**
- * Determines whether two pixels are similar in color
- * @param a first pixel
- * @param b second pixel
- * @return whether they should be considered similar
- */
-bool isSimilar(RGBApixel * a, RGBApixel * b)
-{
-	int red = a->Red - b->Red;
-	int green = a->Green - b->Green;
-	int blue = a->Blue - b->Blue;
-	if (red < 0)
-	red = -red;
-	if (green < 0)
-	green = -green;
-	if (blue < 0)
-	blue = -blue;
-	return (red < SIMILAR_THRESHOLD && green < SIMILAR_THRESHOLD && blue
-			< SIMILAR_THRESHOLD);
-}
-
 /**
  * Performs a flood-fill from a point using either foreground
  * or background pixels.
@@ -154,37 +121,50 @@ bool isSimilar(RGBApixel * a, RGBApixel * b)
  * @param[in,out] visited   which pixels have been visited.
  *                          Should have the same dimensions as limit.
  * @param[in]     limit     do not search beyond this box
+ * @return                  extent of contiguous pixels found
  */
-void floodFill(BMP & image, const Point start, bool bg, bool ** visited,
-		const Box limit)
+Box floodFill(BMP & image, const Point start, bool bg, bool ** visited,
+        const Box limit)
 {
-	// Is this Point within our limit?
-	if (!limit.contains(start))
-		return;
-	// Has this point been visited already?
-	if (visited[start.x - limit.low.x][start.y - limit.low.y])
-		return;
-	// Is this the kind of pixel we're looking for?
-	if (!(bg ^ isForeground(image(start.x, start.y))))
-		return;
+	// Initialize queue and box
+	std::queue<Point> pointsToVisit;
+	Box extent(start.x, start.y, start.x, start.y);
 
-	// Mark as visited
-	visited[start.x - limit.low.x][start.y - limit.low.y] = true;
+	// Add the starting pixel to the queue, if it has not been visited
+	if (!visited[start.x - limit.low.x][start.y - limit.low.y])
+		pointsToVisit.push(start);
 
-	// Recursive calls
-	floodFill(image, Point(start.x, start.y - 1), bg, visited, limit);
-	floodFill(image, Point(start.x, start.y + 1), bg, visited, limit);
-	floodFill(image, Point(start.x - 1, start.y), bg, visited, limit);
-	floodFill(image, Point(start.x + 1, start.y), bg, visited, limit);
-
-	// For foreground pixels, use 8 neighbors
-	if(!bg)
+	while (!pointsToVisit.empty())
 	{
-		floodFill(image, Point(start.x - 1, start.y - 1), bg, visited, limit);
-		floodFill(image, Point(start.x + 1, start.y - 1), bg, visited, limit);
-		floodFill(image, Point(start.x - 1, start.y + 1), bg, visited, limit);
-		floodFill(image, Point(start.x + 1, start.y + 1), bg, visited, limit);
+		// Take a pixel
+		Point p = pointsToVisit.front();
+		pointsToVisit.pop();
+
+		// Extend the current extent Box if necessary
+		extent.extendToInclude(p);
+
+		// Get all its neighbors
+		Box neighbors(
+		        (p.x - 1 > limit.low.x ? p.x - 1 : limit.low.x),
+		        (p.y - 1 > limit.low.y ? p.y - 1 : limit.low.y),
+		        (p.x + 1 < limit.high.x ? p.x + 1 : limit.high.x),
+		        (p.y + 1 < limit.high.y ? p.y + 1 : limit.high.y));
+
+		for (Point current(neighbors.low); current.x <= neighbors.high.x; ++current.x)
+		{
+			for (current.y = neighbors.low.y; current.y <= neighbors.high.y; ++current.y)
+			{
+				if (!visited[current.x - limit.low.x][current.y - limit.low.y]
+				        && (bg ^ isForeground(image(current.x, current.y))))
+				{
+					pointsToVisit.push(current);
+					visited[current.x - limit.low.x][current.y - limit.low.y]
+					        = true;
+				}
+			}
+		}
 	}
+	return extent;
 }
 
 } // namespace OCR
