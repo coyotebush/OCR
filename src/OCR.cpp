@@ -128,7 +128,7 @@ Box floodFill(BMP & image, const Point start, bool bg, bool ** visited,
 {
 	// Initialize queue and box
 	std::queue<Point> pointsToVisit;
-	Box extent(start.x, start.y, start.x, start.y);
+	Box extentOfContiguousPixelsFound(start.x, start.y, start.x, start.y);
 
 	// Add the starting pixel to the queue, if it has not been visited
 	if (!visited[start.x - limit.low.x][start.y - limit.low.y])
@@ -137,34 +137,34 @@ Box floodFill(BMP & image, const Point start, bool bg, bool ** visited,
 	while (!pointsToVisit.empty())
 	{
 		// Take a pixel
-		Point p = pointsToVisit.front();
+		Point current = pointsToVisit.front();
 		pointsToVisit.pop();
 
 		// Extend the current extent Box if necessary
-		extent.extendToInclude(p);
+		extentOfContiguousPixelsFound.extendToInclude(current);
 
 		// Get all its neighbors
 		Box neighbors(
-		        (p.x - 1 > limit.low.x ? p.x - 1 : limit.low.x),
-		        (p.y - 1 > limit.low.y ? p.y - 1 : limit.low.y),
-		        (p.x + 1 < limit.high.x ? p.x + 1 : limit.high.x),
-		        (p.y + 1 < limit.high.y ? p.y + 1 : limit.high.y));
+		        (current.x - 1 > limit.low.x ? current.x - 1 : limit.low.x),
+		        (current.y - 1 > limit.low.y ? current.y - 1 : limit.low.y),
+		        (current.x + 1 < limit.high.x ? current.x + 1 : limit.high.x),
+		        (current.y + 1 < limit.high.y ? current.y + 1 : limit.high.y));
 
-		for (Point current(neighbors.low); current.x <= neighbors.high.x; ++current.x)
+		for (Point neighbor(neighbors.low); neighbor.x <= neighbors.high.x; ++neighbor.x)
 		{
-			for (current.y = neighbors.low.y; current.y <= neighbors.high.y; ++current.y)
+			for (neighbor.y = neighbors.low.y; neighbor.y <= neighbors.high.y; ++neighbor.y)
 			{
-				if (!visited[current.x - limit.low.x][current.y - limit.low.y]
-				        && (bg ^ isForeground(image(current.x, current.y))))
+				if (!visited[neighbor.x - limit.low.x][neighbor.y - limit.low.y]
+				        && (bg ^ isForeground(image(neighbor.x, neighbor.y))))
 				{
-					pointsToVisit.push(current);
-					visited[current.x - limit.low.x][current.y - limit.low.y]
+					pointsToVisit.push(neighbor);
+					visited[neighbor.x - limit.low.x][neighbor.y - limit.low.y]
 					        = true;
 				}
 			}
 		}
 	}
-	return extent;
+	return extentOfContiguousPixelsFound;
 }
 
 } // namespace OCR
