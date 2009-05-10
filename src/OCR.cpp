@@ -143,26 +143,75 @@ Box floodFill(BMP & image, const Point start, bool bg, bool ** visited,
 		// Extend the current extent Box if necessary
 		extentOfContiguousPixelsFound.extendToInclude(current);
 
-		// Get all its neighbors
-		Box neighbors(
-		        (current.x - 1 > limit.low.x ? current.x - 1 : limit.low.x),
-		        (current.y - 1 > limit.low.y ? current.y - 1 : limit.low.y),
-		        (current.x + 1 < limit.high.x ? current.x + 1 : limit.high.x),
-		        (current.y + 1 < limit.high.y ? current.y + 1 : limit.high.y));
+		Point temp(current);
 
-		for (Point neighbor(neighbors.low); neighbor.x <= neighbors.high.x; ++neighbor.x)
+		/*
+		// Travel left, filling along the way
+		for (; temp.x >= limit.low.x && !visited[temp.x - limit.low.x][temp.y
+		        - limit.low.y] && (bg ^ isForeground(image(temp.x, current.y))); --temp.x)
 		{
-			for (neighbor.y = neighbors.low.y; neighbor.y <= neighbors.high.y; ++neighbor.y)
-			{
-				if (!visited[neighbor.x - limit.low.x][neighbor.y - limit.low.y]
-				        && (bg ^ isForeground(image(neighbor.x, neighbor.y))))
-				{
-					pointsToVisit.push(neighbor);
-					visited[neighbor.x - limit.low.x][neighbor.y - limit.low.y]
-					        = true;
-				}
-			}
+			// Mark this as visited and extend extent
+			visited[temp.x - limit.low.x][temp.y - limit.low.y] = true;
+			extentOfContiguousPixelsFound.extendToInclude(temp);
+
+			// If the point above is a valid, unvisited, pixel of
+			// the right type, add it to the queue
+			if (temp.y - 1 >= limit.low.y
+			        && !visited[temp.x - limit.low.x][temp.y - 1 - limit.low.y]
+			        && (bg ^ isForeground(image(temp.x, temp.y - 1))))
+				pointsToVisit.push(Point(temp.x, temp.y - 1));
+
+			// If the point below is a valid, unvisited, pixel of
+			// the right type, add it to the queue
+			if (temp.y + 1 <= limit.high.y
+			        && !visited[temp.x - limit.low.x][temp.y + 1 - limit.low.y]
+			        && (bg ^ isForeground(image(temp.x, temp.y + 1))))
+				pointsToVisit.push(temp);
 		}
+
+		// Travel right, filling along the way
+		temp = current;
+		for (; temp.x <= limit.high.x && !visited[temp.x - limit.low.x][temp.y
+		        - limit.low.y] && (bg ^ isForeground(image(temp.x, current.y))); ++temp.x)
+		{
+			// Mark this as visited and extend extent
+			visited[temp.x - limit.low.x][temp.y - limit.low.y] = true;
+			extentOfContiguousPixelsFound.extendToInclude(temp);
+
+			// If the point above is a valid, unvisited, pixel of
+			// the right type, add it to the queue
+			if (temp.y - 1 >= limit.low.y
+			        && !visited[temp.x - limit.low.x][temp.y - 1 - limit.low.y]
+			        && (bg ^ isForeground(image(temp.x, temp.y - 1))))
+				pointsToVisit.push(Point(temp.x, temp.y - 1));
+
+			// If the point below is a valid, unvisited, pixel of
+			// the right type, add it to the queue
+			if (temp.y + 1 <= limit.high.y
+			        && !visited[temp.x - limit.low.x][temp.y + 1 - limit.low.y]
+			        && (bg ^ isForeground(image(temp.x, temp.y + 1))))
+				pointsToVisit.push(temp);
+		}
+		*/
+		// Get all its neighbors
+		 Box neighbors(
+		 (current.x - 1 > limit.low.x ? current.x - 1 : limit.low.x),
+		 (current.y - 1 > limit.low.y ? current.y - 1 : limit.low.y),
+		 (current.x + 1 < limit.high.x ? current.x + 1 : limit.high.x),
+		 (current.y + 1 < limit.high.y ? current.y + 1 : limit.high.y));
+		 for (Point neighbor(neighbors.low); neighbor.x <= neighbors.high.x; ++neighbor.x)
+		 {
+		 for (neighbor.y = neighbors.low.y; neighbor.y <= neighbors.high.y; ++neighbor.y)
+		 {
+		 if (!visited[neighbor.x - limit.low.x][neighbor.y - limit.low.y]
+		 && (bg ^ isForeground(image(neighbor.x, neighbor.y))))
+		 {
+		 pointsToVisit.push(neighbor);
+		 visited[neighbor.x - limit.low.x][neighbor.y - limit.low.y]
+		 = true;
+		 }
+		 }
+		 }//*/
 	}
 	return extentOfContiguousPixelsFound;
 }
