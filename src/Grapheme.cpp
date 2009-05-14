@@ -94,7 +94,7 @@ char Grapheme::Read()
 	// Find density of border
 	unsigned pixelCount = 0;
 	unsigned foregroundCount = 0;
-	for (Box::edge_iterator i(part); !i.done(); ++i, ++pixelCount)
+	for (Box::edge_iterator i(part); !i; ++i, ++pixelCount)
 		if (isForeground(image((*i).x, (*i).y)))
 			++foregroundCount;
 	theSymbol.density.border = foregroundCount / (double) pixelCount;
@@ -207,7 +207,7 @@ unsigned char Grapheme::countHoles() const
 	}
 
 	// Do a breadth-first search from each background edge pixel
-	for (Box::edge_iterator i(part); !i.done(); ++i)
+	for (Box::edge_iterator i(part); !i; ++i)
 		if (!isForeground(image((*i).x, (*i).y)))
 			floodFill(image, *i, true, visited, part);
 
@@ -238,7 +238,7 @@ unsigned char Grapheme::countHoles() const
 /**
  * Finds the straight lines in the letter
  * @return angles of straight lines
- */
+ *|
 std::set<unsigned char> Grapheme::findStraightLines() const
 {
 	static const double SIGNIFICANT_LINE = 0.8;
@@ -300,7 +300,7 @@ std::set<unsigned char> Grapheme::findStraightLines() const
  * @param start     edge point on the line
  * @param angle     angle of the line (0 <= angle < 180)
  * @return density of foreground pixels along the line specified
- */
+ *|
 double Grapheme::checkLine(Point start, unsigned char angle) const
 {
 	static const double DEG2RAD = 180.0 / (atan(1.0) * 4.0);
@@ -330,7 +330,7 @@ double Grapheme::checkLine(Point start, unsigned char angle) const
 			++foregroundCount;
 	}
 	return foregroundCount / (double) pixelCount;
-}
+}*/
 
 /**
  * Checks the density of foreground pixels within an area

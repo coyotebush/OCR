@@ -2,8 +2,7 @@
  * @file OCR.cpp
  * @date Spring 2009
  * @author Corey Ford <fordco@sonoma.edu>
- * @brief The implementation of functions global to the OCR namespace,
- *        as well as OCR::Box::edge_iterator.
+ * @brief The implementation of functions global to the OCR namespace.
  * @see OCR.h for the interface and documentation.
  * @version $Id$
  */
@@ -31,85 +30,6 @@
 
 namespace OCR
 {
-
-// OCR::Box::edge_iterator members
-/**
- * Constructor
- * @param b Box to iterate around
- */
-Box::edge_iterator::edge_iterator(const Box & b) :
-	box(b), current(b.low), first(true)
-{
-}
-
-/**
- * Constructor
- * @param b Box to iterate around
- * @param p starting point, should be on b's edge
- */
-Box::edge_iterator::edge_iterator(const Box & b, const Point & p) :
-	box(b), current(p), first(true)
-{
-}
-
-/**
- * Copy constructor
- * @param other another edge_iterator
- */
-Box::edge_iterator::edge_iterator(const edge_iterator & other) :
-	box(other.box), current(other.current), first(other.first)
-{
-}
-
-/**
- * Increments the current Point clockwise around the edge.
- * @return this
- */
-Box::edge_iterator Box::edge_iterator::operator++()
-{
-	// Top edge
-	if (current.y == box.low.y && current.x < box.high.x)
-		++current.x;
-
-	// Right edge
-	else if (current.x == box.high.x && current.y < box.high.y)
-		++current.y;
-
-	// Bottom edge
-	else if (current.y == box.high.y && current.x > box.low.x)
-		--current.x;
-
-	// Left edge
-	else if (current.x == box.low.x && current.y > box.low.y)
-		--current.y;
-
-	first = false;
-	return *this;
-}
-
-/**
- * Determines whether the iterator is done
- * @return whether complete
- */
-bool Box::edge_iterator::done() const
-{
-	return (current == box.low && !first) || (current.x == box.high.x
-	        && box.height() == 1) || (current.y == box.high.y && box.width()
-	        == 1);
-}
-
-/**
- * Returns an iterator set to the position after the current one
- * @return an iterator
- */
-Box::edge_iterator Box::edge_iterator::next()
-{
-	edge_iterator theNext = *this;
-	++theNext;
-	return theNext;
-}
-
-// End OCR::Box::edge_iterator member functions
 
 /**
  * Performs a flood-fill from a point using either foreground
@@ -143,75 +63,25 @@ Box floodFill(BMP & image, const Point start, bool bg, bool ** visited,
 		// Extend the current extent Box if necessary
 		extentOfContiguousPixelsFound.extendToInclude(current);
 
-		Point temp(current);
-
-		/*
-		// Travel left, filling along the way
-		for (; temp.x >= limit.low.x && !visited[temp.x - limit.low.x][temp.y
-		        - limit.low.y] && (bg ^ isForeground(image(temp.x, current.y))); --temp.x)
-		{
-			// Mark this as visited and extend extent
-			visited[temp.x - limit.low.x][temp.y - limit.low.y] = true;
-			extentOfContiguousPixelsFound.extendToInclude(temp);
-
-			// If the point above is a valid, unvisited, pixel of
-			// the right type, add it to the queue
-			if (temp.y - 1 >= limit.low.y
-			        && !visited[temp.x - limit.low.x][temp.y - 1 - limit.low.y]
-			        && (bg ^ isForeground(image(temp.x, temp.y - 1))))
-				pointsToVisit.push(Point(temp.x, temp.y - 1));
-
-			// If the point below is a valid, unvisited, pixel of
-			// the right type, add it to the queue
-			if (temp.y + 1 <= limit.high.y
-			        && !visited[temp.x - limit.low.x][temp.y + 1 - limit.low.y]
-			        && (bg ^ isForeground(image(temp.x, temp.y + 1))))
-				pointsToVisit.push(temp);
-		}
-
-		// Travel right, filling along the way
-		temp = current;
-		for (; temp.x <= limit.high.x && !visited[temp.x - limit.low.x][temp.y
-		        - limit.low.y] && (bg ^ isForeground(image(temp.x, current.y))); ++temp.x)
-		{
-			// Mark this as visited and extend extent
-			visited[temp.x - limit.low.x][temp.y - limit.low.y] = true;
-			extentOfContiguousPixelsFound.extendToInclude(temp);
-
-			// If the point above is a valid, unvisited, pixel of
-			// the right type, add it to the queue
-			if (temp.y - 1 >= limit.low.y
-			        && !visited[temp.x - limit.low.x][temp.y - 1 - limit.low.y]
-			        && (bg ^ isForeground(image(temp.x, temp.y - 1))))
-				pointsToVisit.push(Point(temp.x, temp.y - 1));
-
-			// If the point below is a valid, unvisited, pixel of
-			// the right type, add it to the queue
-			if (temp.y + 1 <= limit.high.y
-			        && !visited[temp.x - limit.low.x][temp.y + 1 - limit.low.y]
-			        && (bg ^ isForeground(image(temp.x, temp.y + 1))))
-				pointsToVisit.push(temp);
-		}
-		*/
 		// Get all its neighbors
-		 Box neighbors(
-		 (current.x - 1 > limit.low.x ? current.x - 1 : limit.low.x),
-		 (current.y - 1 > limit.low.y ? current.y - 1 : limit.low.y),
-		 (current.x + 1 < limit.high.x ? current.x + 1 : limit.high.x),
-		 (current.y + 1 < limit.high.y ? current.y + 1 : limit.high.y));
-		 for (Point neighbor(neighbors.low); neighbor.x <= neighbors.high.x; ++neighbor.x)
-		 {
-		 for (neighbor.y = neighbors.low.y; neighbor.y <= neighbors.high.y; ++neighbor.y)
-		 {
-		 if (!visited[neighbor.x - limit.low.x][neighbor.y - limit.low.y]
-		 && (bg ^ isForeground(image(neighbor.x, neighbor.y))))
-		 {
-		 pointsToVisit.push(neighbor);
-		 visited[neighbor.x - limit.low.x][neighbor.y - limit.low.y]
-		 = true;
-		 }
-		 }
-		 }//*/
+		Box neighbors(
+				(current.x - 1 > limit.low.x ? current.x - 1 : limit.low.x),
+				(current.y - 1 > limit.low.y ? current.y - 1 : limit.low.y),
+				(current.x + 1 < limit.high.x ? current.x + 1 : limit.high.x),
+				(current.y + 1 < limit.high.y ? current.y + 1 : limit.high.y));
+		for (Point neighbor(neighbors.low); neighbor.x <= neighbors.high.x; ++neighbor.x)
+		{
+			for (neighbor.y = neighbors.low.y; neighbor.y <= neighbors.high.y; ++neighbor.y)
+			{
+				if (!visited[neighbor.x - limit.low.x][neighbor.y - limit.low.y]
+						&& (bg ^ isForeground(image(neighbor.x, neighbor.y))))
+				{
+					pointsToVisit.push(neighbor);
+					visited[neighbor.x - limit.low.x][neighbor.y - limit.low.y]
+							= true;
+				}
+			}
+		}
 	}
 	return extentOfContiguousPixelsFound;
 }
