@@ -206,9 +206,10 @@ unsigned char Grapheme::countHoles() const
 			visited[i][j] = false;
 	}
 
-	// Do a breadth-first search from each background edge pixel
+	// Do a breadth-first search from each unvisited background edge pixel
 	for (Box::edge_iterator i(part); !i; ++i)
-		if (!isForeground(image((*i).x, (*i).y)))
+		if (!isForeground(image((*i).x, (*i).y)) && !visited[(*i).x
+		        - part.low.x][(*i).y - part.low.y])
 			floodFill(image, *i, true, visited, part);
 
 	// Loop through every inner pixel
@@ -239,98 +240,98 @@ unsigned char Grapheme::countHoles() const
  * Finds the straight lines in the letter
  * @return angles of straight lines
  *|
-std::set<unsigned char> Grapheme::findStraightLines() const
-{
-	static const double SIGNIFICANT_LINE = 0.8;
-	std::set<unsigned char> lines;
-	unsigned char angle;
-	Point current(part.low);
-	bool foundLastTime;
+ std::set<unsigned char> Grapheme::findStraightLines() const
+ {
+ static const double SIGNIFICANT_LINE = 0.8;
+ std::set<unsigned char> lines;
+ unsigned char angle;
+ Point current(part.low);
+ bool foundLastTime;
 
-	// Check angle 0 with points on the left edge
-	for (angle = 0, current = part.low, foundLastTime = false; current.y
-	        <= part.high.y; ++current.y)
-	{
-		if (checkLine(current, angle) > SIGNIFICANT_LINE && !foundLastTime)
-		{
-			lines.insert(angle);
-			foundLastTime = true;
-		}
-		else
-			foundLastTime = false;
-	}
+ // Check angle 0 with points on the left edge
+ for (angle = 0, current = part.low, foundLastTime = false; current.y
+ <= part.high.y; ++current.y)
+ {
+ if (checkLine(current, angle) > SIGNIFICANT_LINE && !foundLastTime)
+ {
+ lines.insert(angle);
+ foundLastTime = true;
+ }
+ else
+ foundLastTime = false;
+ }
 
-	// Check angle 90 with points on the bottom edge
-	for (angle = 90, current.x = part.low.x, current.y = part.high.y, foundLastTime
-	        = false; current.x <= part.high.x; ++current.x)
-	{
-		if (checkLine(current, angle) > SIGNIFICANT_LINE && !foundLastTime)
-		{
-			lines.insert(angle);
-			foundLastTime = true;
-		}
-		else
-			foundLastTime = false;
-	}
-	// Check angles between 0 and 90 with points on the bottom and left edges
-	for (angle = 5; angle < 90; angle += 5)
-	{
-		foundLastTime = false;
-		for (Box::edge_iterator i(part, part.high); i != part.low; ++i)
-		{
-			if (checkLine(*i, angle) > SIGNIFICANT_LINE && !foundLastTime)
-			{
-				lines.insert(angle);
-				foundLastTime = true;
-			}
-			else
-				foundLastTime = false;
-		}
-	}
-	// Check angles between 90 and 180 with points on the bottom and right edges
-	for (angle = 95; angle < 180; angle += 5)
-	{
+ // Check angle 90 with points on the bottom edge
+ for (angle = 90, current.x = part.low.x, current.y = part.high.y, foundLastTime
+ = false; current.x <= part.high.x; ++current.x)
+ {
+ if (checkLine(current, angle) > SIGNIFICANT_LINE && !foundLastTime)
+ {
+ lines.insert(angle);
+ foundLastTime = true;
+ }
+ else
+ foundLastTime = false;
+ }
+ // Check angles between 0 and 90 with points on the bottom and left edges
+ for (angle = 5; angle < 90; angle += 5)
+ {
+ foundLastTime = false;
+ for (Box::edge_iterator i(part, part.high); i != part.low; ++i)
+ {
+ if (checkLine(*i, angle) > SIGNIFICANT_LINE && !foundLastTime)
+ {
+ lines.insert(angle);
+ foundLastTime = true;
+ }
+ else
+ foundLastTime = false;
+ }
+ }
+ // Check angles between 90 and 180 with points on the bottom and right edges
+ for (angle = 95; angle < 180; angle += 5)
+ {
 
-	}
-	return lines;
-}
+ }
+ return lines;
+ }
 
-/**
+ /**
  * Checks the density of foreground pixels along a line.
  * @param start     edge point on the line
  * @param angle     angle of the line (0 <= angle < 180)
  * @return density of foreground pixels along the line specified
  *|
-double Grapheme::checkLine(Point start, unsigned char angle) const
-{
-	static const double DEG2RAD = 180.0 / (atan(1.0) * 4.0);
-	unsigned int pixelCount = 0, foregroundCount = 0;
+ double Grapheme::checkLine(Point start, unsigned char angle) const
+ {
+ static const double DEG2RAD = 180.0 / (atan(1.0) * 4.0);
+ unsigned int pixelCount = 0, foregroundCount = 0;
 
-	// Determine X and Y increments
-	double dY = sin(angle * DEG2RAD);
-	double dX = cos(angle * DEG2RAD);
-	// Increase one of these to 1
-	if (dY > dX)
-	{
-		dX /= dY;
-		dY = 1;
-	}
-	else
-	{
-		dY /= dX;
-		dX = 1;
-	}
+ // Determine X and Y increments
+ double dY = sin(angle * DEG2RAD);
+ double dX = cos(angle * DEG2RAD);
+ // Increase one of these to 1
+ if (dY > dX)
+ {
+ dX /= dY;
+ dY = 1;
+ }
+ else
+ {
+ dY /= dX;
+ dX = 1;
+ }
 
-	// Travel down the line
-	for (double curX = start.x, curY = start.y; part.contains(Point(curX, curY)); curX
-	        += dX, curY += dY)
-	{
-		++pixelCount;
-		if (isForeground(image(curX, curY)))
-			++foregroundCount;
-	}
-	return foregroundCount / (double) pixelCount;
-}*/
+ // Travel down the line
+ for (double curX = start.x, curY = start.y; part.contains(Point(curX, curY)); curX
+ += dX, curY += dY)
+ {
+ ++pixelCount;
+ if (isForeground(image(curX, curY)))
+ ++foregroundCount;
+ }
+ return foregroundCount / (double) pixelCount;
+ }*/
 
 /**
  * Checks the density of foreground pixels within an area
