@@ -1,0 +1,67 @@
+{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf460
+{\fonttbl\f0\froman\fcharset0 TimesNewRomanPSMT;}
+{\colortbl;\red255\green255\blue255;}
+{\info
+{\keywords cursorLocation=452, fitsPagesWidth=1}}\margl1440\margr1440\margb1440\margt1440\vieww15520\viewh15480\viewkind1\viewscale120
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\fi0\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 I\'92ll explain how my OCR system works.\
+-----\
+\'93omophagy\'94 is a somewhat obscure term that refers to eating raw food.\
+In this case, the program\'92s eating raw bitmap images.\
+-----\
+So the first step in the algorithm is to divide the page of text into lines.\
+This is done simply on the basis of blank rows in the image, which works quite well.\
+-----\
+Once I have the image divided into lines, I divide each line into characters.\
+This is done on the basis of blank columns in the line.\
+Now, the downside with such a simple approach is that the characters of many fonts overlap horizontally.\
+The advantage is that it catches lowercase \'93I\'94 and \'93J\'94 as one piece.\
+-----\
+Several simple characteristics are computed for a symbol. A flood fill algorithm is involved in counting the number of holes in the symbol.\
+I divide the height of the bounding box by its width.\
+Then I find the density (that is, the relative amount of foreground pixels) in several areas of the image.\
+First, I take the entire bounding box and find that density.\
+Then I divide the image into quadrants as shown and find the density of each; those are the most reliable and important densities.\
+I also calculate the density along those red midlines and of the border of the bounding box.\
+-----\
+I\'92ll explain the hole-counting algorithm.\
+Say we have [click] the lowercase letter \'93E\'94.\
+The first step is to perform a flood-fill from the upper-left corner, which would cover approximately [click] this area.\
+Then I go through all the pixels on the edge that are the background color and that haven\'92t been visited in a previous fill, and I do a fill from each of those.\
+Then it scans the image and looks for background pixels that haven\'92t been visited yet. For each one, it increments the hole count and does a fill from that point.\
+-----\
+A companion program can \'93learn\'94 fonts. If you give it sample images of a predefined alphabet,\
+it will compute those characteristics for the symbols and store the values in a file.\
+If there are multiple samples, it will average the characteristics.\
+So, for instance, the entry for that \'93m\'94 we saw might look like this, with the values for the number of holes,\
+proportion, overall density, border density, the four quadrants and the two midlines\
+-----\
+When the recognition program has to identify a symbol, it loads the previously saved characteristics from the file.\
+Then it compares the unknown character with each known character.\
+Each characteristic has an associated weight.\
+It takes the differences between the two values for each characteristic and multiplies each by the weight; the sum of all that gives a score for the match.\
+Then the known character that has the lowest score when compared to the unknown character is chosen.\
+-----\
+Some things are hard for the program to identify.\
+As I mentioned, horizontally overlapping characters won\'92t be recognized properly. This is often caused by kerning or similar effects.\
+Serifs, in fonts that have them, also have a great tendency to stick into other letters\'92 space.\
+Rotated or noisy images, or text in a small font size, are quite difficult and the program won\'92t do a very good job.\
+Also, some fonts have letters that look identical (uppercase I, lowercase L). There\'92s really not much to do about that.\
+Recognizing blank space is difficult. I insert a space character when there\'92s a large enough horizontal space compared to the line height.\
+-----\
+As an example, let\'92s look at the program reading this image. This is a 1000x500 pixel, 2MB BMP image created with the GIMP using text from the CS department website, set in 48px FreeSans font.\
+-----\
+And here\'92s the result when I run the program.\
+You can see a few issues here:\
+The \'93F\'94 and \'93T\'94 in \'93fifteen\'94 were too close to each other, so the best match it found for that was the letter \'93v\'94.\
+The colon wasn\'92t recognized correctly because the colon isn\'92t in my character set. The best it found was the letter \'93j\'94.\
+Also, a space was detected between the two exclamation marks.\
+-----\
+Here are a few of the tools that were useful in building this project:\
+I coded it in C++, in Eclipse, using Subversion and GNU compilers, and Dox*gen for documentation.\
+The code uses the EasyBMP library to read images. I usually create images using the GIMP.\
+And my code is licensed under the GPL.\
+-----\
+So, any questions?\
+[click] Okay, thank you everyone!}
