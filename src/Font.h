@@ -56,13 +56,8 @@ public:
 		/// Height / width
 		double proportion;
 		/// Foreground pixels / total pixels
-		struct dense
+		struct
 		{
-			dense() :
-				total(0), border(0), q1(0), q2(0), q3(0), q4(0), mid1(0), mid2(
-				        0)
-			{
-			}
 			double total, border, q1, q2, q3, q4, mid1, mid2;
 		} density;
 
@@ -106,7 +101,8 @@ public:
 		 * @param s    symbol
 		 * @return output stream
 		 */
-		friend std::ostream & operator<<(std::ostream & outs, const Font::Symbol & s);
+		friend std::ostream & operator<<(std::ostream & outs,
+		        const Font::Symbol & s);
 	};
 
 	/**

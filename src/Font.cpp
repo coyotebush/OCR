@@ -50,8 +50,16 @@ Font::Font(std::string name)
  * Initializes the data fields
  */
 Font::Symbol::Symbol() :
-	holes(0), proportion(0), density()
+	holes(0), proportion(0)
 {
+	density.total = 0;
+	density.border = 0;
+	density.q1 = 0;
+	density.q2 = 0;
+	density.q3 = 0;
+	density.q4 = 0;
+	density.mid1 = 0;
+	density.mid2 = 0;
 }
 
 /**
@@ -142,9 +150,9 @@ Font::Symbol Font::Symbol::operator/=(int divisor)
  */
 std::istream & operator>>(std::istream & ins, Font::Symbol & s)
 {
-	ins >> s.holes >> s.proportion >> s.density.total
-	        >> s.density.border >> s.density.q1 >> s.density.q2 >> s.density.q3
-	        >> s.density.q4 >> s.density.mid1 >> s.density.mid2;
+	ins >> s.holes >> s.proportion >> s.density.total >> s.density.border
+	        >> s.density.q1 >> s.density.q2 >> s.density.q3 >> s.density.q4
+	        >> s.density.mid1 >> s.density.mid2;
 	return ins;
 }
 /**
