@@ -95,7 +95,7 @@ char Grapheme::Read()
 	unsigned pixelCount = 0;
 	unsigned foregroundCount = 0;
 	for (Box::edge_iterator i(part); !i; ++i, ++pixelCount)
-		if (isForeground(image((*i).x, (*i).y)))
+		if (isForeground(image(i->x, i->y)))
 			++foregroundCount;
 	theSymbol.density.border = foregroundCount / (double) pixelCount;
 
@@ -208,8 +208,8 @@ unsigned char Grapheme::countHoles() const
 
 	// Do a breadth-first search from each unvisited background edge pixel
 	for (Box::edge_iterator i(part); !i; ++i)
-		if (!isForeground(image((*i).x, (*i).y)) && !visited[(*i).x
-		        - part.low.x][(*i).y - part.low.y])
+		if (!isForeground(image(i->x, i->y)) && !visited[(*i).x
+		        - part.low.x][i->y - part.low.y])
 			floodFill(image, *i, true, visited, part);
 
 	// Loop through every inner pixel

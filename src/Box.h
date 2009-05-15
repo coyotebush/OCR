@@ -223,6 +223,11 @@ public:
 	{
 		return current;
 	}
+	
+	Point* operator -> ()
+	{
+		return &current;
+	}
 
 	/**
 	 * Increments the current Point clockwise around the edge.
