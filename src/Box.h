@@ -109,7 +109,7 @@ public:
 	 * @param y2 High Y (bottom)
 	 * @return
 	 */
-	Box(int x1, int y1, int x2, int y2) :
+	Box(int x1 = 0, int y1 = 0, int x2 = 0, int y2 = 0) :
 		low(x1, y1), high(x2, y2)
 	{
 	}
@@ -149,6 +149,19 @@ public:
 	{
 		return width() * height();
 	}
+	
+	/**
+	 * Determines whether two boxes have a similar x midpoint.
+	 * @param other     another box
+	 * @param tolerance how close they must be
+	 */
+	bool hasSimilarXMidpoint (const Box & other, unsigned short tolerance)
+	{
+		int diff = ((high.x - low.x)/2 - (other.high.x - other.low.x)/2);
+		if (diff < 0)
+			diff = -diff;
+		return diff <= tolerance;
+	}
 
 	/**
 	 * Determines whether a Point is on the edge of this Box
@@ -184,6 +197,16 @@ public:
 			low.y = p.y;
 		if (p.y > high.y)
 			high.y = p.y;
+	}
+	
+	/**
+	 * Extends the box to include another box
+	 * @param b Box that should be included
+	 */
+	void extendToInclude(const Box & b)
+	{
+		extendToInclude(b.low);
+		extendToInclude(b.high);
 	}
 
 	/**

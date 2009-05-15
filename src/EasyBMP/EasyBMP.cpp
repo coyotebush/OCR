@@ -321,7 +321,7 @@ RGBApixel* BMP::operator()(int i, int j)
  { j = 0; Warn = true; }
  if( Warn && EasyBMPwarnings )
  {
-  cout << "EasyBMP Warning: Attempted to access non-existent pixel;" << endl
+  cout << "EasyBMP Warning: Attempted to access non-existent pixel: (" << i << ", " << j << ")" << endl
        << "                 Truncating request to fit in the range [0,"
        << Width-1 << "] x [0," << Height-1 << "]." << endl;
  }

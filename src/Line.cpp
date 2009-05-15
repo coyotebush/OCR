@@ -84,6 +84,46 @@ Line & Line::operator =(const Line & other)
  */
 std::string Line::Read(std::vector<Font::Symbol> * symData)
 {
+	const unsigned short VARIANCE = 10;
+	std::string result = "";
+	// Initialize visited array
+	bool ** visited = new bool *[image.TellWidth()];
+	for (unsigned i = 0; i < image.TellWidth(); ++i)
+	{
+		visited[i] = new bool[bottom - top + 1];
+		for (unsigned j = 0; j < bottom - top + 1; ++j)
+			visited[i][j] = false;
+	}
+	// Other variables
+	Box limit(0,top,image.TellWidth(), bottom), currentLetter, temp;
+	// Find a foreground pixel
+	for (Point p(0,top); p.x < image.TellWidth(); ++p.x)
+	{
+		for (p.y = top; p.y < bottom;++p.y)
+		{
+			if (isForeground(image(p.x,p.y)))
+			{
+				// Do a flood-fill from it
+				temp = floodFill(image, p,false,visited,limit);
+				
+				// If close, add to the current box
+				if (currentLetter.hasSimilarXMidpoint(temp, VARIANCE))
+					currentLetter.extendToInclude(temp);
+				else
+				{
+					// Read the current letter
+					Grapheme sym(image, currentLetter, font);
+					result += sym.Read();
+					// Replace currentLetter with the new box
+					currentLetter = temp;
+				}
+			}
+		}
+	}
+	return result;
+}
+
+/*{
 	std::string result = "";
 	// Divide into symbols
 	int left = 0, right = 0; // of the current grapheme
@@ -121,6 +161,6 @@ std::string Line::Read(std::vector<Font::Symbol> * symData)
 	}
 
 	return result;
-}
+}*/
 
 } // namespace OCR

@@ -59,6 +59,14 @@ public:
 	 * @param[in] f   font to use
 	 */
 	Grapheme(BMP & img, int x1, int y1, int x2, int y2, const Font & f);
+	
+	/**
+	 * Initializes the object using part of a BMP image
+	 * @param[in] img reference to BMP
+	 * @param[in] box part of image
+	 * @param[in] f   font to use
+	 */
+	Grapheme(BMP & img, const Box & box, const Font & f);
 
 	/**
 	 * Initializes the object as a copy of another

@@ -83,7 +83,7 @@ private:
 	/// The image
 	BMP & image;
 	/// The part of the image (inclusive)
-	int top, bottom;
+	unsigned top, bottom;
 	/// The font to use
 	const Font & font;
 };
