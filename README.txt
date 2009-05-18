@@ -17,11 +17,3 @@ See the man pages provided:
 
     man/ocr.1
     man/ocr-learn.1
-
-Supported fonts
------
-The text in the input image must be in a supported font.
-Currently, the fonts supported are:
-
- - FreeSans
- - FreeMono
