@@ -59,7 +59,7 @@ public:
 	 * @param[in] f   font to use
 	 */
 	Grapheme(BMP & img, int x1, int y1, int x2, int y2, const Font & f);
-	
+
 	/**
 	 * Initializes the object using part of a BMP image
 	 * @param[in] img reference to BMP
@@ -102,20 +102,6 @@ private:
 	 * @return number of holes
 	 */
 	unsigned char countHoles() const;
-
-	/**
-	 * Finds the straight lines in the letter
-	 * @return angles of straight lines
-	 */
-	std::set<unsigned char> findStraightLines() const;
-
-	/**
-	 * Checks the density of foreground pixels along a line.
-	 * @param start     edge point on the line
-	 * @param angle     angle of the line (0 <= angle < 180)
-	 * @return density of foreground pixels along the line specified
-	 */
-	double checkLine(Point start, unsigned char angle) const;
 
 	/**
 	 * Checks the density of foreground pixels within an area
