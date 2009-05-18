@@ -1,0 +1,82 @@
+<HTML><HEAD><TITLE>Manpage of ocr</TITLE>
+</HEAD><BODY>
+<H1>ocr</H1>
+Section: Sonoma State University (1)<BR>Updated: April 30, 2009<BR><A HREF="#index">Index</A>
+<A HREF="http://localhost/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+ocr - recognize characters in a bitmap image
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>ocr</B>
+
+font image
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+The
+<B>ocr</B>
+
+program identifies text in a bitmap image.
+Given a BMP
+<I>image</I>
+
+and a supported
+<I>font</I>
+
+name, the text recognized in the image will be printed.
+<A NAME="lbAE">&nbsp;</A>
+<H2>EXAMPLES</H2>
+
+Identify text in the FreeSans font:
+ocr freesans somefile.bmp
+<A NAME="lbAF">&nbsp;</A>
+<H2>FILES</H2>
+
+Font information is retrieved from files in the
+<I>font</I>
+
+directory in the same directory as the executable. These files have the suffix
+<I>.font</I>
+
+
+Font data files can be generated using the
+<B>ocr-learn</B>
+
+program. Several font data files are included with the 
+<B>ocr</B>
+
+programs.
+<A NAME="lbAG">&nbsp;</A>
+<H2>BUGS</H2>
+
+The algorithm for splitting letters relies on the existence of blank space between letters. Issues will be encountered with fonts whose letters overlap horizontally.
+
+Detection of space characters is also somewhat crude. With certain fonts, too few or too many space characters may be detected.
+<A NAME="lbAH">&nbsp;</A>
+<H2>AUTHOR</H2>
+
+Corey Ford &lt;<A HREF="mailto:fordco@sonoma.edu">fordco@sonoma.edu</A>&gt;
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">EXAMPLES</A><DD>
+<DT><A HREF="#lbAF">FILES</A><DD>
+<DT><A HREF="#lbAG">BUGS</A><DD>
+<DT><A HREF="#lbAH">AUTHOR</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="http://localhost/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 06:02:32 GMT, May 18, 2009
+</BODY>
+</HTML>

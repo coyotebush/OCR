@@ -1,0 +1,83 @@
+<HTML><HEAD><TITLE>Manpage of ocr-learn</TITLE>
+</HEAD><BODY>
+<H1>ocr-learn</H1>
+Section: Sonoma State University (1)<BR>Updated: May 1, 2009<BR><A HREF="#index">Index</A>
+<A HREF="http://localhost/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+ocr-learn - create font data files
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>ocr-learn</B>
+
+font image[...]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+The
+<B>ocr-learn</B>
+
+program generates font data files for the
+<B>ocr</B>
+
+program. The operands consist of a
+<I>font</I>
+
+name for data storage, followed by the filenames of any number of BMP
+<I>images</I>
+
+as samples of the font.
+
+Each image must contain the same characters in the same order, and in the desired font. The characters in the images must be the following string, or any initial part of it.
+<DL COMPACT><DT><DD>
+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,?!/@_
+</DL>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>EXAMPLES</H2>
+
+Generate data for the FreeSans font using samples in a variety of sizes:
+<DL COMPACT><DT><DD>
+ocr-learn freesans freesans36.bmp freesans48.bmp freesans72.bmp
+</DL>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>FILES</H2>
+
+Font information is stored in files in the
+<I>font</I>
+
+directory in the same directory as the executable. These files have the suffix
+<I>.font</I>
+
+
+Font data files can be used with the
+<B>ocr</B>
+
+program.
+<A NAME="lbAG">&nbsp;</A>
+<H2>AUTHOR</H2>
+
+Corey Ford &lt;<A HREF="mailto:fordco@sonoma.edu">fordco@sonoma.edu</A>&gt;
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">EXAMPLES</A><DD>
+<DT><A HREF="#lbAF">FILES</A><DD>
+<DT><A HREF="#lbAG">AUTHOR</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="http://localhost/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 06:02:45 GMT, May 18, 2009
+</BODY>
+</HTML>
