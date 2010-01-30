@@ -85,4 +85,4 @@ clean-doc:
 	$(RM) -r doc/*
 
 clean:
-	$(RM) -r build/*.o *.o ocr
+	$(RM) -r build/*.o *.o ocr ocr-learn
